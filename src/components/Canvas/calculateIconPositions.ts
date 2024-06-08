@@ -1,32 +1,14 @@
 "use client";
 
 import { Action, CanvasIcon, GCD, oGCD } from './types'
+import { scale, styles } from './styles'
 
-const SCALING_FACTOR = 4;
-const GCD_WIDTH = 64 * SCALING_FACTOR;
-const GCD_HEIGHT = 64 * SCALING_FACTOR;
-const oGCD_WIDTH = 48 * SCALING_FACTOR;
-const oGCD_HEIGHT = 48 * SCALING_FACTOR;
-const oGCD_ADJUST_INWARD = 3 * SCALING_FACTOR;
-const oGCD_CLIP_PADDING = 8 * SCALING_FACTOR;
-const WEAVE_SLOT_WIDTH = 64 * SCALING_FACTOR;
-const WEAVE_SLOT_HEIGHT = 24 * SCALING_FACTOR;
-const WEAVE_SLOT_Y_OFFSET = 8 * SCALING_FACTOR;
-const oGCD_BOTTOM_PADDING = 24 * SCALING_FACTOR;
-const DEFAULT_CAST_WIDTH = 2 * WEAVE_SLOT_WIDTH;  // for a 2.5s cast
-const FRAME_ADJUST_LEFT = 3 * SCALING_FACTOR;
-const FRAME_ADJUST_TOP = 3 * SCALING_FACTOR;
-const FRAME_EXTRA_WIDTH_GCD = 8 * SCALING_FACTOR;
-const FRAME_EXTRA_WIDTH_OGCD = 6 * SCALING_FACTOR;
-const FRAME_EXTRA_HEIGHT_GCD = 12 * SCALING_FACTOR;
-const FRAME_EXTRA_HEIGHT_OGCD = 10 * SCALING_FACTOR;
-const HARDCAST_END_WIDTH = 4 * SCALING_FACTOR;
-const WEAVESLOT_END_ADJUST_LEFT = 4 * SCALING_FACTOR;
-const PREPULL_GCD_PADDING = 16 * SCALING_FACTOR;
-const PREPULL_OGCD_PADDING = 40 * SCALING_FACTOR;
+const { height, widthInitial, positions, fonts, colors } = styles
+
 const ANIMATION_LOCK = 0.65;
 const CAST_ANIMATION_LOCK = 0.1;
 const DEFAULT_RECAST = 2.5;
+const DEFAULT_CAST_WIDTH = 2 * positions.weaveSlotWidth;  // for a 2.5s cast
 
 interface GCDResult {
     gcdIcons: CanvasIcon[];
@@ -49,9 +31,9 @@ const calculateGCDIcons = (action: GCD, x: number): GCDResult => {
     // Add GCD icon
     const gcdIcon = {
         x: x,
-        y: -(GCD_WIDTH) / 2,
-        width: GCD_WIDTH,
-        height: GCD_HEIGHT,
+        y: -positions.gcdWidth / 2,
+        width: positions.gcdWidth,
+        height: positions.gcdHeight,
         ...action,
         weaveSlots: weaveSlots,
         timeElapsed: Math.max((action.castTime ?? 0) + CAST_ANIMATION_LOCK, action.recastTime ?? DEFAULT_RECAST)
@@ -60,36 +42,36 @@ const calculateGCDIcons = (action: GCD, x: number): GCDResult => {
     // Add icon frame
     const frameIcon = {
         type: 'other',
-        x: x - FRAME_ADJUST_LEFT,
-        y: -(GCD_WIDTH) / 2 - FRAME_ADJUST_TOP,
-        width: GCD_WIDTH + FRAME_EXTRA_WIDTH_GCD,
-        height: GCD_HEIGHT + FRAME_EXTRA_HEIGHT_GCD,
+        x: x - positions.frameAdjustLeft,
+        y: -positions.gcdHeight / 2 - positions.frameAdjustTop,
+        width: positions.gcdWidth + positions.frameExtraWidthGcd,
+        height: positions.gcdHeight + positions.frameExtraHeightOgcd,
         imageSrc: '/icon_frame.png',
     } as const;
 
-    width += GCD_WIDTH;
+    width += positions.gcdWidth;
 
     // Add a cast bar icon as needed
     if (action.castTime && action.castTime > 0) {
-        const castWidth = (action.castTime / DEFAULT_RECAST * DEFAULT_CAST_WIDTH) - HARDCAST_END_WIDTH;
+        const castWidth = (action.castTime / DEFAULT_RECAST * DEFAULT_CAST_WIDTH) - positions.hardcastEndWidth;
         icons.push({
             type: 'other',
             x: x + width,
-            y: -(WEAVE_SLOT_HEIGHT) / 2 + WEAVE_SLOT_Y_OFFSET,
+            y: -positions.weaveSlotHeight / 2 + positions.weaveSlotYOffset,
             width: castWidth,
-            height: WEAVE_SLOT_HEIGHT,
+            height: positions.weaveSlotHeight,
             imageSrc: '/hardcast.png',
         });
         icons.push({
             type: 'other',
             x: x + width + castWidth - 1,
-            y: -(WEAVE_SLOT_HEIGHT) / 2 + WEAVE_SLOT_Y_OFFSET,
-            width: HARDCAST_END_WIDTH,
-            height: WEAVE_SLOT_HEIGHT,
+            y: -positions.weaveSlotHeight / 2 + positions.weaveSlotYOffset,
+            width: positions.hardcastEndWidth,
+            height: positions.weaveSlotHeight,
             imageSrc: '/hardcast_end.png',
         });
 
-        width += castWidth + HARDCAST_END_WIDTH;
+        width += castWidth + positions.hardcastEndWidth;
     }
 
     const weaveSlotIcons: CanvasIcon[] = [];
@@ -97,12 +79,16 @@ const calculateGCDIcons = (action: GCD, x: number): GCDResult => {
     // Add weave slot icons as needed
     if (weaveSlots > 0 && !action.prepull) {
         for (let i = 0; i < weaveSlots; i++) {
+            const weaveSlotWidth = excessGCDRollWidth > 0
+                ? positions.weaveSlotWidth + (i === weaveSlots - 1 ? excessGCDRollWidth : 0)
+                : positions.weaveSlotWidth;
+
             weaveSlotIcons.push({
                 type: 'weave',
                 x: x + width,
-                y: -(WEAVE_SLOT_HEIGHT) / 2 + WEAVE_SLOT_Y_OFFSET,
-                width: WEAVE_SLOT_WIDTH,
-                height: WEAVE_SLOT_HEIGHT,
+                y: -positions.weaveSlotHeight / 2 + positions.weaveSlotYOffset,
+                width: weaveSlotWidth,
+                height: positions.weaveSlotHeight,
                 imageSrc: (i === weaveSlots - 1) 
                     ? '/last_weaveslot.png' 
                     : '/weaveslot.png',
@@ -113,41 +99,27 @@ const calculateGCDIcons = (action: GCD, x: number): GCDResult => {
                 firstWeaveSlotX = x + width;
             }
 
-            width += WEAVE_SLOT_WIDTH;
+            width += weaveSlotWidth;
         }
 
-        width -= WEAVESLOT_END_ADJUST_LEFT;
+        width -= positions.weaveslotEndAdjustLeft;
     }
 
-    // Add an excess GCD roll icon as needed
-    if (excessGCDRollWidth > 0 && !action.prepull) {
-        icons.push({
-            type: 'other',
-            x: x + width,
-            y: -(WEAVE_SLOT_HEIGHT) / 2 + WEAVE_SLOT_Y_OFFSET,
-            width: excessGCDRollWidth,
-            height: WEAVE_SLOT_HEIGHT,
-            imageSrc: '/dead_space.png',
-        });
-
-        width += excessGCDRollWidth;
-    }
-
-    width += FRAME_EXTRA_WIDTH_GCD / 2;
+    width += positions.frameExtraWidthGcd / 2;
 
     // Push these last so they're on top
     icons.push(...weaveSlotIcons);
     icons.push(gcdIcon, frameIcon);
 
     if (action.prepull) {
-        width += PREPULL_GCD_PADDING;
+        width += positions.prepullGcdPadding;
     }
 
     return {
         gcdIcons: icons,
         gcdWidth: width,
         weaveSlots: action.prepull ? 0 : weaveSlots,
-        firstWeaveSlotX: firstWeaveSlotX ?? x + GCD_WIDTH,
+        firstWeaveSlotX: firstWeaveSlotX ?? x + positions.gcdWidth,
     }
 }
 
@@ -169,18 +141,18 @@ const calculateOGCDIcons = (
     const x = hardClip ? rotationEndX : weaveSlotX;
     const iconX = hardClip 
         ? x 
-        : x + (WEAVE_SLOT_WIDTH - oGCD_WIDTH) / 2 + (
+        : x + (positions.weaveSlotWidth - positions.ogcdWidth) / 2 + (
             weaveSlot === 1
-                ? oGCD_ADJUST_INWARD 
-                : (remainingWeaves === 1) ? -oGCD_ADJUST_INWARD : 0
+                ? positions.ogcdAdjustInward 
+                : (remainingWeaves === 1) ? -positions.ogcdAdjustInward  : 0
         );
 
     // Add oGCD icon
     icons.push({
         x: iconX,
-        y: -(oGCD_BOTTOM_PADDING + oGCD_HEIGHT),
-        width: oGCD_WIDTH,
-        height: oGCD_HEIGHT,
+        y: -(positions.ogcdBottomPadding + positions.ogcdHeight),
+        width: positions.ogcdWidth,
+        height: positions.ogcdHeight,
         weavePosition: hardClip ? undefined : weaveSlot,
         timeElapsed: hardClip ? ANIMATION_LOCK : 0,
         ...action,
@@ -189,21 +161,21 @@ const calculateOGCDIcons = (
     // Add icon frame
     icons.push({
         type: 'other',
-        x: iconX - FRAME_ADJUST_LEFT,
-        y: -(oGCD_BOTTOM_PADDING + oGCD_HEIGHT) - FRAME_ADJUST_TOP,
-        width: oGCD_WIDTH + FRAME_EXTRA_WIDTH_OGCD,
-        height: oGCD_HEIGHT + FRAME_EXTRA_HEIGHT_OGCD,
+        x: iconX - positions.frameAdjustLeft,
+        y: -(positions.ogcdBottomPadding + positions.ogcdHeight) - positions.frameAdjustTop,
+        width: positions.ogcdWidth + positions.frameExtraWidthOgcd,
+        height: positions.ogcdHeight + positions.frameExtraHeightOgcd,
         imageSrc: '/icon_frame.png',
     });
 
     return {
         ogcdIcons: icons,
         addedRotationWidth: action.prepull
-                ? oGCD_WIDTH + (FRAME_EXTRA_WIDTH_OGCD / 2) + PREPULL_OGCD_PADDING
+                ? positions.ogcdWidth + (positions.frameExtraWidthOgcd / 2) + positions.prepullOgcdPadding
                 : hardClip
-                    ? oGCD_WIDTH + (FRAME_EXTRA_WIDTH_OGCD / 2) + oGCD_CLIP_PADDING
+                    ? positions.ogcdWidth + (positions.frameExtraWidthOgcd / 2) + positions.ogcdClipPadding
                     : 0,
-        addedWeaveSlotWidth: hardClip ? 0 : WEAVE_SLOT_WIDTH,
+        addedWeaveSlotWidth: hardClip ? 0 : positions.weaveSlotWidth,
     }
 }
 
@@ -233,7 +205,7 @@ export const calculateIconPositions = (rotation: Action[]): IconPositionResult =
             }
             case 'ogcd': {
                 if (action.lateWeave) {
-                    currentWeaveSlotX += WEAVE_SLOT_WIDTH * (availableWeaveSlots - 1);
+                    currentWeaveSlotX += positions.weaveSlotWidth * (availableWeaveSlots - 1);
                     availableWeaveSlots = Math.min(availableWeaveSlots, 1);
                 }
 
