@@ -112,7 +112,6 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({ job, setStatus }) => {
             applicationDelay: applicationDelay ?? 0,
         };
 
-        console.log(color);
         setStatus(buff);
     }
 
