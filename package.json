@@ -1,0 +1,43 @@
+{
+  "name": "mint-leaf",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/antd": "^1.0.0",
+    "@types/cookie": "^0.6.0",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/lodash": "^4.14.202",
+    "@types/node-fetch": "^2.6.11",
+    "@xivapi/js": "^0.4.5",
+    "antd": "^5.14.2",
+    "colorthief": "^2.4.0",
+    "cookie": "^0.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "next": "^14.1.1",
+    "next-auth": "^5.0.0-beta.18",
+    "node-fetch": "^2.6.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
+    "postcss": "^8",
+    "react-select": "^5.8.0",
+    "styled-components": "^6.1.9",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}
