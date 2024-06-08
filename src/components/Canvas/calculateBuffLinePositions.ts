@@ -68,14 +68,6 @@ export const calculateTimeline = (
             addedTime: 0,
             x: finalX,
         })
-
-        console.log({
-            time: timeline.at(-1)?.time,
-            addedTime: timeline.at(-1)?.addedTime,
-            addedWeaveTime: timeline.at(-1)?.addedWeaveTime,
-            x: timeline.at(-1)?.x,
-            type: 'end',
-        })
     }
 
     return timeline
