@@ -42,6 +42,24 @@ const drawPrepullTime = (
     drawLabel(icon.prepull.toString(), x + icon.width / 2, midLine - positions.pullLineHeightAbove - positions.textBottomPadding - positions.pullTimeAdjustTop, context)
 }
 
+const drawPrepullLine = (
+    context: CanvasRenderingContext2D,
+    x: number,
+    midLine: number,
+) => {
+    context.beginPath()
+    context.moveTo(x + positions.prepullPadding, midLine + positions.pullLineHeightBelow)
+    context.lineTo(x + positions.prepullPadding, midLine - positions.pullLineHeightAbove)
+    context.strokeStyle = colors.line
+    context.lineWidth = scale
+    context.stroke()
+    context.fillStyle = colors.text
+    context.font = fonts.pullLabel
+    context.textAlign = "center"
+    context.textBaseline = "bottom"
+    context.fillText("Pull", x + positions.prepullPadding, midLine - positions.pullLineHeightAbove - positions.textBottomPadding)
+}
+
 const drawBalanceLogo = (
     context: CanvasRenderingContext2D,
     x: number,
@@ -234,22 +252,12 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
 
         // Draw pull line
         if (prepullRotation.length > 0 && rotation.length > 0) {
-            context.beginPath()
-            context.moveTo(startPoint + prepullWidth + positions.rotationPadding, midLine)
-            context.lineTo(startPoint + prepullWidth + positions.rotationPadding + positions.prepullPadding, midLine)
-            context.strokeStyle = colors.line
-            context.lineWidth = scale
-            context.stroke()
-            context.fillStyle = colors.text
-            context.font = fonts.pullLabel
-            context.textAlign = "center"
-            context.textBaseline = "bottom"
-            context.fillText("Pull", startPoint + prepullWidth + positions.rotationPadding + positions.prepullPadding, midLine - positions.pullLineHeightAbove - positions.textBottomPadding)
+            drawPrepullLine(context, startPoint + prepullWidth + positions.rotationPadding, midLine)
         }
 
+        // Draw rotation
         let gcdCount = 1
 
-        // Draw rotation
         rotationIcons.forEach((icon, index) => {
             const image = rotationIconRefs.current[index]
             drawImageFromHTML(context, image, icon.x, icon.y, icon.width, icon.height)
