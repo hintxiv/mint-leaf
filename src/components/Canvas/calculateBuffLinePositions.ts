@@ -57,29 +57,6 @@ export const calculateTimeline = (
                 })
                 break
         }
-
-        // Verbose logging of the point that was just added including the name / type of the icon
-        if (icon.type === 'gcd' || icon.type === 'ogcd') {
-            console.log({
-                time: timeline.at(-1)?.time,
-                addedTime: timeline.at(-1)?.addedTime,
-                addedWeaveTime: timeline.at(-1)?.addedWeaveTime,
-                x: timeline.at(-1)?.x,
-                type: icon.type,
-                name: icon.name,
-            })
-        }
-
-        if (icon.type === 'weave') {
-            console.log({
-                time: timeline.at(-1)?.time,
-                addedTime: timeline.at(-1)?.addedTime,
-                addedWeaveTime: timeline.at(-1)?.addedWeaveTime,
-                x: timeline.at(-1)?.x,
-                type: icon.type,
-                name: icon.imageSrc,
-            })
-        }
     })
 
     // Add a final point to the timeline to finish addedTime
