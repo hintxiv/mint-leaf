@@ -67,7 +67,6 @@ export const getActionByID = async (id: string): Promise<DataAction> => {
             icon: Icon ? new URL(baseURL + Icon.split('.png')[0] + '_hr1.png') : null,
         };
     } catch (e) {
-        console.log(e);
         throw new Error(`No action with ID ${id} exists`);
     }
 }

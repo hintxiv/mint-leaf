@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useMemo, forwardRef, useImperativeHandle, useState } from 'react'
-import { Action, CanvasBuffLine, CanvasGCD, CanvasoGCD } from './types'
+import { Action, CanvasGCD, CanvasoGCD } from './types'
 import { calculateIconPositions } from './calculateIconPositions'
 import styled from 'styled-components'
 import { default as NextImage } from 'next/image'
