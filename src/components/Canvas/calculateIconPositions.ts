@@ -1,9 +1,9 @@
 "use client";
 
 import { Action, CanvasIcon, GCD, oGCD } from './types'
-import { scale, styles } from './styles'
+import { styles } from './styles'
 
-const { height, widthInitial, positions, fonts, colors } = styles
+const { positions } = styles
 
 const ANIMATION_LOCK = 0.65;
 const CAST_ANIMATION_LOCK = 0.1;
