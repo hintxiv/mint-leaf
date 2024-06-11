@@ -136,10 +136,16 @@ export const jobs: Record<string, Job> = {
         icon: "/job-icons/smn.svg",
         borderedIcon: "/job-icons/bordered/062127_hr1.png",
     },
+    BLU: {
+        id: 36,
+        name: "Blue Mage",
+        icon: "/job-icons/blu.svg",
+        borderedIcon: "/job-icons/bordered/062136_hr1.png",
+    },
 } as const;
 
 export const tanks = ['DRK', 'GNB', 'PLD', 'WAR'] as const;
 export const healers = ['AST', 'SCH', 'SGE', 'WHM'] as const;
 export const melee = ['DRG', 'MNK', 'NIN', 'RPR', 'SAM'] as const;
 export const physRanged = ['BRD', 'DNC', 'MCH'] as const;
-export const casters = ['BLM', 'RDM', 'SMN'] as const;
+export const casters = ['BLM', 'RDM', 'SMN', 'BLU'] as const;
