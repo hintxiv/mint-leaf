@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
-import SearchInput from './SearchInput'
-import { DataAction, searchForAction } from '@/app/api'
+import React from 'react';
+import { DataAction } from '@/app/api'
 import styled from 'styled-components'
 import { Button, Checkbox, InputNumber, Switch } from 'antd'
-import { Action } from '../Canvas/types'
 import { AbilityIcon } from './AbilityIcon'
-import { Job } from '@/data/jobs'
 
 const DEFAULT_RECAST_TIME = 2.5;
 const DEFAULT_CAST_TIME = 0;
 
-const RotationBuilderContainer = styled.div`
+const ActionBuilderContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,11 +15,6 @@ const RotationBuilderContainer = styled.div`
     font-size: 16px;
     flex-shrink: 0;
     margin-bottom: auto;
-`;
-
-const SearchContainer = styled.div`
-    display: block;
-    width: 100%;
 `;
 
 const ActionDisplayAndSettings = styled.div`
@@ -65,82 +57,51 @@ const ActionButtons = styled.div`
     }
 `;
 
-interface RotationBuilderProps {
-    createAction: (action: Action) => void
-    job: Job
+interface ActionBuilderProps {
+    currentAction: DataAction
+    setGcdToggled: (toggled: boolean) => void
+    gcdToggled: boolean
+    setLateWeave: (lateWeave: boolean) => void
+    lateWeave: boolean
+    setRecastTime: (recastTime: number | null) => void
+    recastTime: number | null
+    setCastTime: (castTime: number | null) => void
+    castTime: number | null
+    setPrepull: (prepull: boolean) => void
+    prepull: boolean
+    setPrepullTime: (prepullTime: number | null) => void
+    prepullTime: number | null
     appliesBuff: boolean
     setAppliesBuff: (appliesBuff: boolean) => void
+    onCreate: () => void
+    onClear: () => void
 }
 
-export const RotationBuilder: React.FC<RotationBuilderProps> = ({
-    createAction,
-    job,
+export const ActionBuilder: React.FC<ActionBuilderProps> = ({
+    currentAction,
+    setGcdToggled,
+    gcdToggled,
+    setLateWeave,
+    lateWeave,
+    setRecastTime,
+    recastTime,
+    setCastTime,
+    castTime,
+    setPrepull,
+    prepull,
+    setPrepullTime,
+    prepullTime,
     appliesBuff,
     setAppliesBuff,
+    onCreate,
+    onClear,
 }) => {
-    const [currentAction, setCurrentAction] = useState<DataAction | null>(null);
-    const [gcdToggled, setGcdToggled] = useState<boolean>(true);
-    const [lateWeave, setLateWeave] = useState<boolean>(false);
-    const [recastTime, setRecastTime] = useState<number | null>(null);
-    const [castTime, setCastTime] = useState<number | null>(null);
-    const [prepull, setPrepull] = useState<boolean>(false);
-    const [prepullTime, setPrepullTime] = useState<number | null>(-5);
-
-    const onClear = () => {
-        setCurrentAction(null);
-        setAppliesBuff(false);
-        setGcdToggled(true);
-        setLateWeave(false);
-        setRecastTime(null);
-        setCastTime(null);
-    }
-
-    const onCreate = async () => {
-        if (!currentAction) return;
-
-        const icon = currentAction.icon ? currentAction.icon.toString() : '';
-
-        if (gcdToggled) {
-            createAction({
-                type: 'gcd',
-                id: currentAction.id,
-                name: currentAction.name ?? '',
-                imageSrc: icon,
-                recastTime: recastTime ?? DEFAULT_RECAST_TIME,
-                castTime: castTime ?? DEFAULT_CAST_TIME,
-                prepull: prepull ? (prepullTime ?? 0) : undefined,
-            });
-        } else {
-            createAction({
-                type: 'ogcd',
-                id: currentAction.id,
-                name: currentAction.name ?? '',
-                imageSrc: icon,
-                lateWeave: lateWeave,
-                prepull: prepull ? (prepullTime ?? 0) : undefined,
-            });
-        }
-
-        onClear();
-    }
-
-    if (!currentAction) {
-        return (
-            <RotationBuilderContainer>
-                <SearchContainer>
-                    <SearchInput
-                        job={job}
-                        onSelect={setCurrentAction}
-                        search={searchForAction}
-                        placeholder="Search for an action..."
-                    />
-                </SearchContainer>
-            </RotationBuilderContainer>
-        );
-    }
+    const idLabel = currentAction.id.startsWith('item-')
+        ? `${currentAction.id.replace('item-', '')} (Item)`
+        : `${currentAction.id}`;
 
     return (
-        <RotationBuilderContainer>
+        <ActionBuilderContainer>
             <ActionDisplayAndSettings>
                 <ActionDisplayAndSettingsColumn>
                     {currentAction.icon &&
@@ -149,10 +110,7 @@ export const RotationBuilder: React.FC<RotationBuilderProps> = ({
                     <ActionInfo>
                         <div>{currentAction.name ?? 'Unknown'}</div>
                         <div>
-                            {currentAction.id.startsWith('item-')
-                                ? `${currentAction.id.replace('item-', '')} (Item)`
-                                : `${currentAction.id}`
-                            }
+                            {idLabel.length > 8 ? "(Custom)" : idLabel}
                         </div>
                     </ActionInfo>
                 </ActionDisplayAndSettingsColumn>
@@ -228,6 +186,6 @@ export const RotationBuilder: React.FC<RotationBuilderProps> = ({
                     Clear
                 </Button>
             </ActionButtons>
-        </RotationBuilderContainer>
+        </ActionBuilderContainer>
     );
 }

@@ -76,7 +76,7 @@ const drawBalanceLogo = (
     context.font = fonts.url
     context.textAlign = "center"
     context.textBaseline = "top"
-    context.fillText("www.thebalanceffxiv.com", x + positions.balanceLogoWidth / 2 + positions.balanceLogoWidth + positions.balanceLogoGap, y + positions.balanceLogoHeight - positions.balanceUrlAdjustTop)
+    context.fillText("www.thebalanceffxiv.com", x + positions.balanceLogoWidth / 2 + positions.balanceLogoWidth + positions.balanceLogoGap + positions.balanceUrlAdjustLeft, y + positions.balanceLogoHeight - positions.balanceUrlAdjustTop)
 }
 
 interface CanvasProps {
