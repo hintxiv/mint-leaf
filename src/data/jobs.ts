@@ -95,6 +95,12 @@ export const jobs: Record<string, Job> = {
         icon: "/job-icons/sam.svg",
         borderedIcon: "/job-icons/bordered/062134_hr1.png",
     },
+    VPR: {
+        id: -1,
+        name: "Viper",
+        icon: "/job-icons/vpr.svg",
+        borderedIcon: "/job-icons/bordered/vpr_bordered_temp.png",
+    },
     // Phys Ranged
     BRD: {
         id: 23,
@@ -136,10 +142,16 @@ export const jobs: Record<string, Job> = {
         icon: "/job-icons/smn.svg",
         borderedIcon: "/job-icons/bordered/062127_hr1.png",
     },
+    PCT: {
+        id: -2,
+        name: "Pictomancer",
+        icon: "/job-icons/pct.svg",
+        borderedIcon: "/job-icons/bordered/pct_bordered_temp.png",
+    },
 } as const;
 
 export const tanks = ['DRK', 'GNB', 'PLD', 'WAR'] as const;
 export const healers = ['AST', 'SCH', 'SGE', 'WHM'] as const;
-export const melee = ['DRG', 'MNK', 'NIN', 'RPR', 'SAM'] as const;
+export const melee = ['DRG', 'MNK', 'NIN', 'RPR', 'SAM', 'VPR'] as const;
 export const physRanged = ['BRD', 'DNC', 'MCH'] as const;
-export const casters = ['BLM', 'RDM', 'SMN'] as const;
+export const casters = ['BLM', 'RDM', 'SMN', 'PCT'] as const;
