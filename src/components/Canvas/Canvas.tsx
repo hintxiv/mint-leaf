@@ -277,9 +277,9 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
         // Draw buff lines
         const pullX = prepullRotation.length > 0 && rotation.length > 0
             ? startPoint + prepullWidth + positions.rotationPadding + positions.prepullPadding
-            : undefined
+            : startPoint
 
-        const timeline = calculateTimeline(prepullIcons,  rotationIcons, width, pullX)
+        const timeline = calculateTimeline(prepullIcons, rotationIcons, width, pullX)
         const buffLines = calculateBuffLinePositions(rotationIcons, timeline, statusIconRefs, width)
         const addedHeight = drawBuffLines(context, buffLines, height - positions.midlineAdjustBottom / 2, width - positions.rotationPadding)
         setBuffLineHeight(addedHeight)
