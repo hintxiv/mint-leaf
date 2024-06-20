@@ -6,6 +6,7 @@ import { searchForStatus } from '@/app/api'
 import styled from 'styled-components'
 import SearchInput from './SearchInput'
 import { BuffBuilder } from './BuffBuilder'
+import { CustomBuffInput } from './CustomBuffInput'
 
 const RotationBuilderContainer = styled.div`
     display: flex;
@@ -61,6 +62,8 @@ export const BuffSelect: React.FC<BuffSelectProps> = ({ job, setStatus }) => {
                         placeholder="Search for a status..."
                     />
                 </SearchContainer>
+                <div>- or -</div>
+                <CustomBuffInput onCreate={setCurrentStatus} />
             </RotationBuilderContainer>
         );
     }

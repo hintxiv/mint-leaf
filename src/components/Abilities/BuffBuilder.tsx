@@ -56,7 +56,7 @@ const rgbToHex = (r: number, g: number, b: number) => {
 }
 
 interface BuffBuilderProps {
-    status: DataStatus | null
+    status: DataStatus
     applicationDelay: number | null
     setApplicationDelay: (applicationDelay: number | null) => void
     duration: number | null
@@ -102,11 +102,13 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
 
     useEffect(onCreate, [duration, applicationDelay, onCreate, color]);
 
+    const idLabel = status.id.length > 8 ? "(Custom)" : status.id;
+
     return (
         <BuffBuilderContainer>
             <BuffDisplayAndSettings>
                 <ActionDisplayAndSettingsColumn>
-                    {status?.icon &&
+                    {status.icon &&
                         <StatusIcon
                             ref={imageRef}
                             status={status}
@@ -114,8 +116,8 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
                         />
                     }
                     <ActionInfo>
-                        <div>{status?.name ?? 'Unknown'}</div>
-                        <div>{status?.id}</div>
+                        <div>{status.name ?? 'Unknown'}</div>
+                        <div>{idLabel}</div>
                     </ActionInfo>
                 </ActionDisplayAndSettingsColumn>
                 <ActionDisplayAndSettingsColumn>
