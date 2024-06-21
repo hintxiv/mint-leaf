@@ -21,14 +21,14 @@ export const calculateTimeline = (
         })
     })
 
-    const firstGcd = sortedRotation.findIndex(icon => icon.type === 'gcd')
-    const firstOgcd = sortedRotation.findIndex(icon => icon.type === 'ogcd')
+    const firstGcdIndex = sortedRotation.findIndex(icon => icon.type === 'gcd')
+    const firstOgcdIndex = sortedRotation.findIndex(icon => icon.type === 'ogcd')
 
     timeline.push({
         x: pullX,
         time: 0,
-        addedTime: firstOgcd < firstGcd
-            ? (sortedRotation[firstOgcd] as CanvasoGCD).timeElapsed
+        addedTime: firstOgcdIndex < firstGcdIndex && firstOgcdIndex >= 0
+            ? (sortedRotation[firstGcdIndex] as CanvasoGCD).timeElapsed
             : 0,
     })
 
