@@ -1,17 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import SearchInput from './SearchInput'
-import { searchForStatus } from '@/app/api'
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components'
 import { InputNumber } from 'antd'
-import { Status } from '../Canvas/types'
-import { Job } from '@/data/jobs'
 import { DataStatus } from '@/app/api/xivapi/types'
 import { StatusIcon } from './StatusIcon'
 import ColorThief from 'colorthief'
 
 const colorThief = new ColorThief();
 
-const RotationBuilderContainer = styled.div`
+const BuffBuilderContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,12 +17,7 @@ const RotationBuilderContainer = styled.div`
     margin-bottom: auto;
 `;
 
-const SearchContainer = styled.div`
-    display: block;
-    width: 100%;
-`;
-
-const ActionDisplayAndSettings = styled.div`
+const BuffDisplayAndSettings = styled.div`
     display: flex;
     flex-direction: row;
     gap: 16px;
@@ -65,15 +56,26 @@ const rgbToHex = (r: number, g: number, b: number) => {
 }
 
 interface BuffBuilderProps {
-    job: Job
-    setStatus: (status: Status) => void
+    status: DataStatus
+    applicationDelay: number | null
+    setApplicationDelay: (applicationDelay: number | null) => void
+    duration: number | null
+    setDuration: (duration: number | null) => void
+    color: string | undefined
+    setColor: (color: string | undefined) => void
+    onCreate: () => void
 }
 
-export const BuffBuilder: React.FC<BuffBuilderProps> = ({ job, setStatus }) => {
-    const [currentStatus, setCurrentStatus] = useState<DataStatus | null>(null);
-    const [applicationDelay, setApplicationDelay] = useState<number | null>(0);
-    const [duration, setDuration] = useState<number | null>(20);
-    const [color, setColor] = useState<string>();
+export const BuffBuilder: React.FC<BuffBuilderProps> = ({
+    status,
+    applicationDelay,
+    setApplicationDelay,
+    duration,
+    setDuration,
+    color,
+    setColor,
+    onCreate,
+}) => {
     const imageRef = useRef<HTMLImageElement>(null);
 
     const getDominantColor = async () => {
@@ -96,56 +98,26 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({ job, setStatus }) => {
 
     useEffect(() => {
         getDominantColor().then(setColor);
-    }, [currentStatus]);
+    }, [status, setColor]);
 
-    const createBuff = () => {
-        if (!currentStatus || !currentStatus.icon || duration === null || applicationDelay === null) {
-            return;
-        }
+    useEffect(onCreate, [duration, applicationDelay, onCreate, color]);
 
-        const buff: Status = {
-            id: currentStatus.id,
-            name: currentStatus.name ?? 'Unknown',
-            imageSrc: currentStatus.icon.toString(),
-            color: color ?? '#000000',
-            duration: duration ?? 0,
-            applicationDelay: applicationDelay ?? 0,
-        };
-
-        setStatus(buff);
-    }
-
-    useEffect(createBuff, [currentStatus, duration, applicationDelay, setStatus, color]);
-
-    if (!currentStatus) {
-        return (
-            <RotationBuilderContainer>
-                <SearchContainer>
-                    <SearchInput
-                        job={job}
-                        onSelect={setCurrentStatus}
-                        search={searchForStatus}
-                        placeholder="Search for a status..."
-                    />
-                </SearchContainer>
-            </RotationBuilderContainer>
-        );
-    }
+    const idLabel = status.id.length > 8 ? "(Custom)" : status.id;
 
     return (
-        <RotationBuilderContainer>
-            <ActionDisplayAndSettings>
+        <BuffBuilderContainer>
+            <BuffDisplayAndSettings>
                 <ActionDisplayAndSettingsColumn>
-                    {currentStatus.icon &&
+                    {status.icon &&
                         <StatusIcon
                             ref={imageRef}
-                            status={currentStatus}
+                            status={status}
                             width={60}
                         />
                     }
                     <ActionInfo>
-                        <div>{currentStatus.name ?? 'Unknown'}</div>
-                        <div>{currentStatus.id}</div>
+                        <div>{status.name ?? 'Unknown'}</div>
+                        <div>{idLabel}</div>
                     </ActionInfo>
                 </ActionDisplayAndSettingsColumn>
                 <ActionDisplayAndSettingsColumn>
@@ -168,7 +140,7 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({ job, setStatus }) => {
                         onChange={setApplicationDelay}
                     />
                 </ActionDisplayAndSettingsColumn>
-            </ActionDisplayAndSettings>
-        </RotationBuilderContainer>
+            </BuffDisplayAndSettings>
+        </BuffBuilderContainer>
     );
 }

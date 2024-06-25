@@ -39,10 +39,26 @@ export const searchForStatus = async (query: string, job: Job): Promise<DataStat
 }
 
 export const getStatusByID = async (id: string): Promise<DataStatus> => {
-    const { Icon, Name } = await xiv.data.get('status', id);
-    return {
-        id: id,
-        name: Name,
-        icon: Icon ? new URL(baseURL + Icon.split('.png')[0] + '_hr1.png') : null,
-    };
+    try {
+        const isCustom = id.startsWith('custom-');
+
+        if (isCustom) {
+            const [_, icon, name] = decodeURI(id).split('-');
+            return {
+                id: id,
+                name: name,
+                icon: new URL(icon),
+            };
+        }
+
+        const { Icon, Name } = await xiv.data.get('status', id);
+
+        return {
+            id: id,
+            name: Name,
+            icon: Icon ? new URL(baseURL + Icon.split('.png')[0] + '_hr1.png') : null,
+        };
+    } catch (e) {
+        throw new Error(`No status with ID ${id} exists`);
+    }
 }

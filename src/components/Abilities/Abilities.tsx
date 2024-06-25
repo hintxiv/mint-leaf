@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import { RotationBuilder } from './RotationBuilder'
 import { Action, Status } from '../Canvas/types'
 import TextArea from 'antd/es/input/TextArea'
 import { Job } from '@/data/jobs'
 import { useState } from 'react'
-import { BuffBuilder } from './BuffBuilder'
+import { ActionSelect } from './ActionSelect'
+import { BuffSelect } from './BuffSelect'
 
 const AbilityContainer = styled.div`
     display: flex;
@@ -81,7 +81,7 @@ export const Abilities = ({
             <AbilityOptions>
                 <AbilityOptionColumn>
                     <span>Action Builder</span>
-                    <RotationBuilder
+                    <ActionSelect
                         job={job}
                         createAction={onCreateAction}
                         appliesBuff={appliesBuff}
@@ -91,7 +91,7 @@ export const Abilities = ({
                 {appliesBuff &&
                     <AbilityOptionColumn $width={350}>
                         <span>Buff Builder</span>
-                        <BuffBuilder
+                        <BuffSelect
                             job={job}
                             setStatus={setStatus}
                         />

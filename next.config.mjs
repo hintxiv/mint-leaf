@@ -14,6 +14,16 @@ const nextConfig = {
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: '**',
+            },
+            {
+                protocol: 'http',
+                hostname: 'mint-leaf.thebalanceffxiv.com',
+                port: '',
+                pathname: '/**',
+            }
         ],
     },
     crossOrigin: 'anonymous',

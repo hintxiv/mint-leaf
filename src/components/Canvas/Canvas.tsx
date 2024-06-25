@@ -76,7 +76,7 @@ const drawBalanceLogo = (
     context.font = fonts.url
     context.textAlign = "center"
     context.textBaseline = "top"
-    context.fillText("www.thebalanceffxiv.com", x + positions.balanceLogoWidth / 2 + positions.balanceLogoWidth + positions.balanceLogoGap, y + positions.balanceLogoHeight - positions.balanceUrlAdjustTop)
+    context.fillText("www.thebalanceffxiv.com", x + positions.balanceLogoWidth / 2 + positions.balanceLogoWidth + positions.balanceLogoGap + positions.balanceUrlAdjustLeft, y + positions.balanceLogoHeight - positions.balanceUrlAdjustTop)
 }
 
 interface CanvasProps {
@@ -277,9 +277,9 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
         // Draw buff lines
         const pullX = prepullRotation.length > 0 && rotation.length > 0
             ? startPoint + prepullWidth + positions.rotationPadding + positions.prepullPadding
-            : undefined
+            : startPoint
 
-        const timeline = calculateTimeline(prepullIcons,  rotationIcons, width, pullX)
+        const timeline = calculateTimeline(prepullIcons, rotationIcons, width, pullX)
         const buffLines = calculateBuffLinePositions(rotationIcons, timeline, statusIconRefs, width)
         const addedHeight = drawBuffLines(context, buffLines, height - positions.midlineAdjustBottom / 2, width - positions.rotationPadding)
         setBuffLineHeight(addedHeight)

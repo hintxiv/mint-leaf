@@ -39,6 +39,7 @@ export const styles = {
         balanceLogoGap: 16 * scale,
         balanceLogotypeAdjustTop: 8 * scale,
         balanceUrlAdjustTop: 20 * scale,
+        balanceUrlAdjustLeft: 95 * scale,
         weaveSlotWidth: 64 * scale,
         weaveSlotHeight: 24 * scale,
         weaveSlotYOffset: 8 * scale,

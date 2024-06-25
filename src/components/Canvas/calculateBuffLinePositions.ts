@@ -1,11 +1,11 @@
 import { MutableRefObject } from 'react'
-import { CanvasBuffLine, CanvasIcon, TimelinePoint } from './types'
+import { CanvasBuffLine, CanvasIcon, CanvasoGCD, TimelinePoint } from './types'
 
 export const calculateTimeline = (
     prepullRotation: CanvasIcon[],
     rotation: CanvasIcon[],
     finalX: number,
-    pullX?: number,
+    pullX: number,
 ): TimelinePoint[] => {
     const timeline: TimelinePoint[] = []
     const sortedPrepull = prepullRotation.slice().sort((a, b) => a.x - b.x)
@@ -21,13 +21,16 @@ export const calculateTimeline = (
         })
     })
 
-    if (pullX) {
-        timeline.push({
-            x: pullX,
-            time: 0,
-            addedTime: 0,
-        })
-    }
+    const firstGcdIndex = sortedRotation.findIndex(icon => icon.type === 'gcd')
+    const firstOgcdIndex = sortedRotation.findIndex(icon => icon.type === 'ogcd')
+
+    timeline.push({
+        x: pullX,
+        time: 0,
+        addedTime: firstOgcdIndex < firstGcdIndex && firstOgcdIndex >= 0
+            ? (sortedRotation[firstGcdIndex] as CanvasoGCD).timeElapsed
+            : 0,
+    })
 
     sortedRotation.forEach(icon => {
         const lastTimelinePoint = timeline.at(-1) ?? { time: 0, x: 0, addedTime: 0 }

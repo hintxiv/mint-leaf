@@ -47,6 +47,17 @@ export const searchForAction = async (query: string, job: Job): Promise<DataActi
 
 export const getActionByID = async (id: string): Promise<DataAction> => {
     try {
+        const isCustom = id.startsWith('custom-');
+
+        if (isCustom) {
+            const [_, icon, name] = decodeURI(id).split('-');
+            return {
+                id: id,
+                name: name,
+                icon: new URL(icon),
+            };
+        }
+
         const isItem = id.startsWith('item-');
 
         if (isItem) {
