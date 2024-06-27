@@ -31,9 +31,9 @@ export const Home = ({ discordAuth }: HomeProps) => {
     const [screenWidth, setScreenWidth] = useState(0)
     const [job, setJob] = useState<Job>(jobs['DRK'])
     const [rotationTitle, setRotationTitle] = useState<string>('Title')
-    const [expansion, setExpansion] = useState<string>('Endwalker')
-    const [patch, setPatch] = useState<string>('6.5')
-    const [level, setLevel] = useState<number>(90)
+    const [expansion, setExpansion] = useState<string>('Dawntrail')
+    const [patch, setPatch] = useState<string>('7.0')
+    const [level, setLevel] = useState<number>(100)
     const [useBalanceLogo, setUseBalanceLogo] = useState<boolean>(false)
     const canvasRef = useRef<HTMLCanvasElement>(null)
 
