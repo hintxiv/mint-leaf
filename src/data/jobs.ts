@@ -96,7 +96,7 @@ export const jobs: Record<string, Job> = {
         borderedIcon: "/job-icons/bordered/062134_hr1.png",
     },
     VPR: {
-        id: -1,
+        id: 41,
         name: "Viper",
         icon: "/job-icons/vpr.svg",
         borderedIcon: "/job-icons/bordered/vpr_bordered_temp.png",
@@ -143,7 +143,7 @@ export const jobs: Record<string, Job> = {
         borderedIcon: "/job-icons/bordered/062127_hr1.png",
     },
     PCT: {
-        id: -2,
+        id: 42,
         name: "Pictomancer",
         icon: "/job-icons/pct.svg",
         borderedIcon: "/job-icons/bordered/pct_bordered_temp.png",
