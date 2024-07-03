@@ -5,7 +5,7 @@ import { styles } from './styles'
 
 const { positions } = styles
 
-const ANIMATION_LOCK = 0.65;
+const ANIMATION_LOCK = 0.625;
 const CAST_ANIMATION_LOCK = 0.1;
 const DEFAULT_RECAST = 2.5;
 const DEFAULT_CAST_WIDTH = 2 * positions.weaveSlotWidth;  // for a 2.5s cast
