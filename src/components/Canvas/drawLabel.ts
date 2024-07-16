@@ -57,7 +57,7 @@ export const drawGCDLabel = (
     context.fillText(
         (gcdCount ?? 0).toString(),
         x + icon.width / 2,
-        y + icon.height + positions.gcdLabelTopPadding * 2)
+        y + icon.height + positions.gcdLabelTopPadding + positions.gcdCountLabelTopPadding)
 }
 
 export const drawOGCDLabel = (

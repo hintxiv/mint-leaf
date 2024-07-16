@@ -262,7 +262,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
             const image = rotationIconRefs.current[index]
             drawImageFromHTML(context, image, icon.x, icon.y, icon.width, icon.height)
 
-            // TODO make functions for everything below
             switch (icon.type) {
                 case 'gcd':
                     drawGCDLabel(context, icon.x, icon.y, icon, gcdCount)
