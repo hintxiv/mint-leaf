@@ -6,6 +6,7 @@ export const styles = {
     height: 2200,
     widthInitial: 5000,
     maxCharsPerLine: 12,
+    maxCharsPerLineGCD: 18,
     positions: {
         ogcdSeparatorLineHeight: 40 * scale,
         gcdLabelTopPadding: 32 * scale,

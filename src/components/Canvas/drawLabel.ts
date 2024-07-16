@@ -1,7 +1,7 @@
 import { scale, styles } from './styles'
 import { CanvasGCD, CanvasoGCD } from './types'
 
-const { maxCharsPerLine, positions, fonts, colors } = styles
+const { maxCharsPerLine, maxCharsPerLineGCD, positions, fonts, colors } = styles
 
 export const drawLabel = (
     label: string,
@@ -47,7 +47,7 @@ export const drawGCDLabel = (
     context.textAlign = "center"
     context.textBaseline = "bottom"
 
-    const lineLength = prepull ? maxCharsPerLine : maxCharsPerLine * 2
+    const lineLength = prepull ? maxCharsPerLine : maxCharsPerLineGCD
 
     drawLabel(icon.name, x + icon.width / 2, y + icon.height + positions.gcdLabelTopPadding, context, lineLength, 'down')
 
