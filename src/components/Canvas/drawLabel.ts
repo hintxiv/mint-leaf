@@ -65,12 +65,13 @@ export const drawOGCDLabel = (
     x: number,
     y: number,
     icon: CanvasoGCD,
+    ogcdCount: number,
 ) => {
     context.fillStyle = colors.text
     context.font = fonts.label
     context.textAlign = "center"
 
-    if (icon.weavePosition && icon.weavePosition % 2 === 0) {
+    if (ogcdCount % 2 === 0) {
         drawLabel(icon.name, x + icon.width / 2, y - positions.textBottomPadding * 2 - positions.ogcdSeparatorLineHeight, context)
 
         context.beginPath()

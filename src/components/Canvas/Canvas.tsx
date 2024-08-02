@@ -244,7 +244,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
                     drawPrepullTime(context, icon.x, midLine, icon)
                     break
                 case 'ogcd':
-                    drawOGCDLabel(context, icon.x, icon.y, icon)
+                    drawOGCDLabel(context, icon.x, icon.y, icon, 0)
                     drawPrepullTime(context, icon.x, midLine, icon)
                     break
             }
@@ -256,7 +256,8 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
         }
 
         // Draw rotation
-        let gcdCount = 1
+        let gcdCount = 0
+        let ogcdCount = 0
 
         rotationIcons.forEach((icon, index) => {
             const image = rotationIconRefs.current[index]
@@ -264,11 +265,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
 
             switch (icon.type) {
                 case 'gcd':
-                    drawGCDLabel(context, icon.x, icon.y, icon, gcdCount)
                     gcdCount++
+                    ogcdCount = 0
+                    drawGCDLabel(context, icon.x, icon.y, icon, gcdCount)
                     break
                 case 'ogcd':
-                    drawOGCDLabel(context, icon.x, icon.y, icon)
+                    ogcdCount++
+                    drawOGCDLabel(context, icon.x, icon.y, icon, ogcdCount)
                     break
             }
         })
