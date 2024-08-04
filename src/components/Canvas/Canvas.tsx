@@ -144,7 +144,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
         return {
             icons: icons.map(icon => ({
                 ...icon,
-                x: icon.x + startPoint + (prepullWidth > 0 ? prepullWidth + positions.prepullPadding * 2 : 0) + positions.rotationPadding,
+                x: icon.x + startPoint + (prepullWidth > 0 ? prepullWidth + positions.prepullPadding * 2.5 : 0) + positions.rotationPadding,
                 y: icon.y + midLine,
             })),
             width,
@@ -234,17 +234,21 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
         }
 
         // Draw prepull actions
+        let ogcdCount = 0
+
         prepullIcons.forEach((icon, index) => {
             const image = prepullIconRefs.current[index]
             drawImageFromHTML(context, image, icon.x, icon.y, icon.width, icon.height)
 
             switch (icon.type) {
                 case 'gcd':
+                    ogcdCount = 0
                     drawGCDLabel(context, icon.x, icon.y, icon, undefined, true)
                     drawPrepullTime(context, icon.x, midLine, icon)
                     break
                 case 'ogcd':
-                    drawOGCDLabel(context, icon.x, icon.y, icon, 0)
+                    ogcdCount++
+                    drawOGCDLabel(context, icon.x, icon.y, icon, ogcdCount)
                     drawPrepullTime(context, icon.x, midLine, icon)
                     break
             }
@@ -257,7 +261,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((
 
         // Draw rotation
         let gcdCount = 0
-        let ogcdCount = 0
+        ogcdCount = 0
 
         rotationIcons.forEach((icon, index) => {
             const image = rotationIconRefs.current[index]

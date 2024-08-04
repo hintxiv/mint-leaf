@@ -11,7 +11,7 @@ export const styles = {
         ogcdSeparatorLineHeight: 40 * scale,
         gcdLabelTopPadding: 32 * scale,
         gcdCountLabelTopPadding: 40 * scale,
-        prepullPadding: 16 * scale,
+        prepullPadding: 32 * scale,
         pullLineHeightBelow: 35 * scale,
         pullLineHeightAbove: 140 * scale,
         rotationPadding: 64 * scale,
