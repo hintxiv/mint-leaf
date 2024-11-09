@@ -109,8 +109,13 @@ const parseRotationLine = async (line: string): Promise<Action | null> => {
     }
 }
 
-export const textToRotation = async (text: string): Promise<Action[]> => {
-    return Promise.all(
-        text.split('\n').map(parseRotationLine)
-    ).then(actions => actions.filter(action => action !== null)) as Promise<Action[]>;
+export const textToRotation = async (text: string): Promise<Action[] | false> => {
+    return Promise.all(text.split('\n').map(parseRotationLine))
+        .then(actions => {
+            if (actions.includes(null)) {
+                return false;
+            }
+
+            return actions as Action[];
+        })
 }

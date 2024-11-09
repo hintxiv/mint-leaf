@@ -68,8 +68,22 @@ export const Home = ({ discordAuth }: HomeProps) => {
 
     const parseRotation = async (text: string) => {
         setRotationText(text)
+
+        if (text.trim() === "") {
+            setRotation([])
+            setPrepullRotation([])
+            setRotationInputError(false)
+            return
+        }
+
         try {
-            const parsedRotation = await textToRotation(text)
+            const parsedRotation = await textToRotation(text.trim())
+
+            if (!parsedRotation) {
+                setRotationInputError(true)
+                return
+            }
+
             setRotation(parsedRotation.filter(action => !action.prepull))
             setPrepullRotation(parsedRotation.filter(action => action.prepull).sort((a, b) =>
                 (a.prepull ?? 0) - (b.prepull ?? 0)
