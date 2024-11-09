@@ -2,7 +2,7 @@
 
 import XIVAPI, { XIVAPIOptions } from '@xivapi/js'
 import { DataStatus } from './types'
-import { Job } from '@/data/jobs'
+import { xivapiSearch, convertBetaIconPath } from './xivapi'
 
 const baseURL = 'https://xivapi.com'
 const defaultIcon = 'https://xivapi.com/i/000000/000405_hr1.png'
@@ -13,29 +13,19 @@ const options: XIVAPIOptions = {
 
 const xiv = new XIVAPI(options)
 
-export const searchForStatus = async (query: string, job: Job): Promise<DataStatus[]> => {
-    const jobIDs = [job.id, ...(job.subIDs ?? [])].join(';');
+export const searchForStatus = async (nameQuery: string): Promise<DataStatus[]> => {
+    if (nameQuery === "") return [];
 
-    const { Results: jobResults } = await xiv.search(query, {
-        // @ts-ignore (bad type definition in lib)
-        indexes: ['Status'],
-        filters: [`ClassJob.ID|=${jobIDs}`]
-    });
-    const { Results: otherResults } = await xiv.search(query, {
-        // @ts-ignore (bad type definition in lib)
-        indexes: ['Status'],
-        filters: ['ClassJob.ID!!']
-    });
+    const query = `Name~\"${nameQuery}\"`;
+    const { results } = await xivapiSearch(['Status'], query);
 
-    return [...(jobResults ?? []), ...(otherResults ?? [])]
-        .map(({ ID, Icon, Name }) => ({
-            id: ID.toString(),
-            name: Name,
-            icon: Icon ? new URL(baseURL + Icon.split('.png')[0] + '_hr1.png') : null,
-        }))
-        .filter(({ icon }) =>
-            icon && icon.toString() !== defaultIcon
-        );
+    return results.map(({ row_id, fields }) => ({
+        id: row_id.toString(),
+        name: fields.Name,
+        icon: fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null,
+    })).filter(({ icon }) =>
+        icon && icon.toString() !== defaultIcon
+    );
 }
 
 export const getStatusByID = async (id: string): Promise<DataStatus> => {
