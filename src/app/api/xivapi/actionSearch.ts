@@ -1,17 +1,9 @@
 "use client";
 
-import XIVAPI, { XIVAPIOptions } from '@xivapi/js'
 import { DataAction } from './types'
-import { convertBetaIconPath, xivapiSearch } from './xivapi'
+import { convertBetaIconPath, getObject, xivapiSearch } from './xivapi'
 
-const baseURL = 'https://xivapi.com'
 const defaultIcon = 'https://xivapi.com/i/000000/000405_hr1.png'
-
-const options: XIVAPIOptions = {
-    language: "en"
-}
-
-const xiv = new XIVAPI(options)
 
 export const searchForAction = async (nameQuery: string): Promise<DataAction[]> => {
     if (nameQuery === "") return [];
@@ -42,24 +34,13 @@ export const getActionByID = async (id: string): Promise<DataAction> => {
         }
 
         const isItem = id.startsWith('item-');
+        const parsedId = parseInt(id.replace('item-', ''))
 
-        if (isItem) {
-            const itemID = id.replace('item-', '');
-            const { Icon, Name } = await xiv.data.get('item', itemID);
-            return {
-                id: itemID,
-                name: Name,
-                icon: Icon ? new URL(baseURL + Icon.split('.png')[0] + '_hr1.png') : null,
-            };
-        }
+        const { fields } = await getObject(isItem ? 'Item' : 'Action', parsedId);
+        const icon = fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null;
+        const name = fields.Name;
 
-        const { Icon, Name } = await xiv.data.get('action', id);
-
-        return {
-            id: id,
-            name: Name,
-            icon: Icon ? new URL(baseURL + Icon.split('.png')[0] + '_hr1.png') : null,
-        };
+        return { id, name, icon };
     } catch (e) {
         throw new Error(`No action with ID ${id} exists`);
     }

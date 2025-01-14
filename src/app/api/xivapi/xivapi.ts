@@ -18,7 +18,7 @@ const xivapi = ky.create({
 })
 
 export const xivapiSearch = async (
-    sheets: XivapiSheet[],
+sheets: XivapiSheet[],
     query: string,
 ): Promise<{ results: XivapiSearchResponse[] }> =>
     xivapi.get('search', {
@@ -28,6 +28,12 @@ export const xivapiSearch = async (
         limit: MAX_SEARCH_RESULTS,
     },
   }).json()
+
+export const getObject = async (
+    sheet: XivapiSheet,
+    id: number,
+): Promise<any> =>
+    xivapi.get(`sheet/${sheet}/${id}`).json()
 
 export const convertBetaIconPath = (path: string): URL => {
     const [_, pathWithoutSuffix] = path.split('ui/icon/')

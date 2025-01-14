@@ -1,17 +1,9 @@
 "use client";
 
-import XIVAPI, { XIVAPIOptions } from '@xivapi/js'
 import { DataStatus } from './types'
-import { xivapiSearch, convertBetaIconPath } from './xivapi'
+import { xivapiSearch, convertBetaIconPath, getObject } from './xivapi'
 
-const baseURL = 'https://xivapi.com'
 const defaultIcon = 'https://xivapi.com/i/000000/000405_hr1.png'
-
-const options: XIVAPIOptions = {
-    language: "en"
-}
-
-const xiv = new XIVAPI(options)
 
 export const searchForStatus = async (nameQuery: string): Promise<DataStatus[]> => {
     if (nameQuery === "") return [];
@@ -41,13 +33,11 @@ export const getStatusByID = async (id: string): Promise<DataStatus> => {
             };
         }
 
-        const { Icon, Name } = await xiv.data.get('status', id);
+        const { fields } = await getObject('Status', parseInt(id));
+        const icon = fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null;
+        const name = fields.Name;
 
-        return {
-            id: id,
-            name: Name,
-            icon: Icon ? new URL(baseURL + Icon.split('.png')[0] + '_hr1.png') : null,
-        };
+        return { id, name, icon };
     } catch (e) {
         throw new Error(`No status with ID ${id} exists`);
     }
