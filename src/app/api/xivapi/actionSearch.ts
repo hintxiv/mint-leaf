@@ -11,8 +11,8 @@ export const searchForAction = async (nameQuery: string): Promise<DataAction[]> 
     const query = `Name~\"${nameQuery}\"`;
     const { results } = await xivapiSearch(['Action', 'Item'], query);
 
-    return results.map(({ row_id, fields }) => ({
-        id: row_id.toString(),
+    return results.map(({ row_id, fields, sheet }) => ({
+        id: (sheet === 'Item' ? 'item-' : '') + row_id.toString(),
         name: fields.Name,
         icon: fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null,
     })).filter(({ icon }) =>
