@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useLayoutEffect, useRef, useState } from 'react'
-import { Canvas } from './Canvas/Canvas'
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { Canvas, CanvasRenderState } from './Canvas/Canvas'
 import styled from 'styled-components'
 import { Action, Status } from './Canvas/types'
 import { rotationToText, textToRotation } from '../lib/parseRotation'
@@ -35,7 +35,11 @@ export const Home = ({ discordAuth }: HomeProps) => {
     const [patch, setPatch] = useState<string>('7.4')
     const [level, setLevel] = useState<number>(100)
     const [useBalanceLogo, setUseBalanceLogo] = useState<boolean>(false)
+    const [renderReady, setRenderReady] = useState(false)
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    const onRenderStateChange = useCallback((state: CanvasRenderState) => {
+        setRenderReady(state.status === 'ready')
+    }, [])
 
     useLayoutEffect(() => {
         const onResize = () => {
@@ -96,7 +100,7 @@ export const Home = ({ discordAuth }: HomeProps) => {
 
     const exportInfographic = () => {
         const canvas = canvasRef.current
-        if (!canvas) return
+        if (!canvas || !renderReady) return
 
         const link = document.createElement('a')
         link.download = `${job?.name} ${rotationTitle}.png`
@@ -143,9 +147,11 @@ export const Home = ({ discordAuth }: HomeProps) => {
                 level={level}
                 ref={canvasRef}
                 useBalanceLogo={useBalanceLogo}
+                onRenderStateChange={onRenderStateChange}
             />
             <Footer
                 onExport={exportInfographic}
+                exportReady={renderReady}
                 useBalanceLogo={useBalanceLogo}
                 setUseBalanceLogo={setUseBalanceLogo}
             />

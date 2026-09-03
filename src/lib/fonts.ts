@@ -1,15 +1,9 @@
-import { Kumbh_Sans, Roboto } from 'next/font/google'
+// The root layout imports the corresponding local @fontsource files. These
+// shared names keep DOM styling and canvas measurement on the same faces.
+export const roboto = {
+    style: { fontFamily: 'Roboto' },
+} as const
 
-export const roboto = Roboto({
-    weight: ['400', '700'],
-    style: ['normal'],
-    subsets: ['latin'],
-    display: 'swap',
-});
-
-export const kumbh = Kumbh_Sans({
-    weight: ['500', '700'],
-    style: ['normal'],
-    subsets: ['latin'],
-    display: 'swap',
-});
+export const kumbh = {
+    style: { fontFamily: '"Kumbh Sans"' },
+} as const

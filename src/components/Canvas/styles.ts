@@ -5,8 +5,10 @@ export const scale = 4
 export const styles = {
     height: 2200,
     widthInitial: 5000,
-    maxCharsPerLine: 12,
-    maxCharsPerLineGCD: 16,
+    compactLabelWidth: 128 * scale,
+    gcdLabelWidth: 160 * scale,
+    textClearance: 4 * scale,
+    labelLineHeight: 20 * scale,
     positions: {
         ogcdSeparatorLineHeight: 40 * scale,
         gcdLabelTopPadding: 32 * scale,

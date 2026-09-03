@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { kumbh, roboto } from '../lib/fonts'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/700.css'
+import '@fontsource/kumbh-sans/500.css'
+import '@fontsource/kumbh-sans/700.css'
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className + ' ' + kumbh.className}>
+      <body>
         {children}
       </body>
     </html>
