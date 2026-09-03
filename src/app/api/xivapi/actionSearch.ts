@@ -1,20 +1,20 @@
 "use client";
 
 import { DataAction } from './types'
-import { convertBetaIconPath, getObject, xivapiSearch } from './xivapi'
+import { buildActionSearchQuery, convertIconPath, getObject, xivapiSearch } from './xivapi'
 
-const defaultIcon = 'https://xivapi.com/i/000000/000405_hr1.png'
+const defaultIcon = 'https://v2.xivapi.com/api/asset/ui/icon/000000/000405_hr1.tex?format=png'
 
 export const searchForAction = async (nameQuery: string): Promise<DataAction[]> => {
     if (nameQuery === "") return [];
 
-    const query = `Name~\"${nameQuery}\"`;
+    const query = buildActionSearchQuery(nameQuery);
     const { results } = await xivapiSearch(['Action', 'Item'], query);
 
     return results.map(({ row_id, fields, sheet }) => ({
         id: (sheet === 'Item' ? 'item-' : '') + row_id.toString(),
         name: fields.Name,
-        icon: fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null,
+        icon: fields.Icon ? convertIconPath(fields.Icon.path_hr1) : null,
     })).filter(({ icon }) =>
         icon && icon.toString() !== defaultIcon
     );
@@ -37,7 +37,7 @@ export const getActionByID = async (id: string): Promise<DataAction> => {
         const parsedId = parseInt(id.replace('item-', ''))
 
         const { fields } = await getObject(isItem ? 'Item' : 'Action', parsedId);
-        const icon = fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null;
+        const icon = fields.Icon ? convertIconPath(fields.Icon.path_hr1) : null;
         const name = fields.Name;
 
         return { id, name, icon };

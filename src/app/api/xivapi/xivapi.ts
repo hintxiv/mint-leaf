@@ -4,7 +4,7 @@ import ky from 'ky'
 
 const MAX_SEARCH_RESULTS = 10
 
-type XivapiSheet = 'Action' | 'Status' | 'Item'
+type XivapiSheet = 'Action' | 'Status' | 'Item' | 'ClassJob'
 
 interface XivapiSearchResponse {
     fields: any
@@ -13,21 +13,26 @@ interface XivapiSearchResponse {
     sheet: string
 }
 
+/**
+ * XIVAPI v2 client.
+ * version / schema are not pinned (always latest) to prioritize new content support.
+ * See https://v2.xivapi.com/docs/guides/pinning/ for pinning guidance.
+ */
 const xivapi = ky.create({
-    prefixUrl: 'https://beta.xivapi.com/api/1',
+    prefixUrl: 'https://v2.xivapi.com/api',
 })
 
 export const xivapiSearch = async (
-sheets: XivapiSheet[],
+    sheets: XivapiSheet[],
     query: string,
 ): Promise<{ results: XivapiSearchResponse[] }> =>
     xivapi.get('search', {
-    searchParams: {
-        query: query,
-        sheets: sheets.join(','),
-        limit: MAX_SEARCH_RESULTS,
-    },
-  }).json()
+        searchParams: {
+            query,
+            sheets: sheets.join(','),
+            limit: MAX_SEARCH_RESULTS,
+        },
+    }).json()
 
 export const getObject = async (
     sheet: XivapiSheet,
@@ -35,9 +40,19 @@ export const getObject = async (
 ): Promise<any> =>
     xivapi.get(`sheet/${sheet}/${id}`).json()
 
-export const convertBetaIconPath = (path: string): URL => {
-    const [_, pathWithoutSuffix] = path.split('ui/icon/')
-    const [pathWithoutFileType] = pathWithoutSuffix.split('.tex')
+/**
+ * Convert a game texture path (e.g. ui/icon/000000/000786_hr1.tex)
+ * to a CORS-enabled v2 asset PNG URL.
+ * The legacy xivapi.com/i CDN lacks Access-Control-Allow-Origin,
+ * which causes SecurityError on canvas toDataURL after drawing.
+ */
+export const convertIconPath = (path: string): URL =>
+    new URL(`https://v2.xivapi.com/api/asset/${path}?format=png`)
 
-    return new URL(`https://xivapi.com/i/${pathWithoutFileType}.png`)
-}
+const PLACEHOLDER_ICON_ID = 405
+
+export const buildActionSearchQuery = (nameQuery: string): string =>
+    `Name~"${nameQuery}" -Icon=${PLACEHOLDER_ICON_ID}`
+
+export const buildStatusSearchQuery = (nameQuery: string): string =>
+    `Name~"${nameQuery}" -Icon=${PLACEHOLDER_ICON_ID}`

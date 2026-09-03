@@ -1,20 +1,20 @@
 "use client";
 
 import { DataStatus } from './types'
-import { xivapiSearch, convertBetaIconPath, getObject } from './xivapi'
+import { buildStatusSearchQuery, xivapiSearch, convertIconPath, getObject } from './xivapi'
 
-const defaultIcon = 'https://xivapi.com/i/000000/000405_hr1.png'
+const defaultIcon = 'https://v2.xivapi.com/api/asset/ui/icon/000000/000405_hr1.tex?format=png'
 
 export const searchForStatus = async (nameQuery: string): Promise<DataStatus[]> => {
     if (nameQuery === "") return [];
 
-    const query = `Name~\"${nameQuery}\"`;
+    const query = buildStatusSearchQuery(nameQuery);
     const { results } = await xivapiSearch(['Status'], query);
 
     return results.map(({ row_id, fields }) => ({
         id: row_id.toString(),
         name: fields.Name,
-        icon: fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null,
+        icon: fields.Icon ? convertIconPath(fields.Icon.path_hr1) : null,
     })).filter(({ icon }) =>
         icon && icon.toString() !== defaultIcon
     );
@@ -34,7 +34,7 @@ export const getStatusByID = async (id: string): Promise<DataStatus> => {
         }
 
         const { fields } = await getObject('Status', parseInt(id));
-        const icon = fields.Icon ? convertBetaIconPath(fields.Icon.path_hr1) : null;
+        const icon = fields.Icon ? convertIconPath(fields.Icon.path_hr1) : null;
         const name = fields.Name;
 
         return { id, name, icon };
