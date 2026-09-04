@@ -117,22 +117,21 @@ const interpolateTime = (timeline: TimelinePoint[], x: number) => {
 
 // Calculate the positions of buff lines on the canvas
 export const calculateBuffLinePositions = (
-    rotation: CanvasIcon[],
+    icons: CanvasIcon[],
     timeline: TimelinePoint[],
     iconRefs: MutableRefObject<(HTMLImageElement | null)[]>,
     finalX: number,
 ): CanvasBuffLine[] => {
     const buffLines: CanvasBuffLine[] = []
 
-    // TODO prepull buff lines?
-
-    rotation.forEach((icon, index) => {
+    icons.forEach((icon, index) => {
         if (icon.type !== 'gcd' && icon.type !== 'ogcd') return
         if (!icon.statusApplied) return
 
         const status = icon.statusApplied
         const initialX = icon.x + icon.width
-        const startTime = interpolateTime(timeline, initialX) + (status.applicationDelay ?? 0)
+        const actionTime = icon.prepull ?? interpolateTime(timeline, initialX)
+        const startTime = actionTime + (status.applicationDelay ?? 0)
         const startX = interpolateX(timeline, startTime, finalX)
 
         buffLines.push({

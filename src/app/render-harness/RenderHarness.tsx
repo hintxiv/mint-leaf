@@ -34,8 +34,8 @@ const ogcd = (id: string, name: string, extra: Partial<Action> = {}): Action => 
 const fixtures: Record<string, { prepullRotation: Action[]; rotation: Action[]; title?: string; expansion?: string; patch?: string; logo?: boolean }> = {
     empty: { prepullRotation: [], rotation: [] },
     ordinary: {
-        prepullRotation: [ogcd('p1', 'Grade 6 Gemdraught of Intelligence', { prepull: -2 })],
-        rotation: [gcd('g1', 'Hard Slash'), ogcd('o1', 'Edge of Shadow'), gcd('g2', 'Syphon Strike', { statusApplied: buff })],
+        prepullRotation: [ogcd('p1', 'Grade 6 Gemdraught of Intelligence', { prepull: -2, statusApplied: buff })],
+        rotation: [gcd('g1', 'Hard Slash'), ogcd('o1', 'Edge of Shadow'), gcd('g2', 'Syphon Strike')],
     },
     reported: {
         prepullRotation: [

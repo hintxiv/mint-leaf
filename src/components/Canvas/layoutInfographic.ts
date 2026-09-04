@@ -566,10 +566,10 @@ const addBuffs = (
     baseY: number,
     measurer: TextMeasurer,
 ): { primitives: RenderPrimitive[]; bottom: number } => {
-    if (rotationIcons.length === 0) return { primitives: [], bottom: 0 }
+    if (rotationIcons.length === 0 && prepullIcons.length === 0) return { primitives: [], bottom: 0 }
     const timeline = calculateTimeline(prepullIcons, rotationIcons, rotationEnd, pullX)
     const refs = { current: [] as Array<HTMLImageElement | null> }
-    const buffs = calculateBuffLinePositions(rotationIcons, timeline, refs, rotationEnd)
+    const buffs = calculateBuffLinePositions([...prepullIcons, ...rotationIcons], timeline, refs, rotationEnd)
         .map((buff, index) => ({ ...buff, sourceIndex: index }))
         .sort((a, b) => a.endX - b.endX)
     const bins: Array<{ end: number; buffs: typeof buffs }> = []

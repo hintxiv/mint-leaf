@@ -111,4 +111,61 @@ describe('infographic layout plan', () => {
         expect(Math.max(...prepullTimes.map(block => block.bounds.y + block.bounds.height)))
             .toBeLessThan(Math.min(...prepullNames.map(block => block.bounds.y)))
     })
+
+    it('renders buffs applied before pull from their prepull timestamp', () => {
+        const status = {
+            id: 'prepull-buff',
+            name: 'Prepull Buff',
+            imageSrc: '/favicon.ico',
+            color: '#74d6b4',
+            applicationDelay: 1,
+            duration: 20,
+        }
+        const plan = layoutInfographic({
+            ...baseInput,
+            prepullRotation: [{
+                id: 'p1',
+                type: 'ogcd',
+                name: 'Prepull Buff Action',
+                imageSrc: '/favicon.ico',
+                prepull: -2,
+                statusApplied: status,
+            }],
+            rotation: [{ id: 'g1', type: 'gcd', name: 'First GCD', imageSrc: '/favicon.ico' }],
+        }, measurer)
+        const prepullIcon = plan.primitives.find(primitive => primitive.id === 'prepull-0-image-0')
+        const pullLine = plan.primitives.find((primitive): primitive is LinePrimitive => primitive.id === 'pull-line')
+        const buffStart = plan.primitives.find((primitive): primitive is LinePrimitive => primitive.id === 'buff-0-start')
+
+        expect(prepullIcon).toBeDefined()
+        expect(pullLine).toBeDefined()
+        expect(buffStart).toBeDefined()
+        expect(buffStart!.points[0].x).toBeCloseTo((prepullIcon!.bounds.x + pullLine!.points[0].x) / 2)
+        expect(plan.primitives.some(primitive => primitive.kind === 'image' && primitive.role === 'buff-icon')).toBe(true)
+        expect(auditRenderPlan(plan).filter(item => item.code === 'invalid-measurement' || item.code === 'out-of-bounds')).toEqual([])
+    })
+
+    it('renders buff lines for prepull-only rotations', () => {
+        const plan = layoutInfographic({
+            ...baseInput,
+            prepullRotation: [{
+                id: 'p1',
+                type: 'ogcd',
+                name: 'Prepull Buff Action',
+                imageSrc: '/favicon.ico',
+                prepull: -5,
+                statusApplied: {
+                    id: 'prepull-only-buff',
+                    name: 'Prepull-only Buff',
+                    imageSrc: '/favicon.ico',
+                    color: '#74d6b4',
+                    applicationDelay: 0,
+                    duration: 20,
+                },
+            }],
+        }, measurer)
+
+        expect(plan.primitives.some(primitive => primitive.kind === 'line' && primitive.role === 'buff')).toBe(true)
+        expect(auditRenderPlan(plan).filter(item => item.code === 'invalid-measurement' || item.code === 'out-of-bounds')).toEqual([])
+    })
 })
