@@ -1,15 +1,17 @@
 "use client";
 
+import { Locale } from '@/context/LanguageContext'
+import { Job } from '@/data/jobs'
 import { DataStatus } from './types'
 import { buildStatusSearchQuery, xivapiSearch, convertIconPath, getObject } from './xivapi'
 
 const defaultIcon = 'https://v2.xivapi.com/api/asset/ui/icon/000000/000405_hr1.tex?format=png'
 
-export const searchForStatus = async (nameQuery: string): Promise<DataStatus[]> => {
+export const searchForStatus = async (nameQuery: string, _job: Job, language: Locale): Promise<DataStatus[]> => {
     if (nameQuery === "") return [];
 
-    const query = buildStatusSearchQuery(nameQuery);
-    const { results } = await xivapiSearch(['Status'], query);
+    const query = buildStatusSearchQuery(nameQuery, language);
+    const { results } = await xivapiSearch(['Status'], query, language);
 
     return results.map(({ row_id, fields }) => ({
         id: row_id.toString(),
@@ -20,7 +22,7 @@ export const searchForStatus = async (nameQuery: string): Promise<DataStatus[]> 
     );
 }
 
-export const getStatusByID = async (id: string): Promise<DataStatus> => {
+export const getStatusByID = async (id: string, language: Locale): Promise<DataStatus> => {
     try {
         const isCustom = id.startsWith('custom-');
 
@@ -33,7 +35,7 @@ export const getStatusByID = async (id: string): Promise<DataStatus> => {
             };
         }
 
-        const { fields } = await getObject('Status', parseInt(id));
+        const { fields } = await getObject('Status', parseInt(id), language);
         const icon = fields.Icon ? convertIconPath(fields.Icon.path_hr1) : null;
         const name = fields.Name;
 

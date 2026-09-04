@@ -4,6 +4,7 @@ import { InputNumber } from 'antd'
 import { DataStatus } from '@/app/api/xivapi/types'
 import { StatusIcon } from './StatusIcon'
 import ColorThief from 'colorthief'
+import { useTranslation } from '@/context/LanguageContext'
 
 const colorThief = new ColorThief();
 
@@ -76,6 +77,7 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
     setColor,
     onCreate,
 }) => {
+    const { t } = useTranslation()
     const imageRef = useRef<HTMLImageElement>(null);
 
     const getDominantColor = async () => {
@@ -102,7 +104,7 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
 
     useEffect(onCreate, [duration, applicationDelay, onCreate, color]);
 
-    const idLabel = status.id.length > 8 ? "(Custom)" : status.id;
+    const idLabel = status.id.length > 8 ? t('buffBuilder.custom') : status.id;
 
     return (
         <BuffBuilderContainer>
@@ -116,12 +118,12 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
                         />
                     }
                     <ActionInfo>
-                        <div>{status.name ?? 'Unknown'}</div>
+                        <div>{status.name ?? t('buffBuilder.unknown')}</div>
                         <div>{idLabel}</div>
                     </ActionInfo>
                 </ActionDisplayAndSettingsColumn>
                 <ActionDisplayAndSettingsColumn>
-                    <span>Duration (s)</span>
+                    <span>{t('buffBuilder.duration')}</span>
                     <InputNumber
                         min={0}
                         max={60}
@@ -130,7 +132,7 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
                         value={duration}
                         onChange={setDuration}
                     />
-                    <span>Application delay (s)</span>
+                    <span>{t('buffBuilder.applicationDelay')}</span>
                     <InputNumber
                         min={0}
                         max={5}

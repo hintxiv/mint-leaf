@@ -3,6 +3,7 @@ import { Button, Input as BaseInput } from 'antd';
 import React, { useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+import { useTranslation } from '@/context/LanguageContext'
 
 const Input = styled(BaseInput)`
     &::placeholder {
@@ -52,6 +53,7 @@ interface CustomActionInputProps {
 }
 
 export const CustomActionInput: React.FC<CustomActionInputProps> = ({ onCreate }) => {
+    const { t } = useTranslation()
     const [isClicked, toggleClicked] = useState<boolean>(false);
     const [hasError, toggleError] = useState<boolean>(false);
     const [iconUrl, setIconUrl] = useState<string>();
@@ -81,7 +83,7 @@ export const CustomActionInput: React.FC<CustomActionInputProps> = ({ onCreate }
             {!isClicked &&
                 <ButtonContainer>
                     <Button type="primary" onClick={() => toggleClicked(true)}>
-                        Custom Action
+                        {t('customAction.button')}
                     </Button>
                 </ButtonContainer>
             }
@@ -94,18 +96,18 @@ export const CustomActionInput: React.FC<CustomActionInputProps> = ({ onCreate }
             >
                 <CustomActionInputContainer>
                     <Input
-                        placeholder="Enter action name..."
+                        placeholder={t('customAction.namePlaceholder')}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
                     <Input
-                        placeholder="Enter custom image URL..."
+                        placeholder={t('customAction.urlPlaceholder')}
                         value={iconUrl}
                         onChange={handleIconUrlChange}
                         status={hasError ? 'error' : undefined}
                     />
                     <Button type="primary" onClick={onCreateAction}>
-                        Create
+                        {t('customAction.create')}
                     </Button>
                 </CustomActionInputContainer>
             </CSSTransition>

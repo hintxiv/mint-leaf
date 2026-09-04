@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { default as NextImage } from 'next/image'
 import { DataAction } from '@/app/api'
+import { useTranslation } from '@/context/LanguageContext'
 
 const AbilityContainer = styled.div<{ $width: number }>`
     position: relative;
@@ -34,6 +35,8 @@ interface AbilityIconProps {
 }
 
 export const AbilityIcon = ({ action, width }: AbilityIconProps) => {
+    const { t } = useTranslation()
+
     return (
         <AbilityContainer $width={width}>
             <IconImage
@@ -44,7 +47,7 @@ export const AbilityIcon = ({ action, width }: AbilityIconProps) => {
             />
             <FrameImage
                 src={'/icon_frame.png'}
-                alt={'icon frame'}
+                alt={t('abilityIcon.frameAlt')}
                 height={width}
                 width={width}
             />

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { Job } from '@/data/jobs'
 import { DataStatus } from '@/app/api/xivapi/types'
+import { Locale } from '@/context/LanguageContext'
 
 const LabelContainer = styled.div`
     display: flex;
@@ -48,8 +49,9 @@ const ActionOption = <SearchType extends DataAction | DataStatus>({
 interface SearchInputProps<SearchType extends DataAction | DataStatus> {
     job: Job
     onSelect: (option: SearchType) => void
-    search: (query: string, job: Job) => Promise<SearchType[]>
+    search: (query: string, job: Job, language: Locale) => Promise<SearchType[]>
     placeholder?: string
+    language: Locale
 }
 
 const SearchInput = <SearchType extends DataAction | DataStatus>({
@@ -57,16 +59,17 @@ const SearchInput = <SearchType extends DataAction | DataStatus>({
     onSelect,
     search,
     placeholder,
+    language,
 }: SearchInputProps<SearchType>) => {
     const [searchResults, setSearchResults] = useState<SearchType[]>([])
 
     const handleActionSearch = useMemo(
         () =>
             debounce(async (query) => {
-                const results = await search(query, job)
+                const results = await search(query, job, language)
                 setSearchResults(results)
             }, 500),
-        [job, search]
+        [job, search, language]
     )
 
     const handleInputChange = (value: string) => {

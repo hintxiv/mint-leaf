@@ -1,5 +1,6 @@
 import { DiscordAuth } from '@/components/Discord/DiscordAuth'
 import { Home } from '@/components/Home'
+import { Providers } from '@/components/Providers'
 import { SessionProvider } from 'next-auth/react'
 
 export default function Index() {
@@ -7,7 +8,9 @@ export default function Index() {
 
     return (
         <SessionProvider>
-            <Home discordAuth={discordAuth} />
+            <Providers>
+                <Home discordAuth={discordAuth} />
+            </Providers>
         </SessionProvider>
     )
 }

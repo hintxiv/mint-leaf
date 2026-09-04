@@ -3,6 +3,7 @@ import { Button, Input as BaseInput } from 'antd';
 import React, { useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+import { useTranslation } from '@/context/LanguageContext'
 
 const Input = styled(BaseInput)`
     &::placeholder {
@@ -53,6 +54,7 @@ interface CustomBuffInputProps {
 }
 
 export const CustomBuffInput: React.FC<CustomBuffInputProps> = ({ onCreate }) => {
+    const { t } = useTranslation()
     const [isClicked, toggleClicked] = useState<boolean>(false);
     const [hasError, toggleError] = useState<boolean>(false);
     const [iconUrl, setIconUrl] = useState<string>();
@@ -82,7 +84,7 @@ export const CustomBuffInput: React.FC<CustomBuffInputProps> = ({ onCreate }) =>
             {!isClicked &&
                 <ButtonContainer>
                     <Button type="primary" onClick={() => toggleClicked(true)}>
-                        Custom Buff
+                        {t('customBuff.button')}
                     </Button>
                 </ButtonContainer>
             }
@@ -95,18 +97,18 @@ export const CustomBuffInput: React.FC<CustomBuffInputProps> = ({ onCreate }) =>
             >
                 <CustomBuffInputContainer>
                     <Input
-                        placeholder="Enter buff name..."
+                        placeholder={t('customBuff.namePlaceholder')}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
                     <Input
-                        placeholder="Enter custom image URL..."
+                        placeholder={t('customBuff.urlPlaceholder')}
                         value={iconUrl}
                         onChange={handleIconUrlChange}
                         status={hasError ? 'error' : undefined}
                     />
                     <Button type="primary" onClick={onCreateBuff}>
-                        Create
+                        {t('customBuff.create')}
                     </Button>
                 </CustomBuffInputContainer>
             </CSSTransition>

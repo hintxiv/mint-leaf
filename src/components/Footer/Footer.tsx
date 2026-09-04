@@ -1,6 +1,7 @@
 import { Button } from 'antd'
 import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
+import { useTranslation } from '@/context/LanguageContext'
 
 const FooterContainer = styled.div`
     display: flex;
@@ -30,15 +31,16 @@ interface FooterProps {
 
 export const Footer = ({ onExport, exportReady, useBalanceLogo, setUseBalanceLogo }: FooterProps) => {
     const { data: session } = useSession()
+    const { t } = useTranslation()
 
     return (
         <FooterContainer>
             <Button type="primary" onClick={onExport} disabled={!exportReady}>
-                Export to PNG
+                {t('footer.export')}
             </Button>
             {session &&
                 <Button type="primary" onClick={() => setUseBalanceLogo(!useBalanceLogo)}>
-                    {useBalanceLogo ? 'Remove Balance Stamp' : 'Add Balance Stamp'}
+                    {useBalanceLogo ? t('footer.removeBalanceStamp') : t('footer.addBalanceStamp')}
                 </Button>
             }
         </FooterContainer>

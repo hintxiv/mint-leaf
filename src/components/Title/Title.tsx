@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { default as NextImage } from 'next/image';
+import { Dropdown } from 'antd'
+import type { MenuProps } from 'antd'
+import { Locale, useLanguage, useTranslation } from '@/context/LanguageContext'
 
 const TitleContainer = styled.div`
     display: flex;
@@ -52,6 +55,14 @@ const DiscordAuthContainer = styled.div`
     margin-left: 2rem;
 `;
 
+const RightNav = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    margin-left: auto;
+`;
+
 const BalanceLink = styled.a`
     display: flex;
     flex-direction: row;
@@ -59,19 +70,66 @@ const BalanceLink = styled.a`
     gap: 8px;
     color: white;
     font-size: 1.25em;
-    margin-left: auto;
 `;
+
+const LanguageDropdownTrigger = styled.button`
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #c8cbce;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    .current-locale {
+        color: white;
+        font-weight: 500;
+    }
+
+    .chevron {
+        font-size: 10px;
+        opacity: 0.7;
+        transform: translateY(1px);
+    }
+
+    &:hover,
+    &[aria-expanded="true"] {
+        color: #aaf0d1;
+
+        .current-locale {
+            color: #aaf0d1;
+        }
+    }
+`;
+
+const localeLabel = (locale: Locale): string => (locale === 'en' ? 'EN' : 'JP')
 
 interface TitleProps {
     discordAuth: JSX.Element
 }
 
 export const Title = ({ discordAuth }: TitleProps) => {
+    const { t } = useTranslation()
+    const { locale, setLocale } = useLanguage()
+
+    const languageMenuItems: MenuProps['items'] = [
+        { key: 'en', label: 'EN' },
+        { key: 'ja', label: 'JP' },
+    ]
+
+    const onLanguageMenuClick: MenuProps['onClick'] = ({ key }) => {
+        setLocale(key as Locale)
+    }
+
     return (
         <TitleContainer>
             <NextImage
                 src="/leaf-icon.svg"
-                alt="Logo"
+                alt={t('title.logoAlt')}
                 width={40}
                 height={40}
                 priority={true}
@@ -79,26 +137,43 @@ export const Title = ({ discordAuth }: TitleProps) => {
             <TitleTextContainer>
                 <TitleWrapper>
                     <TitleText>
-                        Mint Leaf
+                        {t('meta.title')}
                     </TitleText>
                 </TitleWrapper>
                 <SubTitleText>
-                    FFXIV Rotation Builder
+                    {t('title.subtitle')}
                 </SubTitleText>
             </TitleTextContainer>
             <DiscordAuthContainer>
                 {discordAuth}
             </DiscordAuthContainer>
-            <BalanceLink href="https://discord.gg/thebalanceffxiv" target="_blank" rel="noreferrer">
-                <NextImage
-                    src="/Balance_Logo-02.png"
-                    alt="The Balance Discord"
-                    width={36}
-                    height={36}
-                    priority={true}
-                />
-                The Balance FFXIV
-            </BalanceLink>
+            <RightNav>
+                <Dropdown
+                    menu={{
+                        items: languageMenuItems,
+                        onClick: onLanguageMenuClick,
+                        selectedKeys: [locale],
+                    }}
+                    trigger={['click']}
+                    overlayClassName="language-dropdown-overlay"
+                >
+                    <LanguageDropdownTrigger type="button">
+                        <span>{t('title.language')}</span>
+                        <span className="current-locale">{localeLabel(locale)}</span>
+                        <span className="chevron">▼</span>
+                    </LanguageDropdownTrigger>
+                </Dropdown>
+                <BalanceLink href="https://discord.gg/thebalanceffxiv" target="_blank" rel="noreferrer">
+                    <NextImage
+                        src="/Balance_Logo-02.png"
+                        alt={t('title.balanceLogoAlt')}
+                        width={36}
+                        height={36}
+                        priority={true}
+                    />
+                    {t('title.balanceLink')}
+                </BalanceLink>
+            </RightNav>
         </TitleContainer>
     );
 }

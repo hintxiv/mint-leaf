@@ -77,3 +77,23 @@ body {
   background-color: #1d1d20 !important;
   color: white !important;
 }
+
+/* Language dropdown (antd portal; selected item highlight) */
+.language-dropdown-overlay .ant-dropdown-menu {
+  background-color: #262833 !important;
+  border: 1px solid #3a3d4a;
+  padding: 4px;
+  min-width: 72px;
+}
+
+.language-dropdown-overlay .ant-dropdown-menu-item {
+  color: #c8cbce !important;
+  border-radius: 4px;
+}
+
+.language-dropdown-overlay .ant-dropdown-menu-item:hover,
+.language-dropdown-overlay .ant-dropdown-menu-item-selected {
+  background-color: #1d1d20 !important;
+  color: #aaf0d1 !important;
+}
+

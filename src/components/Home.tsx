@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Canvas, CanvasRenderState } from './Canvas/Canvas'
 import styled from 'styled-components'
 import { Action, Status } from './Canvas/types'
@@ -10,7 +10,8 @@ import { Header } from './Header/Header'
 import { Abilities } from './Abilities/Abilities'
 import { Title } from './Title/Title'
 import { Footer } from './Footer/Footer'
-import { ConfigProvider } from 'antd'
+import { useTranslation } from '@/context/LanguageContext'
+import { getJobName } from '@/lib/jobs'
 
 const Container = styled.div`
   display: flex;
@@ -24,14 +25,15 @@ interface HomeProps {
 }
 
 export const Home = ({ discordAuth }: HomeProps) => {
+    const { locale, localeReady, t } = useTranslation()
     const [rotation, setRotation] = useState<Action[]>([])
     const [rotationText, setRotationText] = useState('')
     const [rotationInputError, setRotationInputError] = useState<boolean>(false)
     const [prepullRotation, setPrepullRotation] = useState<Action[]>([])
     const [screenWidth, setScreenWidth] = useState(0)
     const [job, setJob] = useState<Job>(jobs['DRK'])
-    const [rotationTitle, setRotationTitle] = useState<string>('Title')
-    const [expansion, setExpansion] = useState<string>('Dawntrail')
+    const [rotationTitle, setRotationTitle] = useState('')
+    const [expansion, setExpansion] = useState('')
     const [patch, setPatch] = useState<string>('7.4')
     const [level, setLevel] = useState<number>(100)
     const [useBalanceLogo, setUseBalanceLogo] = useState<boolean>(false)
@@ -51,6 +53,15 @@ export const Home = ({ discordAuth }: HomeProps) => {
             window.removeEventListener("resize", onResize)
         }
     }, [])
+
+    // Apply translated defaults once, after locale is restored from localStorage.
+    useEffect(() => {
+        if (!localeReady) {
+            return
+        }
+        setRotationTitle(t('defaults.rotationTitle'))
+        setExpansion(t('defaults.expansion'))
+    }, [localeReady]) // eslint-disable-line react-hooks/exhaustive-deps -- run once when locale is ready
 
     const addAction = async (action: Action, status?: Status) => {
         if (status) {
@@ -81,7 +92,7 @@ export const Home = ({ discordAuth }: HomeProps) => {
         }
 
         try {
-            const parsedRotation = await textToRotation(text.trim())
+            const parsedRotation = await textToRotation(text.trim(), locale)
 
             if (!parsedRotation) {
                 setRotationInputError(true)
@@ -103,17 +114,12 @@ export const Home = ({ discordAuth }: HomeProps) => {
         if (!canvas || !renderReady) return
 
         const link = document.createElement('a')
-        link.download = `${job?.name} ${rotationTitle}.png`
+        link.download = `${getJobName(job, locale)} ${rotationTitle}.png`
         link.href = canvas.toDataURL('image/png')
         link.click()
     }
 
     return (
-        <ConfigProvider theme={{
-            token: {
-                colorPrimary: '#aaf0d1',
-            }
-        }}>
         <Container>
             <Title discordAuth={discordAuth} />
             <Header
@@ -139,7 +145,7 @@ export const Home = ({ discordAuth }: HomeProps) => {
                 screenWidth={screenWidth}
                 prepullRotation={prepullRotation}
                 rotation={rotation}
-                jobName={job?.name}
+                jobName={getJobName(job, locale)}
                 jobIcon={job?.icon}
                 title={rotationTitle}
                 expansion={expansion}
@@ -156,6 +162,5 @@ export const Home = ({ discordAuth }: HomeProps) => {
                 setUseBalanceLogo={setUseBalanceLogo}
             />
         </Container>
-        </ConfigProvider>
     )
 }

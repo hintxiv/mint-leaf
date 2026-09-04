@@ -1,13 +1,13 @@
 import { Job } from '@/data/jobs';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Action } from '../Canvas/types';
 import { DataAction, searchForAction } from '@/app/api';
 import SearchInput from './SearchInput';
 import styled from 'styled-components';
 import { ActionBuilder } from './ActionBuilder';
-import { Button } from 'antd';
 import { CustomActionInput } from './CustomActionInput'
 import { buffDetailsToStatus, getStoredCustomAction } from '@/lib/customActionsStore';
+import { useTranslation } from '@/context/LanguageContext'
 
 const DEFAULT_RECAST_TIME = 2.5;
 const DEFAULT_CAST_TIME = 0;
@@ -42,6 +42,7 @@ export const ActionSelect: React.FC<ActionSelectProps> = ({
     setAppliesBuff,
     setStatus,
 }) => {
+    const { t, locale } = useTranslation()
     const [currentAction, setCurrentAction] = useState<DataAction | null>(null);
     const [gcdToggled, setGcdToggled] = useState<boolean>(true);
     const [lateWeave, setLateWeave] = useState<boolean>(false);
@@ -128,10 +129,11 @@ export const ActionSelect: React.FC<ActionSelectProps> = ({
                         job={job}
                         onSelect={setCurrentAction}
                         search={searchForAction}
-                        placeholder="Search for an action..."
+                        placeholder={t('abilities.searchAction')}
+                        language={locale}
                     />
                 </SearchContainer>
-                <div>- or -</div>
+                <div>{t('abilities.orDivider')}</div>
                 <CustomActionInput onCreate={setCurrentAction} />
             </ActionSelectContainer>
         );

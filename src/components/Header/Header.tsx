@@ -2,6 +2,7 @@ import { Job } from '@/data/jobs'
 import styled from 'styled-components'
 import { JobSelect } from './JobSelect'
 import { Input as AntdInput } from 'antd'
+import { useTranslation } from '@/context/LanguageContext'
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -72,29 +73,31 @@ export const Header = ({
     patch, setPatch,
     level, setLevel,
 }: HeaderProps) => {
+    const { t } = useTranslation()
+
     return (
         <HeaderContainer>
-            <HeaderTitle>Header</HeaderTitle>
+            <HeaderTitle>{t('header.sectionTitle')}</HeaderTitle>
             <HeaderOptions>
                 <HeaderOptionRow>
-                    <span>Job</span>
+                    <span>{t('header.job')}</span>
                     <JobSelect currentJob={currentJob} setJob={setJob} />
                 </HeaderOptionRow>
                 <HeaderOptionRow>
-                    <span>Rotation Title</span>
+                    <span>{t('header.rotationTitle')}</span>
                     <Input value={title} onChange={(e) => setTitle(e.target.value)} />
                 </HeaderOptionRow>
                 <HeaderOptionSuperRow>
                     <HeaderOptionRow>
-                        <span>Expansion</span>
+                        <span>{t('header.expansion')}</span>
                         <Input value={expansion} onChange={(e) => setExpansion(e.target.value)} />
                     </HeaderOptionRow>
                     <HeaderOptionRow>
-                        <span>Patch</span>
+                        <span>{t('header.patch')}</span>
                         <Input value={patch} onChange={(e) => setPatch(e.target.value)} />
                     </HeaderOptionRow>
                     <HeaderOptionRow>
-                        <span>Level</span>
+                        <span>{t('header.level')}</span>
                         <Input type="number" value={level} onChange={(e) => setLevel(parseInt(e.target.value))} />
                     </HeaderOptionRow>
                 </HeaderOptionSuperRow>

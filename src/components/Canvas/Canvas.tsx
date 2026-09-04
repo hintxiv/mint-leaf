@@ -1,5 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from '@/context/LanguageContext'
 import { auditRenderPlan } from './auditRenderPlan'
 import { layoutInfographic } from './layoutInfographic'
 import { CanvasTextMeasurer } from './textLayout'
@@ -70,6 +71,10 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         useBalanceLogo,
         onRenderStateChange,
     } = props
+    const { t } = useTranslation()
+    const pullLabel = t('canvas.pull')
+    const levelPrefix = t('canvas.levelPrefix')
+    const patchLabel = t('canvas.patch')
     const innerRef = useRef<HTMLCanvasElement>(null)
     const generation = useRef(0)
     const [canvasWidth, setCanvasWidth] = useState<number>(styles.widthInitial)
@@ -104,6 +109,9 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
                 expansion,
                 patch,
                 useBalanceLogo,
+                pullLabel,
+                levelPrefix,
+                patchLabel,
             }, new CanvasTextMeasurer(context))
             const violations = auditRenderPlan(plan)
             const images = await loadRenderImages(plan.requiredImages, abortController.signal)
@@ -128,7 +136,21 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         })
 
         return () => abortController.abort()
-    }, [prepullRotation, rotation, title, jobName, jobIcon, level, expansion, patch, useBalanceLogo, onRenderStateChange])
+    }, [
+        prepullRotation,
+        rotation,
+        title,
+        jobName,
+        jobIcon,
+        level,
+        expansion,
+        patch,
+        useBalanceLogo,
+        onRenderStateChange,
+        pullLabel,
+        levelPrefix,
+        patchLabel,
+    ])
 
     return (
         <CanvasContainer $overflow={canvasWidth > screenWidth}>

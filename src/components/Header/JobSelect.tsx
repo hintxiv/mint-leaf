@@ -1,6 +1,8 @@
 import { Job, casters, healers, jobs, melee, physRanged, tanks } from '@/data/jobs'
 import { default as NextImage } from 'next/image'
 import styled from 'styled-components'
+import { useTranslation } from '@/context/LanguageContext'
+import { getJobName } from '@/lib/jobs'
 
 const JOB_ICON_WIDTH = 40;
 
@@ -33,6 +35,8 @@ export interface JobSelectProps {
 }
 
 export const JobSelect = ({ currentJob, setJob }: JobSelectProps) => {
+    const { locale } = useTranslation()
+
     return (
         <JobSelectContainer>
             {[tanks, healers, melee, physRanged, casters].map((role) =>
@@ -41,7 +45,7 @@ export const JobSelect = ({ currentJob, setJob }: JobSelectProps) => {
                         <JobContainer key={jobs[job].name} $selected={currentJob === jobs[job]}>
                             <NextImage
                                 src={jobs[job].borderedIcon}
-                                alt={jobs[job].name}
+                                alt={getJobName(jobs[job], locale)}
                                 onClick={() => setJob(jobs[job])}
                                 width={JOB_ICON_WIDTH}
                                 height={JOB_ICON_WIDTH}

@@ -38,6 +38,9 @@ export interface LayoutInfographicInput {
     expansion: string
     patch: string
     useBalanceLogo: boolean
+    pullLabel?: string
+    levelPrefix?: string
+    patchLabel?: string
 }
 
 interface PositionedActions {
@@ -470,18 +473,20 @@ const addHeader = (
     measurer: TextMeasurer,
 ): { primitives: RenderPrimitive[]; bottom: number } => {
     const primitives: RenderPrimitive[] = []
+    const levelPrefix = input.levelPrefix ?? 'LV.'
+    const patchLabel = input.patchLabel ?? 'Patch'
     const titleX = positions.titleMarginLeft + positions.jobIconWidth + positions.jobIconPadding
     const title = makeLabel(
         'header-title', 'header', input.title, 'title', fonts.title, colors.title,
         titleX, positions.titleMarginTop, 56 * scale, undefined, measurer, false, 'left',
     )
     const subtitle = makeLabel(
-        'header-subtitle', 'header-subtitle', `${input.jobName} LV.${input.level}`, 'subtitle',
+        'header-subtitle', 'header-subtitle', `${input.jobName} ${levelPrefix}${input.level}`, 'subtitle',
         fonts.subtitle, colors.subtitle, titleX, positions.titleMarginTop + 64 * scale,
         38 * scale, undefined, measurer, false, 'left',
     )
     const metadata = makeLabel(
-        'header-metadata', 'header-metadata', `${input.expansion} Patch ${input.patch}`, 'metadata',
+        'header-metadata', 'header-metadata', `${input.expansion} ${patchLabel} ${input.patch}`, 'metadata',
         fonts.subtitle, colors.subtitle, width - positions.titleMarginLeft,
         positions.titleMarginTop + 64 * scale, 38 * scale, undefined, measurer, false, 'right',
     )
@@ -540,9 +545,11 @@ const addHeader = (
 
 const requiredHeaderWidth = (input: LayoutInfographicInput, measurer: TextMeasurer): number => {
     const titleX = positions.titleMarginLeft + positions.jobIconWidth + positions.jobIconPadding
+    const levelPrefix = input.levelPrefix ?? 'LV.'
+    const patchLabel = input.patchLabel ?? 'Patch'
     const titleWidth = measurer.measure(input.title.replace(/\s+/gu, ' ').trim(), fonts.title).width
-    const subtitleWidth = measurer.measure(`${input.jobName} LV.${input.level}`, fonts.subtitle).width
-    const metadataWidth = measurer.measure(`${input.expansion} Patch ${input.patch}`, fonts.subtitle).width
+    const subtitleWidth = measurer.measure(`${input.jobName} ${levelPrefix}${input.level}`, fonts.subtitle).width
+    const metadataWidth = measurer.measure(`${input.expansion} ${patchLabel} ${input.patch}`, fonts.subtitle).width
     const brandingWidth = input.useBalanceLogo
         ? positions.balanceLogoWidth + positions.balanceLogoGap + positions.balanceLogotypeWidth
         : 0
@@ -673,17 +680,18 @@ export const layoutInfographic = (input: LayoutInfographicInput, measurer: TextM
         ...labels.primitives,
     ]
     if (hasPullLine) {
+        const translatedPullLabel = input.pullLabel ?? 'Pull'
         relativePrimitives.push(line('pull-line', [
             { x: pullLineX + positions.prepullPadding, y: positions.pullLineHeightBelow },
             { x: pullLineX + positions.prepullPadding, y: -positions.pullLineHeightAbove },
         ], colors.line, scale, 'pull', 'pull'))
-        const pullLabel = makeLabel(
-            'pull-label', 'pull', 'Pull', 'pull', fonts.pullLabel, colors.text,
+        const pullBlock = makeLabel(
+            'pull-label', 'pull', translatedPullLabel, 'pull', fonts.pullLabel, colors.text,
             pullLineX + positions.prepullPadding,
-            -positions.pullLineHeightAbove - positions.textBottomPadding - measurer.measure('Pull', fonts.pullLabel).actualBoundingBoxAscent,
+            -positions.pullLineHeightAbove - positions.textBottomPadding - measurer.measure(translatedPullLabel, fonts.pullLabel).actualBoundingBoxAscent,
             36 * scale, undefined, measurer,
         )
-        if (pullLabel) relativePrimitives.push(pullLabel)
+        if (pullBlock) relativePrimitives.push(pullBlock)
     }
 
     const actionTop = Math.min(0, ...relativePrimitives.map(primitive => primitive.bounds.y - CLEARANCE))

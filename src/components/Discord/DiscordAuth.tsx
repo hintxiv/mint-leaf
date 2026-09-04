@@ -1,5 +1,6 @@
 import { auth, signIn } from "@/auth"
 import { UserAvatar } from './UserAvatar'
+import { MentorSignInButton } from './MentorSignInButton'
 
 export const DiscordAuth = async () => {
     const session = await auth()
@@ -14,7 +15,7 @@ export const DiscordAuth = async () => {
 
     return (
         <form action={action} style={{ color: '#aaf0d1' }}>
-            <button type="submit">mentor sign in</button>
+            <MentorSignInButton />
         </form>
     )
 }

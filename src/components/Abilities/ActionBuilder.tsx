@@ -3,6 +3,7 @@ import { DataAction } from '@/app/api'
 import styled from 'styled-components'
 import { Button, Checkbox, InputNumber, Switch } from 'antd'
 import { AbilityIcon } from './AbilityIcon'
+import { useTranslation } from '@/context/LanguageContext'
 
 const DEFAULT_RECAST_TIME = 2.5;
 const DEFAULT_CAST_TIME = 0;
@@ -96,8 +97,10 @@ export const ActionBuilder: React.FC<ActionBuilderProps> = ({
     onCreate,
     onClear,
 }) => {
+    const { t } = useTranslation()
+
     const idLabel = currentAction.id.startsWith('item-')
-        ? `${currentAction.id.replace('item-', '')} (Item)`
+        ? `${currentAction.id.replace('item-', '')} ${t('actionBuilder.item')}`
         : `${currentAction.id}`;
 
     return (
@@ -108,35 +111,35 @@ export const ActionBuilder: React.FC<ActionBuilderProps> = ({
                         <AbilityIcon action={currentAction} width={80} />
                     }
                     <ActionInfo>
-                        <div>{currentAction.name ?? 'Unknown'}</div>
+                        <div>{currentAction.name ?? t('actionBuilder.unknown')}</div>
                         <div>
-                            {idLabel.length > 8 ? "(Custom)" : idLabel}
+                            {idLabel.length > 8 ? t('actionBuilder.custom') : idLabel}
                         </div>
                     </ActionInfo>
                 </ActionDisplayAndSettingsColumn>
                 <ActionDisplayAndSettingsColumn>
-                    <span>Action Type</span>
+                    <span>{t('actionBuilder.actionType')}</span>
                     <Switch
-                        checkedChildren="GCD"
-                        unCheckedChildren="oGCD"
+                        checkedChildren={t('actionBuilder.gcd')}
+                        unCheckedChildren={t('actionBuilder.ogcd')}
                         defaultChecked
                         onChange={setGcdToggled}
                     />
-                    <span>Applies Buff?</span>
+                    <span>{t('actionBuilder.appliesBuff')}</span>
                     <Checkbox
                         checked={appliesBuff}
                         onChange={(e) => setAppliesBuff(e.target.checked)}
                     />
                 </ActionDisplayAndSettingsColumn>
                 <ActionDisplayAndSettingsColumn>
-                    <span>Prepull?</span>
+                    <span>{t('actionBuilder.prepull')}</span>
                     <Checkbox
                         checked={prepull}
                         onChange={(e) => setPrepull(e.target.checked)}
                     />
                     {prepull &&
                         <>
-                            <span>Time (s)</span>
+                            <span>{t('actionBuilder.timeSeconds')}</span>
                             <InputNumber
                                 min={-60}
                                 max={0}
@@ -150,7 +153,7 @@ export const ActionBuilder: React.FC<ActionBuilderProps> = ({
                 <ActionDisplayAndSettingsColumn>
                     {gcdToggled ?
                         <>
-                            <span>Recast Time (s)</span>
+                            <span>{t('actionBuilder.recastTime')}</span>
                             <InputNumber
                                 min={0}
                                 max={10}
@@ -158,7 +161,7 @@ export const ActionBuilder: React.FC<ActionBuilderProps> = ({
                                 value={recastTime}
                                 onChange={setRecastTime}
                             />
-                            <span>Cast Time (s)</span>
+                            <span>{t('actionBuilder.castTime')}</span>
                             <InputNumber
                                 min={0}
                                 max={10}
@@ -169,7 +172,7 @@ export const ActionBuilder: React.FC<ActionBuilderProps> = ({
                         </>
                         : !prepull &&
                         <>
-                            <span>Weave late?</span>
+                            <span>{t('actionBuilder.weaveLate')}</span>
                             <Checkbox
                                 checked={lateWeave}
                                 onChange={(e) => setLateWeave(e.target.checked)}
@@ -180,10 +183,10 @@ export const ActionBuilder: React.FC<ActionBuilderProps> = ({
             </ActionDisplayAndSettings>
             <ActionButtons>
                 <Button type="primary" onClick={onCreate}>
-                    Add to rotation
+                    {t('actionBuilder.addToRotation')}
                 </Button>
                 <Button danger onClick={onClear}>
-                    Clear
+                    {t('actionBuilder.clear')}
                 </Button>
             </ActionButtons>
         </ActionBuilderContainer>
