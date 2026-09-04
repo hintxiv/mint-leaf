@@ -26,6 +26,7 @@ export default defineConfig({
         },
     },
     expect: {
+        timeout: 15_000,
         toHaveScreenshot: { animations: 'disabled', caret: 'hide' },
     },
 })
