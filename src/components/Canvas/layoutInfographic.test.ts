@@ -1,6 +1,8 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { TextMeasurer } from './textLayout'
-import { LinePrimitive } from './types'
+import { Action, ImagePrimitive, LinePrimitive, RenderPlan } from './types'
+import { calculateIconPositions } from './calculateIconPositions'
+import { calculateTimeline } from './calculateBuffLinePositions'
 
 vi.mock('../../lib/fonts', () => ({
     roboto: { style: { fontFamily: 'Roboto' } },
@@ -40,6 +42,133 @@ describe('infographic layout plan', () => {
     beforeAll(async () => {
         layoutInfographic = (await import('./layoutInfographic')).layoutInfographic
         auditRenderPlan = (await import('./auditRenderPlan')).auditRenderPlan
+    })
+
+    const action = (id: string, type: Action['type'] = 'gcd', extra: Partial<Action> = {}): Action => ({
+        id, instanceId: id, type, name: `Action ${id}`, imageSrc: '/favicon.ico', ...extra,
+    } as Action)
+    const actionIcons = (plan: RenderPlan) => plan.primitives.filter((primitive): primitive is ImagePrimitive =>
+        primitive.kind === 'image' && primitive.role === 'action-icon' && Boolean(primitive.ownerId?.startsWith('rotation-')),
+    )
+
+    it('keeps all GCD decorations and weaves on their row and retains global numbering', () => {
+        const rotation = [
+            action('lead', 'ogcd'),
+            action('g1', 'gcd', { name: 'An Extremely Long Multiline Global Cooldown Name' }),
+            action('w1', 'ogcd'), action('w2', 'ogcd'), action('clip', 'ogcd'),
+            action('g2', 'gcd', { castTime: 2.5 }), action('late', 'ogcd', { lateWeave: true }),
+            action('g3'),
+        ]
+        const input = { ...baseInput, rotation, prepullRotation: [action('prep', 'ogcd', { prepull: -2 })] }
+        const single = layoutInfographic(input, measurer)
+        const plan = layoutInfographic({ ...input, rowCount: 3, rowSpacing: 0 }, measurer)
+        const icons = actionIcons(plan)
+        const original = actionIcons(single)
+        expect(icons).toHaveLength(rotation.length)
+        expect(new Set(plan.primitives.map(primitive => primitive.id)).size).toBe(plan.primitives.length)
+        expect(plan.primitives.filter(primitive => primitive.kind === 'image' && primitive.role === 'timeline')).toHaveLength(
+            single.primitives.filter(primitive => primitive.kind === 'image' && primitive.role === 'timeline').length,
+        )
+        const shift = (index: number) => icons[index].bounds.y - original[index].bounds.y
+        expect([0, 1, 2, 3, 4].map(shift)).toEqual(Array(5).fill(shift(1)))
+        expect(shift(5)).toBe(shift(6))
+        expect(shift(5)).toBeGreaterThan(shift(1))
+        expect(shift(7)).toBeGreaterThan(shift(5))
+        expect(plan.textBlocks.filter(block => block.role === 'count').map(block => block.lines[0].text)).toEqual(['1', '2', '3'])
+        expect(plan.primitives.filter(primitive => primitive.id === 'pull-line')).toHaveLength(1)
+        expect(auditRenderPlan(plan)).toEqual([])
+    })
+
+    it('adds exactly the requested empty gap without changing row contents or widths', () => {
+        const input = { ...baseInput, rotation: [action('g1'), action('g2'), action('g3')], rowCount: 3 }
+        const zero = layoutInfographic({ ...input, rowSpacing: 0 }, measurer)
+        const custom = layoutInfographic({ ...input, rowSpacing: 400 }, measurer)
+        const defaults = layoutInfographic(input, measurer)
+        expect(custom.width).toBe(zero.width)
+        expect(custom.height - zero.height).toBe(800)
+        expect(defaults.height - zero.height).toBe(256)
+        actionIcons(custom).forEach((icon, index) => expect(icon.bounds.y - actionIcons(zero)[index].bounds.y).toBe(index * 400))
+        expect(auditRenderPlan(zero)).toEqual([])
+    })
+
+    it('carries buffs across rows, repeats fitting labels, and keeps true start/end markers', () => {
+        const status = { id: 'buff', name: 'Buff', imageSrc: '/favicon.ico', color: '#74d6b4', applicationDelay: 0, duration: 100 }
+        const plan = layoutInfographic({
+            ...baseInput,
+            rotation: [action('g1', 'gcd', { statusApplied: status }), ...Array.from({ length: 5 }, (_, index) => action(`g${index + 2}`))],
+            rowCount: 3,
+        }, measurer)
+        const ids = plan.primitives.map(primitive => primitive.id)
+        expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-start'))).toHaveLength(1)
+        expect(ids.filter(id => id.endsWith('-continue-before'))).toHaveLength(2)
+        expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-arrow'))).toHaveLength(2)
+        expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-end'))).toHaveLength(1)
+        expect(plan.textBlocks.filter(block => block.role === 'buff')).toHaveLength(3)
+        expect(auditRenderPlan(plan)).toEqual([])
+    })
+
+    it('does not restart delayed buffs on earlier rows or leave a segment at an exact boundary', () => {
+        const status = { id: 'buff', name: 'Buff', imageSrc: '/favicon.ico', color: '#74d6b4', applicationDelay: 5, duration: 0.1 }
+        const plan = layoutInfographic({
+            ...baseInput, rowCount: 4,
+            rotation: [action('g1', 'gcd', { statusApplied: status }), action('g2'), action('g3'), action('g4')],
+        }, measurer)
+        const buffs = plan.primitives.filter(primitive => primitive.ownerId?.startsWith('buff-'))
+        expect(buffs.length).toBeGreaterThan(0)
+        expect(buffs.every(primitive => primitive.ownerId === 'buff-0-row-2')).toBe(true)
+        const boundaryRotation = [action('g1'), action('g2'), action('g3')]
+        const positioned = calculateIconPositions(boundaryRotation)
+        const timeline = calculateTimeline([], positioned.icons, positioned.width, 0)
+        const boundary = positioned.icons.filter(icon => icon.type === 'gcd')[1].x
+        const before = timeline.filter(point => point.x <= boundary).at(-1)!
+        const after = timeline.find(point => point.x > boundary)!
+        const beforeTime = before.time + (before.addedWeaveTime ?? 0)
+        const afterTime = after.time + (after.addedWeaveTime ?? 0)
+        const duration = beforeTime + (afterTime - beforeTime) * (boundary - before.x) / (after.x - before.x)
+        boundaryRotation[0].statusApplied = { ...status, applicationDelay: 0, duration }
+        const boundaryPlan = layoutInfographic({
+            ...baseInput, rowCount: 3,
+            rotation: boundaryRotation,
+        }, measurer)
+        expect(boundaryPlan.primitives.filter(primitive => primitive.ownerId?.startsWith('buff-')).every(primitive => primitive.ownerId === 'buff-0-row-0')).toBe(true)
+        expect(auditRenderPlan(plan)).toEqual([])
+    })
+
+    it.each([8, 30])('keeps nested buff lanes consistent without crossing connectors (inner duration %s)', (innerDuration) => {
+        const status = { id: 'outer', name: 'Outer Buff', imageSrc: '/favicon.ico', color: '#74d6b4', applicationDelay: 0, duration: 30 }
+        const input = { ...baseInput, rotation: [
+            action('g1', 'gcd', { statusApplied: status }),
+            action('g2', 'gcd', { statusApplied: { ...status, id: 'inner', name: 'Inner Buff', duration: innerDuration } }),
+            action('g3'), action('g4'), action('g5'), action('g6'),
+        ] }
+        const single = layoutInfographic(input, measurer)
+        const plan = layoutInfographic({ ...input, rowCount: 2 }, measurer)
+        const horizontalLines = (source: RenderPlan) => source.primitives.filter((primitive): primitive is LinePrimitive =>
+            primitive.kind === 'line' && primitive.role === 'buff' && primitive.points.length === 2 && primitive.points[0].y === primitive.points[1].y,
+        )
+        const laneY = (source: RenderPlan, ownerId: string) => horizontalLines(source).find(primitive => primitive.ownerId === ownerId)!.points[0].y
+        expect(laneY(single, 'buff-0')).toBeGreaterThan(laneY(single, 'buff-1'))
+        for (const row of [0, 3]) {
+            expect(laneY(plan, `buff-0-row-${row}`)).toBeGreaterThan(laneY(plan, `buff-1-row-${row}`))
+        }
+        const starts = plan.primitives.filter((primitive): primitive is LinePrimitive => primitive.kind === 'line' && primitive.role === 'buff' && primitive.id.endsWith('-start'))
+        starts.forEach(start => horizontalLines(plan).filter(line => line.ownerId !== start.ownerId).forEach(line => {
+            const x = start.points[0].x
+            const y = line.points[0].y
+            const crosses = x > line.points[0].x && x < line.points[1].x
+                && y > Math.min(...start.points.map(point => point.y)) && y < Math.max(...start.points.map(point => point.y))
+            expect(crosses).toBe(false)
+        }))
+        expect(auditRenderPlan(plan)).toEqual([])
+    })
+
+    it('limits rows to available GCD groups and preserves single-row edge cases', () => {
+        for (const input of [baseInput, { ...baseInput, prepullRotation: [action('p', 'ogcd', { prepull: -2 })] }, { ...baseInput, rotation: [action('o', 'ogcd')] }]) {
+            expect(layoutInfographic({ ...input, rowCount: 10 }, measurer)).toEqual(layoutInfographic(input, measurer))
+        }
+        const plan = layoutInfographic({ ...baseInput, rotation: [action('g1'), action('g2')], rowCount: 10 }, measurer)
+        expect(new Set(actionIcons(plan).map(icon => icon.bounds.y)).size).toBe(2)
+        expect(auditRenderPlan(plan)).toEqual([])
     })
 
     it('retains minimum dimensions and expands for lossless headers', () => {

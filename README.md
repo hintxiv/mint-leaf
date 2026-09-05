@@ -4,6 +4,11 @@
 
 A tool for creating FFXIV rotation infographics.
 
+Use **Rows** to choose how many rows the infographic uses (default: 1).
+Rows balance their visual widths and keep each GCD with its following weaves; prepull actions stay on the first row.
+**Row spacing** sets the empty gap between rows in canvas pixels (default: 128; 0 is allowed).
+Buff lines continue across row breaks with consistent vertical ordering.
+
 ## Getting Started
 
 **Requirements**

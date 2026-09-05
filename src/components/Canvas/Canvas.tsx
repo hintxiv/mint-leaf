@@ -3,12 +3,11 @@ import { CompressOutlined, ExpandOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import { useTranslation } from '@/context/LanguageContext'
 import { auditRenderPlan } from './auditRenderPlan'
-import { blitWrappedCanvas, measureContentTop } from './composeWrappedCanvas'
 import { layoutInfographic } from './layoutInfographic'
 import { CanvasTextMeasurer } from './textLayout'
 import { loadRenderImages, paintRenderPlan } from './paintRenderPlan'
 import { Action, LayoutViolation } from './types'
-import { styles, wrapWidthMin } from './styles'
+import { styles } from './styles'
 
 const Viewport = styled.div`
     position: relative;
@@ -86,7 +85,7 @@ interface CanvasProps {
     expansion: string
     patch: string
     useBalanceLogo: boolean
-    wrapWidth?: number | null
+    rowCount?: number
     rowSpacing?: number | null
     // When false, show the bitmap at 1:1 (no CSS fit). Used by the render harness.
     enableDisplayFit?: boolean
@@ -117,7 +116,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         expansion,
         patch,
         useBalanceLogo,
-        wrapWidth = null,
+        rowCount = 1,
         rowSpacing = null,
         enableDisplayFit = true,
         onRenderStateChange,
@@ -189,39 +188,20 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
                 pullLabel,
                 levelPrefix,
                 patchLabel,
+                rowCount,
+                rowSpacing,
             }
 
-            // Always layout the full single-row strip first.
-            const stripPlan = layoutInfographic(layoutInput, measurer)
-            const violations = auditRenderPlan(stripPlan)
-            const images = await loadRenderImages(stripPlan.requiredImages, abortController.signal)
+            const plan = layoutInfographic(layoutInput, measurer)
+            const violations = auditRenderPlan(plan)
+            const images = await loadRenderImages(plan.requiredImages, abortController.signal)
             if (abortController.signal.aborted || currentGeneration !== generation.current) return
 
-            const stripCanvas = document.createElement('canvas')
-            stripCanvas.width = stripPlan.width
-            stripCanvas.height = stripPlan.height
-            paintRenderPlan(stripCanvas.getContext('2d')!, stripPlan, images)
-
-            let output = stripCanvas
-            // Ignore out-of-range wrap values; the toolbar commits only after debounce / blur clip.
-            const wrapEnabled = wrapWidth != null
-                && wrapWidth >= wrapWidthMin
-                && wrapWidth <= stripPlan.width
-            if (wrapEnabled) {
-                const contentTop = measureContentTop(stripPlan)
-                output = blitWrappedCanvas(
-                    stripCanvas,
-                    contentTop,
-                    wrapWidth,
-                    rowSpacing ?? styles.positions.rotationRowSpacing,
-                )
-            }
-
-            // Bitmap stays at output size so export resolution is unchanged; CSS scales display only.
-            canvas.width = output.width
-            canvas.height = output.height
-            setNaturalSize({ width: output.width, height: output.height })
-            canvas.getContext('2d')!.drawImage(output, 0, 0)
+            // Paint the audited geometry directly; CSS scales display only.
+            canvas.width = plan.width
+            canvas.height = plan.height
+            paintRenderPlan(canvas.getContext('2d')!, plan, images)
+            setNaturalSize({ width: plan.width, height: plan.height })
             const readyState = { status: 'ready', violations } as const
             setRenderStatus('ready')
             onRenderStateChange?.(readyState)
@@ -247,7 +227,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         expansion,
         patch,
         useBalanceLogo,
-        wrapWidth,
+        rowCount,
         rowSpacing,
         onRenderStateChange,
         pullLabel,
