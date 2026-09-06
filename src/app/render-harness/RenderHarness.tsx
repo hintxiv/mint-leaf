@@ -38,6 +38,18 @@ const ogcd = (id: string, name: string, extra: Partial<Action> = {}): Action => 
 })
 
 const fixtures: Record<string, { prepullRotation: Action[]; rotation: Action[]; title?: string; expansion?: string; patch?: string; logo?: boolean }> = {
+    'gcd-baseline': {
+        prepullRotation: [],
+        rotation: [gcd('g1', 'Rising Raptor'), gcd('g2', 'Shadow of the Destroyer'), gcd('g3', 'Six-sided Star')],
+    },
+    'gcd-lanes': {
+        prepullRotation: [],
+        rotation: [gcd('g1', 'Rising Raptor', { recastTime: 0 }), gcd('g2', 'Shadow of the Destroyer', { recastTime: 0 }), gcd('g3', 'Six-sided Star', { recastTime: 0 })],
+    },
+    'buff-tail': {
+        prepullRotation: [],
+        rotation: [gcd('g1', 'Heated Split Shot'), gcd('g2', 'Heated Slug Shot'), ogcd('o1', 'Wildfire', { statusesApplied: [{ ...buff, name: 'Wildfire', duration: 20, applicationDelay: 0.6 }] })],
+    },
     empty: { prepullRotation: [], rotation: [] },
     ordinary: {
         prepullRotation: [ogcd('p1', 'Grade 6 Gemdraught of Intelligence', { prepull: -2, statusesApplied: [buff] })],

@@ -101,8 +101,8 @@ describe('infographic layout plan', () => {
         const ids = plan.primitives.map(primitive => primitive.id)
         expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-start'))).toHaveLength(1)
         expect(ids.filter(id => id.endsWith('-continue-before'))).toHaveLength(2)
-        expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-arrow'))).toHaveLength(2)
-        expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-end'))).toHaveLength(1)
+        expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-arrow'))).toHaveLength(3)
+        expect(ids.filter(id => id.startsWith('buff-') && id.endsWith('-end'))).toHaveLength(0)
         expect(plan.textBlocks.filter(block => block.role === 'buff')).toHaveLength(3)
         expect(auditRenderPlan(plan)).toEqual([])
     })
@@ -217,6 +217,60 @@ describe('infographic layout plan', () => {
         expect(name?.lines.length).toBeGreaterThan(1)
         expect(count?.ownerId).toBe(name?.ownerId)
         expect(count!.bounds.y).toBeGreaterThan(name!.bounds.y + name!.bounds.height)
+    })
+
+    it.each([1, 2])('anchors counts below upward-growing name lanes (%s rows)', rowCount => {
+        const plan = layoutInfographic({ ...baseInput, rowCount, rotation: [
+            action('g1', 'gcd', { name: 'Rising Raptor', recastTime: 0 }),
+            action('g2', 'gcd', { name: 'Shadow of the Destroyer', recastTime: 0 }),
+            action('g3', 'gcd', { name: 'Six-sided Star', recastTime: 0 }),
+            action('g4', 'gcd', { name: '', recastTime: 0 }),
+        ] }, measurer)
+        const icons = actionIcons(plan)
+        const counts = plan.textBlocks.filter(block => block.role === 'count')
+        expect(counts.map(block => block.lines[0].text)).toEqual(['1', '2', '3', '4'])
+        for (const y of Array.from(new Set(icons.map(icon => icon.bounds.y)))) {
+            const owners = icons.filter(icon => icon.bounds.y === y).map(icon => icon.ownerId)
+            const rowCounts = counts.filter(count => owners.includes(count.ownerId))
+            expect(new Set(rowCounts.map(count => count.lines[0].y)).size).toBe(1)
+            const names = plan.textBlocks.filter(block => block.role === 'action' && owners.includes(block.ownerId))
+            expect(names.every(name => name.bounds.y >= y + icons[0].bounds.height)).toBe(true)
+            expect(names.every(name => name.bounds.y + name.bounds.height < rowCounts[0].bounds.y)).toBe(true)
+        }
+        expect(auditRenderPlan(plan)).toEqual([])
+    })
+
+    it.each([1, 2])('distinguishes expiry from continuation and includes short tails in bounds (%s rows)', rowCount => {
+        const make = (duration: number, applicationDelay = 0) => layoutInfographic({ ...baseInput, rowCount,
+            rotation: [action('g1'), action('g2', 'gcd', { statusesApplied: [{
+                id: 'buff', name: 'A continuing status with a long label', imageSrc: '/favicon.ico',
+                color: '#abcdef', duration, applicationDelay,
+            }] })],
+        }, measurer)
+        for (const duration of [1, 2.5]) {
+            const plan = make(duration)
+            expect(plan.primitives.some(item => item.id.endsWith('-end'))).toBe(true)
+            expect(plan.primitives.some(item => item.id.endsWith('-arrow'))).toBe(false)
+        }
+        for (const delay of [0, 2.5]) {
+            const plan = make(20, delay)
+            expect(plan.primitives.some(item => item.id.endsWith('-arrow'))).toBe(true)
+            expect(plan.primitives.some(item => item.id.endsWith('-end'))).toBe(false)
+            expect(plan.textBlocks.filter(block => block.role === 'buff')).toHaveLength(1)
+            expect(auditRenderPlan(plan)).toEqual([])
+        }
+        expect(make(20, 3).primitives.some(item => item.ownerId?.startsWith('buff-'))).toBe(false)
+        expect(make(0).primitives.some(item => item.ownerId?.startsWith('buff-'))).toBe(false)
+    })
+
+    it('grows the canvas for a late continuation without stretching the timeline', () => {
+        const rotation = Array.from({ length: 10 }, (_, i) => action(String(i)))
+        const original = layoutInfographic({ ...baseInput, rotation }, measurer)
+        rotation[9].statusesApplied = [{ id: 'tail', name: 'A long continuing buff at the end of the rotation', imageSrc: '/favicon.ico', color: '#abcdef', duration: 20, applicationDelay: 2 }]
+        const plan = layoutInfographic({ ...baseInput, rotation }, measurer)
+        expect(plan.width).toBeGreaterThan(original.width)
+        expect(actionIcons(plan).map(icon => icon.bounds.x)).toEqual(actionIcons(original).map(icon => icon.bounds.x))
+        expect(auditRenderPlan(plan)).toEqual([])
     })
 
     it('adds outward lanes and connectors for consecutive oGCD labels', () => {

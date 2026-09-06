@@ -79,7 +79,9 @@ export type CanvasIcon = CanvasGCD | CanvasoGCD | CanvasIconWeaveSlot | CanvasIc
 export interface CanvasBuffLine {
     instanceKey: string;
     status: Status;
-    icon: HTMLImageElement | null;
+    startTime: number;
+    endTime: number;
+    continuesAfter: boolean;
     startX: number;
     endX: number;
 }

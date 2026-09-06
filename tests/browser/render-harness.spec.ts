@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 
-const fixtures = ['empty', 'ordinary', 'reported', 'dense', 'long-header'] as const
+const fixtures = ['empty', 'ordinary', 'reported', 'dense', 'long-header', 'gcd-baseline', 'gcd-lanes', 'buff-tail'] as const
 
 for (const fixture of fixtures) {
     test(`${fixture} fixture has a clean measured layout`, async ({ page }) => {

@@ -1,4 +1,3 @@
-import { MutableRefObject } from 'react'
 import { CanvasBuffLine, CanvasIcon, CanvasoGCD, TimelinePoint } from './types'
 
 export const calculateTimeline = (
@@ -107,7 +106,8 @@ const interpolateTime = (timeline: TimelinePoint[], x: number) => {
     const before = reverseSortedPoints.find(point => point.x <= x)
     const after = sortedPoints.find(point => point.x > x)
 
-    if (!before || !after) return sortedPoints[0].time
+    if (!before) return sortedPoints[0].time
+    if (!after) return before.time + (before.addedWeaveTime ?? 0)
 
     const beforeTime = before.time + (before.addedWeaveTime ?? 0)
     const afterTime = after.time + (after.addedWeaveTime ?? 0)
@@ -119,26 +119,30 @@ const interpolateTime = (timeline: TimelinePoint[], x: number) => {
 export const calculateBuffLinePositions = (
     icons: CanvasIcon[],
     timeline: TimelinePoint[],
-    iconRefs: MutableRefObject<(HTMLImageElement | null)[]>,
     finalX: number,
 ): CanvasBuffLine[] => {
     const buffLines: CanvasBuffLine[] = []
 
-    icons.forEach((icon, index) => {
+    icons.forEach(icon => {
         if (icon.type !== 'gcd' && icon.type !== 'ogcd') return
         ;(icon.statusesApplied ?? []).forEach((status, statusIndex) => {
             if (status.enabled === false) return
             const initialX = icon.x + icon.width
             const actionTime = icon.prepull ?? interpolateTime(timeline, initialX)
             const startTime = actionTime + (status.applicationDelay ?? 0)
+            const endTime = startTime + status.duration
+            const rotationEndTime = timeline.at(-1)?.time ?? 0
+            if (status.duration <= 0 || startTime > rotationEndTime || endTime < (timeline[0]?.time ?? 0)) return
             const startX = interpolateX(timeline, startTime, finalX)
 
             buffLines.push({
                 instanceKey: `${icon.instanceId}:${statusIndex}`,
                 status: status,
-                icon: iconRefs.current[index] ?? null,
+                startTime,
+                endTime,
+                continuesAfter: endTime > rotationEndTime,
                 startX: startX,
-                endX: interpolateX(timeline, startTime + status.duration, finalX),
+                endX: interpolateX(timeline, endTime, finalX),
             })
         })
     })

@@ -135,8 +135,8 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     })
     const [renderStatus, setRenderStatus] = useState<CanvasRenderState['status']>('loading')
     const [renderError, setRenderError] = useState('')
-    // false = scale to pane height (default); true = fit the whole canvas in the pane
-    const [fitToWindow, setFitToWindow] = useState(false)
+    // true = fit the whole canvas in the pane (default); false = scale to pane height
+    const [fitToWindow, setFitToWindow] = useState(true)
     const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 })
 
     useImperativeHandle(ref, () => innerRef.current!, [])
