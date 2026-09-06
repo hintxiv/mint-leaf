@@ -8,6 +8,9 @@ const actions = [
     { id: '2876', name: 'Reassemble', level: 10 },
     { id: '16498', name: 'Drill', level: 58 },
     { id: '7414', name: 'Barrel Stabilizer', level: 66 },
+    { id: '99902', name: 'API spell one', level: 95 },
+    { id: '99903', name: 'API spell two', level: 90 },
+    { id: '7541', name: 'Second Wind', level: 99 },
 ]
 
 async function setup(page: Page) {
@@ -32,9 +35,10 @@ async function setup(page: Page) {
     await page.addInitScript(({ actions }) => {
         localStorage.setItem('mint-leaf-locale', 'en')
         localStorage.setItem('mint-leaf-job-actions', JSON.stringify({ 'MCH:en': {
-            fetchedAt: Date.now(), format: 3, version: 'older-list-revision', actions: actions.map(action => ({
+            fetchedAt: Date.now(), format: 4, version: 'older-list-revision', actions: actions.map(action => ({
                 id: action.id, name: action.name, iconUrl: 'https://v2.xivapi.com/api/asset/test.png',
                 isPlayerAction: true, description: null, classJobLevel: action.level,
+                isRoleAction: action.id === '7541', kind: action.id === '7541' ? 'ogcd' : 'gcd', baseGcdRecastMs: 2500, baseCastTimeMs: 0,
             })),
         } }))
     }, { actions })
@@ -54,7 +58,7 @@ test('library and search share inherited GCDs across prepull, existing and futur
     await add(page, 'Heated Split Shot')
     await expect(recast(page)).toHaveValue('2.50')
     expect(await page.evaluate(() => localStorage.getItem('mint-leaf-action-preferences-v1'))).toBeNull()
-    await page.getByRole('checkbox', { name: 'Prepull?', exact: true }).check()
+    await page.getByRole('checkbox', { name: 'Prepull', exact: true }).check()
     await add(page, 'Heated Slug Shot')
     await recast(page).fill('2.45')
     await recast(page).blur()
@@ -68,7 +72,7 @@ test('library and search share inherited GCDs across prepull, existing and futur
     await page.getByRole('combobox').first().fill('Drill')
     await page.getByRole('option', { name: 'Drill' }).click()
     await expect(recast(page)).toHaveValue('2.45')
-    await page.getByRole('checkbox', { name: 'Use for matching GCDs' }).uncheck()
+    await page.getByRole('checkbox', { name: 'Share with matching GCDs' }).uncheck()
     await recast(page).fill('2.3')
     await recast(page).blur()
     await add(page, 'Drill')
@@ -82,15 +86,16 @@ test('multiple independent status rows persist edits and render in preview and P
     await setup(page)
     await add(page, 'Reassemble')
     await expect(page.getByRole('checkbox', { name: 'API Reassembled', exact: true })).toBeChecked()
-    await expect(page.getByRole('switch')).not.toBeChecked()
+    await expect(page.getByRole('radio', { name: 'oGCD', exact: true })).toBeChecked()
     await expect(page.getByTestId('status-row')).toHaveCount(1)
     await page.getByRole('button', { name: 'Add status', exact: true }).click()
     await page.getByRole('combobox').last().fill('Test status')
     await page.getByRole('option', { name: 'Test status' }).click()
     await expect(page.getByTestId('status-row')).toHaveCount(2)
     const second = page.getByTestId('status-row').nth(1)
-    await second.locator('summary').click()
+    await second.getByRole('button', { name: 'Test status Settings' }).click()
     await second.getByRole('spinbutton', { name: 'Test status Duration (s)' }).fill('13')
+    await second.getByRole('spinbutton', { name: 'Test status Duration (s)' }).blur()
     await second.locator('input[type=color]').fill('#cc33ee')
     await second.getByRole('checkbox').uncheck()
     await expect(await exported(page)).toHaveValue(/\[99901 0 13 #cc33ee disabled\]/)
@@ -120,7 +125,7 @@ test('multiple independent status rows persist edits and render in preview and P
     expect((await readFile('test-results/multiple-statuses.png')).subarray(1, 4).toString()).toBe('PNG')
     await add(page, 'Reassemble')
     await expect(page.getByTestId('status-row')).toHaveCount(2)
-    await page.getByTestId('status-row').nth(1).locator('summary').click()
+    await page.getByTestId('status-row').nth(1).getByRole('button', { name: 'Test status Settings' }).click()
     await expect(page.getByTestId('status-row').nth(1).locator('input[type=color]')).toHaveValue('#cc33ee')
 })
 
@@ -171,4 +176,154 @@ test('custom status URLs and names roundtrip after correcting an invalid URL', a
     await page.getByRole('button', { name: 'Apply import', exact: true }).click()
     await expect(text).toHaveValue(original)
     await expect(page.locator('canvas')).toHaveAttribute('data-render-state', 'ready')
+})
+
+test('compact inspector supports keyboard type selection, timing options, removal and reset', async ({ page }) => {
+    await setup(page)
+    await add(page, 'Reassemble')
+    const detail = page.getByTestId('action-detail')
+    const ogcd = detail.getByRole('radio', { name: 'oGCD', exact: true })
+    await ogcd.focus()
+    await page.keyboard.press('ArrowLeft')
+    await expect(detail.getByRole('radio', { name: 'GCD', exact: true })).toBeChecked()
+    await expect(recast(page)).toHaveValue('2.50')
+    await detail.getByRole('radio', { name: 'oGCD', exact: true }).check()
+    await detail.getByRole('checkbox', { name: 'Late weave', exact: true }).check()
+    await expect(await exported(page)).toHaveValue(/2876 oGCD late/)
+    await detail.getByRole('checkbox', { name: 'Prepull', exact: true }).check()
+    await expect(detail.getByRole('checkbox', { name: 'Late weave', exact: true })).toHaveCount(0)
+    await detail.getByRole('spinbutton', { name: 'Time (s)', exact: true }).fill('-3')
+    await detail.getByRole('spinbutton', { name: 'Time (s)', exact: true }).blur()
+    await expect(await exported(page)).toHaveValue(/-3 2876 oGCD/)
+    const settings = detail.getByRole('button', { name: 'API Reassembled Settings' })
+    await expect(settings).toHaveAttribute('aria-expanded', 'false')
+    await settings.focus()
+    await page.keyboard.press('Enter')
+    await expect(settings).toHaveAttribute('aria-expanded', 'true')
+    await detail.getByRole('button', { name: 'Remove status: API Reassembled', exact: true }).click()
+    await expect(detail.getByTestId('status-row')).toHaveCount(0)
+    await detail.getByRole('button', { name: 'Reset to defaults', exact: true }).click()
+    await expect(detail.getByTestId('status-row')).toHaveCount(1)
+    await expect(detail.getByRole('spinbutton', { name: 'Time (s)', exact: true })).toHaveValue('-3')
+})
+
+test('detail pane stays contained with expanded settings and localized long names', async ({ page }) => {
+    await setup(page)
+    await add(page, 'Barrel Stabilizer')
+    const detail = page.getByTestId('action-detail')
+    await detail.getByRole('button', { name: 'API Full Metal Machinist Settings' }).click()
+    await detail.screenshot({ path: 'test-results/detail-statuses.png' })
+    await detail.getByRole('button', { name: 'Add status', exact: true }).click()
+    await detail.getByRole('button', { name: 'Custom Buff', exact: true }).click()
+    await detail.getByPlaceholder('Enter buff name...').fill('A very long custom status name 日本語 with additional details')
+    await detail.getByPlaceholder('Enter custom image URL...').fill('https://v2.xivapi.com/test.png')
+    await detail.getByRole('button', { name: 'Create', exact: true }).click()
+    await detail.getByRole('button', { name: /A very long custom status name.*Settings/ }).click()
+    const contained = async () => {
+        expect(await detail.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true)
+        for (const card of await detail.getByTestId('status-row').all()) {
+            expect(await card.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true)
+        }
+    }
+    await contained()
+    await page.setViewportSize({ width: 1440, height: 1400 })
+    await detail.screenshot({ path: 'test-results/detail-long-status.png' })
+    await page.getByRole('button', { name: /^Language/ }).click()
+    await page.getByRole('menuitem', { name: 'JP', exact: true }).click()
+    await expect(detail.getByRole('button', { name: 'ステータスを追加', exact: true })).toBeVisible()
+    await contained()
+    await detail.screenshot({ path: 'test-results/detail-japanese.png' })
+    await page.setViewportSize({ width: 2160, height: 2100 })
+    await page.evaluate(() => { document.documentElement.style.setProperty('zoom', '1.5') })
+    await contained()
+    await detail.screenshot({ path: 'test-results/detail-japanese-zoom.png' })
+})
+
+
+test('long custom action names wrap without letting encoded IDs dominate the header', async ({ page }) => {
+    await setup(page)
+    await page.getByRole('button', { name: 'Custom Action', exact: true }).click()
+    const name = 'A long custom action name with 日本語 and additional description'
+    await page.getByPlaceholder('Enter action name...').fill(name)
+    await page.getByPlaceholder('Enter custom image URL...').fill('https://v2.xivapi.com/test.png')
+    await page.getByRole('button', { name: 'Create', exact: true }).click()
+    const detail = page.getByTestId('action-detail')
+    await expect(detail.getByText(name, { exact: true })).toBeVisible()
+    expect(await detail.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true)
+    await expect(detail.getByRole('checkbox', { name: 'Share with matching GCDs' })).toHaveCount(0)
+    await detail.getByRole('button', { name: 'Edit action name', exact: true }).hover()
+    await detail.screenshot({ path: 'test-results/detail-long-action.png' })
+})
+
+test('numeric edits stay as drafts until committed', async ({ page }) => {
+    await setup(page)
+    await add(page, 'Heated Split Shot')
+    await recast(page).fill('')
+    await expect(recast(page)).toHaveValue('')
+    await recast(page).pressSequentially('1.')
+    await expect(recast(page)).toHaveValue('1.')
+    expect(await page.evaluate(() => localStorage.getItem('mint-leaf-action-preferences-v1'))).toBeNull()
+    await recast(page).pressSequentially('85')
+    await recast(page).press('Enter')
+    await expect(recast(page)).toHaveValue('1.85')
+    await recast(page).fill('-')
+    await expect(recast(page)).toHaveValue('-')
+    await recast(page).blur()
+    await expect(recast(page)).toHaveValue('1.85')
+    await recast(page).fill('99')
+    await expect(recast(page)).toHaveValue('99')
+    await recast(page).press('Escape')
+    await expect(recast(page)).toHaveValue('1.85')
+    await recast(page).fill('99')
+    await recast(page).blur()
+    await expect(recast(page)).toHaveValue('30.00')
+})
+
+
+test('sharing updates differently named API GCDs with the same base recast', async ({ page }) => {
+    await setup(page)
+    await add(page, 'API spell one')
+    await page.getByRole('checkbox', { name: 'Share with matching GCDs' }).uncheck()
+    await recast(page).fill('2.1')
+    await recast(page).blur()
+    await add(page, 'API spell two')
+    await recast(page).fill('2.4')
+    await recast(page).blur()
+    await expect(await exported(page)).toHaveValue('99902 GCD 2.4 0\n99903 GCD 2.4 0')
+    await add(page, 'API spell one')
+    await expect(recast(page)).toHaveValue('2.40')
+})
+
+test('inline name editing commits, cancels and resets', async ({ page }) => {
+    await setup(page)
+    await add(page, 'Heated Split Shot')
+    const detail = page.getByTestId('action-detail')
+    const edit = () => detail.getByRole('button', { name: 'Edit action name', exact: true })
+    const name = () => detail.getByRole('textbox', { name: 'Action name', exact: true })
+    await edit().click()
+    await name().fill('My opener')
+    await name().press('Enter')
+    await expect(detail.getByText('My opener', { exact: true })).toBeVisible()
+    await edit().click()
+    await name().fill('Discard me')
+    await name().press('Escape')
+    await expect(detail.getByText('My opener', { exact: true })).toBeVisible()
+    await edit().click()
+    await name().fill('')
+    await name().blur()
+    await expect(detail.getByText('My opener', { exact: true })).toBeVisible()
+    await add(page, 'Heated Split Shot')
+    await expect(detail.getByText('My opener', { exact: true })).toBeVisible()
+    await detail.getByRole('button', { name: 'Reset to defaults', exact: true }).click()
+    await expect(detail.getByText('Heated Split Shot', { exact: true })).toBeVisible()
+})
+
+test('job library sorts job skills before role skills and descending by level, cached and fetched', async ({ page }) => {
+    await setup(page)
+    const library = page.getByTestId('job-action-library')
+    const expected = ['API spell one', 'API spell two', 'Barrel Stabilizer', 'Heated Slug Shot', 'Drill', 'Heated Split Shot', 'Auto Crossbow', 'Reassemble', 'Second Wind']
+    await expect(library.getByRole('button')).toHaveText(expected)
+    await page.getByRole('button', { name: 'Reload skill list', exact: true }).click()
+    await expect(library.getByRole('button')).toHaveText(expected)
+    await expect(page.getByRole('button', { name: 'Reload skill list', exact: true })).toBeEnabled()
 })

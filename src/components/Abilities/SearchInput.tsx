@@ -52,6 +52,7 @@ interface SearchInputProps<SearchType extends DataAction | DataStatus> {
     search: (query: string, job: Job, language: Locale) => Promise<SearchType[]>
     placeholder?: string
     language: Locale
+    classNamePrefix?: string
 }
 
 const SearchInput = <SearchType extends DataAction | DataStatus>({
@@ -60,6 +61,7 @@ const SearchInput = <SearchType extends DataAction | DataStatus>({
     search,
     placeholder,
     language,
+    classNamePrefix,
 }: SearchInputProps<SearchType>) => {
     const instanceId = useId()
     const [searchResults, setSearchResults] = useState<SearchType[]>([])
@@ -80,6 +82,7 @@ const SearchInput = <SearchType extends DataAction | DataStatus>({
     return (
         <Select<SearchType>
             instanceId={instanceId}
+            classNamePrefix={classNamePrefix}
             placeholder={placeholder}
             options={searchResults}
             value={null}
