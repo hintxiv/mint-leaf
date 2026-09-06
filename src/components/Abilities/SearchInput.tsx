@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useId, useMemo, useState } from 'react'
 import { debounce } from 'lodash'
 import Select, { OptionProps } from 'react-select'
 import { DataAction } from '@/app/api'
@@ -61,6 +61,7 @@ const SearchInput = <SearchType extends DataAction | DataStatus>({
     placeholder,
     language,
 }: SearchInputProps<SearchType>) => {
+    const instanceId = useId()
     const [searchResults, setSearchResults] = useState<SearchType[]>([])
 
     const handleActionSearch = useMemo(
@@ -78,6 +79,7 @@ const SearchInput = <SearchType extends DataAction | DataStatus>({
 
     return (
         <Select<SearchType>
+            instanceId={instanceId}
             placeholder={placeholder}
             options={searchResults}
             value={null}
