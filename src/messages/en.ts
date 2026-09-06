@@ -38,6 +38,7 @@ export const en = {
         statuses: 'Statuses',
         statusSettings: 'Settings',
         statusColor: 'Color',
+        resetStatusColor: 'Reset to automatic',
         addStatus: 'Add status',
         resetDefaults: 'Reset to defaults',
 

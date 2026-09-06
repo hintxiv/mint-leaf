@@ -40,6 +40,7 @@ export const ja: Messages = {
         statuses: 'ステータス',
         statusSettings: '設定',
         statusColor: '色',
+        resetStatusColor: '自動色に戻す',
         addStatus: 'ステータスを追加',
         resetDefaults: 'デフォルトに戻す',
 

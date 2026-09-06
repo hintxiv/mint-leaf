@@ -14,6 +14,8 @@ import { DataAction } from '@/app/api'
 import { useTranslation } from '@/context/LanguageContext'
 import { SequenceListKind } from './SequenceList'
 
+import { useBuffColor } from '@/lib/useBuffColor'
+
 const DEFAULT_RECAST_TIME = 2.5
 const DEFAULT_CAST_TIME = 0
 const DEFAULT_PREPULL_TIME = -5
@@ -303,6 +305,7 @@ const StatusEditor = ({ status, onUpdate, onRemove }: {
     const { t } = useTranslation()
     const id = useId()
     const [open, setOpen] = useState(false)
+    const resolvedColor = useBuffColor(status.imageSrc, status.color)
     return <StatusCard data-testid="status-row">
         <StatusHeader>
             <Checkbox checked={status.enabled !== false} onChange={event => onUpdate({ enabled: event.target.checked })}>
@@ -322,8 +325,9 @@ const StatusEditor = ({ status, onUpdate, onRemove }: {
                     <FieldLabel htmlFor={`${id}-delay`}>{t('buffBuilder.applicationDelay')}</FieldLabel>
                     <DraftNumber id={`${id}-delay`} aria-label={`${status.name} ${t('buffBuilder.applicationDelay')}`} min={0} max={30} step={0.1} value={status.applicationDelay} onChange={value => onUpdate({ applicationDelay: value ?? 0 })} />
                     <FieldLabel htmlFor={`${id}-color`}>{t('editor.statusColor')}</FieldLabel>
-                    <input id={`${id}-color`} aria-label={`${status.name} ${t('editor.statusColor')}`} type="color" value={status.color} onChange={event => onUpdate({ color: event.target.value })} />
+                    <input id={`${id}-color`} aria-label={`${status.name} ${t('editor.statusColor')}`} type="color" value={resolvedColor} onChange={event => onUpdate({ color: event.target.value })} />
                 </Grid>
+                <Button type="text" disabled={status.color === 'auto'} onClick={() => onUpdate({ color: 'auto' })}>{t('editor.resetStatusColor')}</Button>
                 <Button type="text" danger aria-label={`${t('editor.removeStatus')}: ${status.name}`} onClick={onRemove}>{t('editor.removeStatus')}</Button>
             </StatusSettings>
         </div>
@@ -411,7 +415,7 @@ export const SequenceDetail = ({ job, action, list, index, onChange }: SequenceD
     const addStatus = (data: DataStatus) => {
         emit({ ...action, statusesApplied: [...statuses, {
             id: data.id, name: data.name ?? '', imageSrc: data.icon?.toString() ?? '',
-            enabled: true, duration: 20, applicationDelay: 0, color: '#74d6b4',
+            enabled: true, duration: 20, applicationDelay: 0, color: 'auto',
         }] })
         setBuffEditorOpen(false)
     }

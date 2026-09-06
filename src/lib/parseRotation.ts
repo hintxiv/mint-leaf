@@ -23,7 +23,7 @@ const parseStatus = async (section: string, language: Locale): Promise<Status> =
     const tokens = section.trim().split(/[ ,]+/)
     if (tokens.length !== 4 && tokens.length !== 5) throw new Error('Invalid status')
     const [id, delay, duration, color, marker] = tokens
-    if ((marker !== undefined && marker !== 'disabled') || !/^#[\da-f]{6}$/i.test(color)) throw new Error('Invalid status settings')
+    if ((marker !== undefined && marker !== 'disabled') || (color !== 'auto' && !/^#[\da-f]{6}$/i.test(color))) throw new Error('Invalid status settings')
     const applicationDelay = number(delay, 30)
     const durationSeconds = number(duration, 999)
     const data = await getStatusByID(id, language)

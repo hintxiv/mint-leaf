@@ -8,6 +8,7 @@ import { CanvasTextMeasurer } from './textLayout'
 import { loadRenderImages, paintRenderPlan } from './paintRenderPlan'
 import { Action, LayoutViolation } from './types'
 import { styles } from './styles'
+import { resolveBuffColors } from '@/lib/buffColors'
 
 const Viewport = styled.div`
     position: relative;
@@ -175,9 +176,11 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
             if (!context) throw new Error('Canvas 2D rendering is unavailable.')
 
             const measurer = new CanvasTextMeasurer(context)
+            const [resolvedPrepull, resolvedRotation] = await Promise.all([resolveBuffColors(prepullRotation), resolveBuffColors(rotation)])
+            if (abortController.signal.aborted || currentGeneration !== generation.current) return
             const layoutInput = {
-                prepullRotation,
-                rotation,
+                prepullRotation: resolvedPrepull,
+                rotation: resolvedRotation,
                 title,
                 jobName,
                 jobIcon,

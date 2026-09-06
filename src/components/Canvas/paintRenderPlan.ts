@@ -5,37 +5,7 @@ export type DecodedImages = ReadonlyMap<string, CanvasImageSource>
 const transparentVersion = (color: string): string =>
     /^#[0-9a-f]{6}$/i.test(color) ? `${color}00` : 'transparent'
 
-const loadableSource = (source: string): string => {
-    // Proxy remote icons through Next's same-origin image optimizer. Besides
-    // deterministic decoding, this keeps exported canvases origin-clean even
-    // when a third-party image host does not emit CORS headers.
-    if (/^https?:\/\//i.test(source)) {
-        return `/_next/image?url=${encodeURIComponent(source)}&w=640&q=90`
-    }
-    return source
-}
-
-export const loadRenderImages = async (sources: string[], signal?: AbortSignal): Promise<Map<string, HTMLImageElement>> => {
-    const entries = await Promise.all(sources.map(async source => {
-        if (signal?.aborted) throw new DOMException('Render superseded', 'AbortError')
-        const loaded = new Image()
-        loaded.crossOrigin = 'anonymous'
-        const loadResult = new Promise<void>((resolve, reject) => {
-            loaded.addEventListener('load', () => resolve(), { once: true })
-            loaded.addEventListener('error', () => reject(new Error(`Unable to load image: ${source}`)), { once: true })
-        })
-        loaded.src = loadableSource(source)
-        await loadResult
-        try {
-            await loaded.decode()
-        } catch {
-            // A completed load is drawable even where decode() is unsupported.
-        }
-        if (signal?.aborted) throw new DOMException('Render superseded', 'AbortError')
-        return [source, loaded] as const
-    }))
-    return new Map(entries)
-}
+export { loadRenderImages } from '@/lib/iconImages'
 
 export const paintRenderPlan = (
     context: CanvasRenderingContext2D,

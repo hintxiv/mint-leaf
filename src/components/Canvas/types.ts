@@ -2,6 +2,7 @@ export interface Status {
     id: string;
     name: string;
     imageSrc: string;
+    // 'auto' derives a readable colour from the status icon; hex values are explicit.
     color: string;
     applicationDelay: number;
     duration: number;

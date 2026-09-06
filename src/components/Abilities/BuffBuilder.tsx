@@ -1,12 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components'
 import { InputNumber } from 'antd'
 import { DataStatus } from '@/app/api/xivapi/types'
 import { StatusIcon } from './StatusIcon'
-import ColorThief from 'colorthief'
 import { useTranslation } from '@/context/LanguageContext'
 
-const colorThief = new ColorThief();
 
 const BuffBuilderContainer = styled.div`
     display: flex;
@@ -47,15 +45,6 @@ const ActionInfo = styled.div`
     gap: 4px;
 `;
 
-const componentToHex = (c: number) => {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-}
-  
-const rgbToHex = (r: number, g: number, b: number) => {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
-
 interface BuffBuilderProps {
     status: DataStatus
     applicationDelay: number | null
@@ -63,7 +52,6 @@ interface BuffBuilderProps {
     duration: number | null
     setDuration: (duration: number | null) => void
     color: string | undefined
-    setColor: (color: string | undefined) => void
     onCreate: () => void
 }
 
@@ -74,34 +62,9 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
     duration,
     setDuration,
     color,
-    setColor,
     onCreate,
 }) => {
     const { t } = useTranslation()
-    const imageRef = useRef<HTMLImageElement>(null);
-
-    const getDominantColor = async () => {
-        if (!imageRef.current) {
-            return;
-        }
-
-        if (imageRef.current.complete) {
-            const color = await colorThief.getColor(imageRef.current, 1); 
-            return rgbToHex(color[0], color[1], color[2]);
-        } else {
-            return new Promise<string>((resolve, _) => {
-                imageRef.current!.onload = async () => {
-                    const color = await colorThief.getColor(imageRef.current, 1);
-                    resolve(rgbToHex(color[0], color[1], color[2]));
-                }
-            });
-        }
-    }
-
-    useEffect(() => {
-        getDominantColor().then(setColor);
-    }, [status, setColor]);
-
     useEffect(onCreate, [duration, applicationDelay, onCreate, color]);
 
     const idLabel = status.id.length > 8 ? t('buffBuilder.custom') : status.id;
@@ -112,7 +75,6 @@ export const BuffBuilder: React.FC<BuffBuilderProps> = ({
                 <ActionDisplayAndSettingsColumn>
                     {status.icon &&
                         <StatusIcon
-                            ref={imageRef}
                             status={status}
                             width={60}
                         />
