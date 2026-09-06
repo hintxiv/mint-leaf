@@ -40,7 +40,7 @@ export const createEmptyRecord = (options?: {
     title: options?.title ?? en.defaults.rotationTitle,
     job: 'DRK',
     expansion: options?.expansion ?? en.defaults.expansion,
-    patch: '7.4',
+    patch: '7.5',
     level: 100,
     rowCount: 1,
     rowSpacing: null,

@@ -72,7 +72,7 @@ export const Home = ({ discordAuth }: HomeProps) => {
     const [job, setJob] = useState<Job>(jobs['DRK'])
     const [rotationTitle, setRotationTitle] = useState('')
     const [expansion, setExpansion] = useState('')
-    const [patch, setPatch] = useState<string>('7.4')
+    const [patch, setPatch] = useState<string>('7.5')
     const [level, setLevel] = useState<number>(100)
     const [useBalanceLogo, setUseBalanceLogo] = useState(false)
     const [rowCount, setRowCount] = useState(1)
