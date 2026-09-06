@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { JobSelect } from '../Header/JobSelect'
 import { Input as AntdInput } from 'antd'
 import { useTranslation } from '@/context/LanguageContext'
+import { LIBRARY_TAB_GUTTER_PX } from '@/components/Library/LibraryPanel'
 
 const MetaBarContainer = styled.div`
     display: flex;
@@ -16,7 +17,8 @@ const MetaBarContainer = styled.div`
     border-bottom: 1px solid white;
     min-height: 56px;
     max-height: 72px;
-    padding: 8px 16px;
+    /* Pad left so the library tab does not cover the Job label. */
+    padding: 8px 16px 8px ${16 + LIBRARY_TAB_GUTTER_PX}px;
     flex-shrink: 0;
 `
 

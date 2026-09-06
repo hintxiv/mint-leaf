@@ -118,6 +118,21 @@ export const en = {
     discord: {
         mentorSignIn: 'mentor sign in',
     },
+    library: {
+        tab: 'Library',
+        title: 'Saved rotations',
+        new: 'New',
+        delete: 'Delete',
+        deleteConfirm: 'Delete this rotation?',
+        copy: 'Copy',
+        importToggle: 'Import text',
+        importApply: 'Add from paste',
+        importPlaceholder: 'Paste a rotation record JSON here...',
+        importError: 'Could not import that text',
+        copyFailed: 'Failed to copy',
+        emptyTitle: 'Untitled',
+        dragHandle: 'Drag to reorder',
+    },
 } as const
 
 type StringifyValues<T> = {

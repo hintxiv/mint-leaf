@@ -17,6 +17,7 @@ import {
     statusToBuffDetails,
     type StoredCustomAction,
 } from '@/lib/customActionsStore'
+import { LIBRARY_TAB_GUTTER_PX } from '@/components/Library/LibraryPanel'
 
 const DEFAULT_RECAST_TIME = 2.5
 const DEFAULT_CAST_TIME = 0
@@ -57,6 +58,8 @@ const SectionTitle = styled.h3`
     font-size: 13px;
     font-weight: 600;
     color: #c8cbce;
+    /* Shift the "Job skills" heading so the library tab does not cover it. */
+    padding-left: ${LIBRARY_TAB_GUTTER_PX}px;
 `
 
 const PaletteExtras = styled.div`

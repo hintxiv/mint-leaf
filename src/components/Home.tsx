@@ -13,9 +13,11 @@ import { EditorPanel, dataActionToDefaultAction, persistActionSettings } from '.
 import { SequenceListKind, SequenceSelection } from './Editor/SequenceList'
 import { CanvasActionsBar } from './Canvas/CanvasActionsBar'
 import { CanvasPreviewModal } from './Canvas/CanvasPreviewModal'
+import { LibraryPanel } from './Library/LibraryPanel'
 import { useTranslation } from '@/context/LanguageContext'
 import { getJobName } from '@/lib/jobs'
 import { DataAction } from '@/app/api'
+import { type RotationRecord } from '@/lib/rotationLibraryStore'
 
 const Container = styled.div`
     display: flex;
@@ -25,7 +27,9 @@ const Container = styled.div`
     overflow: hidden;
 `
 
+// Below Title. Anchors the floating library panel over MetaBar.
 const Workspace = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -74,9 +78,47 @@ export const Home = ({ discordAuth }: HomeProps) => {
     const [previewImageSrc, setPreviewImageSrc] = useState<string | null>(null)
     const [renderReady, setRenderReady] = useState(false)
     const canvasRef = useRef<HTMLCanvasElement>(null)
+
     const onRenderStateChange = useCallback((state: CanvasRenderState) => {
         setRenderReady(state.status === 'ready')
     }, [])
+
+    // Load the active library record into editor state.
+    const applyRecordToEditor = useCallback((record: RotationRecord) => {
+        setJob(jobs[record.job] ?? jobs['DRK'])
+        setRotationTitle(record.title)
+        setExpansion(record.expansion)
+        setPatch(record.patch)
+        setLevel(record.level)
+        setRowCount(record.rowCount)
+        setRowSpacing(record.rowSpacing)
+        setPrepullRotation(record.prepullRotation)
+        setRotation(record.rotation)
+        setSelection(null)
+        setImportError(false)
+    }, [])
+
+    const editorSnapshot = useMemo(() => ({
+        job,
+        rotationTitle,
+        expansion,
+        patch,
+        level,
+        rowCount,
+        rowSpacing,
+        prepullRotation,
+        rotation,
+    }), [
+        job,
+        rotationTitle,
+        expansion,
+        patch,
+        level,
+        rowCount,
+        rowSpacing,
+        prepullRotation,
+        rotation,
+    ])
 
     const maxRows = useMemo(() => rotationGroupStarts(rotation).length, [rotation])
     const effectiveRowCount = normalizeRowCount(rowCount, maxRows)
@@ -271,6 +313,10 @@ export const Home = ({ discordAuth }: HomeProps) => {
         <Container>
             <Title discordAuth={discordAuth} />
             <Workspace>
+                <LibraryPanel
+                    editorSnapshot={editorSnapshot}
+                    onActiveRecord={applyRecordToEditor}
+                />
                 <MetaBar
                     currentJob={job}
                     setJob={setJob}
