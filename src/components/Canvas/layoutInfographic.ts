@@ -245,8 +245,6 @@ const makeLabel = (
 
 interface ActionLabelResult {
     primitives: RenderPrimitive[]
-    occupiedUpper: Bounds[]
-    occupiedLower: Bounds[]
 }
 
 interface LeaderRequest {
@@ -327,6 +325,7 @@ const layoutActionLabels = (
     const primitives: RenderPrimitive[] = []
     const occupiedUpper: Bounds[] = []
     const occupiedLower: Bounds[] = []
+    const gcdLabels: Array<{ name: TextBlock | null; count: TextBlock | null; iconBottom: number }> = []
     const upperTextBlocks: TextBlock[] = []
     const leaderRequests: LeaderRequest[] = []
     const prepullUpperBounds: Bounds[] = []
@@ -383,40 +382,30 @@ const layoutActionLabels = (
         const center = iconData.x + iconData.width / 2
         if (action.type === 'gcd') {
             ogcdRun = 0
-            let top = iconData.y + iconData.height + positions.gcdLabelTopPadding
             let name = makeLabel(
                 `${ownerId}-name`, ownerId, action.name, 'action', fonts.label, colors.text,
-                center, top, styles.labelLineHeight,
+                center, 0, styles.labelLineHeight,
                 prepull ? styles.compactLabelWidth : styles.gcdLabelWidth,
                 measurer, true,
             )
-            if (!name) return
-
-            let count: TextBlock | null = null
+            if (name) {
+                // Pack names upward from a shared bottom, independently of counts.
+                name = translateTextBlock(name, 0, -name.lines.at(-1)!.y)
+                for (const existing of [...occupiedLower].sort((a, b) => (b.y + b.height) - (a.y + a.height))) {
+                    if (!intersects(padded(name.bounds), existing)) continue
+                    const dy = Math.floor(existing.y - CLEARANCE - name.bounds.y - name.bounds.height)
+                    name = translateTextBlock(name, 0, dy)
+                }
+                occupiedLower.push(padded(name.bounds))
+            }
             const rotationIndex = prepull ? -1 : Number(ownerId.split('-')[1]) - actionOffset
-            const gcdCount = prepull
-                ? undefined
+            const gcdCount = prepull ? undefined
                 : gcdOffset + rotationActions.slice(0, rotationIndex + 1).filter(item => item.type === 'gcd').length
-            if (gcdCount !== undefined) {
-                count = makeLabel(
-                    `${ownerId}-count`, ownerId, String(gcdCount), 'count', fonts.label, colors.gcdCount,
-                    center, name.bounds.y + name.bounds.height + LABEL_GAP,
-                    styles.labelLineHeight, undefined, measurer,
-                )
-            }
-
-            let group = unionBounds([name.bounds, ...(count ? [count.bounds] : [])])
-            while (occupiedLower.some(existing => intersects(padded(group), existing))) {
-                const collisions = occupiedLower.filter(existing => intersects(padded(group), existing))
-                const nextTop = Math.max(...collisions.map(item => item.y + item.height)) + CLEARANCE
-                const dy = nextTop - group.y
-                name = translateTextBlock(name, 0, dy)
-                if (count) count = translateTextBlock(count, 0, dy)
-                group = unionBounds([name.bounds, ...(count ? [count.bounds] : [])])
-            }
-            primitives.push(name)
-            if (count) primitives.push(count)
-            occupiedLower.push(padded(group))
+            const count = gcdCount === undefined ? null : makeLabel(
+                `${ownerId}-count`, ownerId, String(gcdCount), 'count', fonts.label, colors.gcdCount,
+                center, 0, styles.labelLineHeight, undefined, measurer,
+            )
+            gcdLabels.push({ name, count, iconBottom: iconData.y + iconData.height })
             return
         }
 
@@ -474,9 +463,18 @@ const layoutActionLabels = (
         }
     })
     placePrepullTimes()
+    const names = gcdLabels.flatMap(item => item.name ? [item.name] : [])
+    const nameBaseline = Math.max(0, ...gcdLabels.map(item => item.iconBottom)) + positions.gcdLabelTopPadding
+        - Math.min(0, ...names.map(name => name.bounds.y))
+    const countBaseline = nameBaseline + Math.max(0, ...names.map(name => name.bounds.y + name.bounds.height)) + LABEL_GAP
+        + Math.max(0, ...gcdLabels.flatMap(item => item.count ? [item.count.lines[0].ascent] : []))
+    gcdLabels.forEach(({ name, count }) => {
+        if (name) primitives.push(translateTextBlock(name, 0, nameBaseline))
+        if (count) primitives.push(translateTextBlock(count, 0, countBaseline - count.lines[0].y))
+    })
     leaderRequests.forEach(request => primitives.push(...fadedVerticalLeader(request, upperTextBlocks)))
 
-    return { primitives, occupiedUpper, occupiedLower }
+    return { primitives }
 }
 
 const addHeader = (
@@ -573,21 +571,20 @@ const requiredHeaderWidth = (input: LayoutInfographicInput, measurer: TextMeasur
 interface BuffSegment extends CanvasBuffLine {
     lane?: number
     continuesBefore?: boolean
-    continuesAfter?: boolean
 }
 
 const packBuffLanes = (segments: BuffSegment[]): BuffSegment[][] => {
-    const bins: Array<{ end: number; buffs: BuffSegment[] }> = []
-    // Use the full interval endpoints before row clipping, so nested buffs
-    // retain their vertical order even when they share a row's right edge.
-    const sorted = [...segments].sort((a, b) => a.endX - b.endX || b.startX - a.startX)
+    const bins: Array<{ start: number; buffs: BuffSegment[] }> = []
+    // Later starts occupy upper lanes so their connectors cannot cross earlier buffs.
+    // Equal starts place shorter intervals first. Pack before clipping into rows.
+    const sorted = [...segments].sort((a, b) => b.startTime - a.startTime || a.endTime - b.endTime)
     sorted.forEach(buff => {
-        const target = bins.find(bin => bin.end + CLEARANCE < buff.startX)
+        const target = bins.find(bin => buff.endX + CLEARANCE < bin.start)
         if (target) {
             target.buffs.push(buff)
-            target.end = buff.endX
+            target.start = buff.startX
         } else {
-            bins.push({ end: buff.endX, buffs: [buff] })
+            bins.push({ start: buff.startX, buffs: [buff] })
         }
     })
     return bins.map(bin => bin.buffs)
@@ -603,8 +600,7 @@ const addBuffs = (
 ): { primitives: RenderPrimitive[]; bottom: number } => {
     if (rotationIcons.length === 0 && prepullIcons.length === 0) return { primitives: [], bottom: 0 }
     const timeline = calculateTimeline(prepullIcons, rotationIcons, rotationEnd, pullX)
-    const refs = { current: [] as Array<HTMLImageElement | null> }
-    const buffs = calculateBuffLinePositions([...prepullIcons, ...rotationIcons], timeline, refs, rotationEnd)
+    const buffs = calculateBuffLinePositions([...prepullIcons, ...rotationIcons], timeline, rotationEnd)
     return layoutBuffSegments(buffs, rotationEnd, baseY, measurer)
 }
 
@@ -624,12 +620,15 @@ const layoutBuffSegments = (
         const y = baseY + row * positions.buffLineHeight
         bin.forEach(buff => {
             const ownerId = `buff-${buff.instanceKey}${rowId}`
-            const endpoint = Math.min(buff.endX, rotationEnd)
+            let endpoint = Math.min(buff.endX, rotationEnd)
             const labelValue = truncateLabel(buff.status.name)
             const labelWidth = measurer.measure(labelValue, fonts.label).width
             const iconX = buff.startX + positions.buffLineTextLeft
             const labelX = iconX + positions.buffLineIconWidth + positions.buffLineTextPadding
             const labelFootprint = positions.buffLineTextLeft + positions.buffLineIconWidth + labelWidth + positions.buffLineTextPadding * 2
+            if (buff.continuesAfter) {
+                endpoint = Math.max(endpoint, buff.startX + labelFootprint + CLEARANCE + positions.buffLineArrowLength)
+            }
             const canFitLabel = Boolean(labelValue) && buff.startX + labelFootprint + CLEARANCE < endpoint
             const strokeWidth = 2 * scale
 
@@ -669,7 +668,7 @@ const layoutBuffSegments = (
             } else {
                 primitives.push(line(`${ownerId}-start`, [{ x: buff.startX, y: connectorTop }, { x: buff.startX, y }], buff.status.color, strokeWidth, 'buff', ownerId))
             }
-            if (buff.continuesAfter || buff.endX > rotationEnd) {
+            if (buff.continuesAfter) {
                 primitives.push(line(`${ownerId}-arrow`, [
                     { x: endpoint + positions.buffLineArrowPadding, y: y - positions.buffLineArrowLength / 2 },
                     { x: endpoint + positions.buffLineArrowPadding + positions.buffLineArrowLength, y },
@@ -713,7 +712,7 @@ const layoutRows = (
     // Keep timing in the original, continuous coordinate system. Row placement
     // only translates interval segments; it never restarts the timeline.
     const timeline = calculateTimeline(prepull.icons, rotation.icons, rotationEnd, pullX)
-    const fullBuffs = calculateBuffLinePositions([...prepull.icons, ...rotation.icons], timeline, { current: [] }, rotationEnd)
+    const fullBuffs = calculateBuffLinePositions([...prepull.icons, ...rotation.icons], timeline, rotationEnd)
     const buffs = packBuffLanes(fullBuffs).flatMap((laneBuffs, lane) => laneBuffs.map(buff => ({ ...buff, lane })))
 
     const buildRow = (start: number, end: number) => {
@@ -751,8 +750,10 @@ const layoutRows = (
         const segments: BuffSegment[] = buffs.flatMap(buff => {
             const startX = Math.max(sourceStart, buff.startX)
             const endX = Math.min(sourceEnd, buff.endX)
-            if (endX <= startX) return []
-            return [{ ...buff, startX, endX, continuesBefore: buff.startX < sourceStart, continuesAfter: buff.endX > sourceEnd }]
+            const finalRow = end === groupStarts.length
+            const continuesAfter = buff.endX > sourceEnd || (finalRow && buff.continuesAfter)
+            if (endX < startX || (endX === startX && !(finalRow && continuesAfter && buff.startX === sourceEnd))) return []
+            return [{ ...buff, startX, endX, continuesBefore: buff.startX < sourceStart, continuesAfter }]
         })
         const rowBuffs = layoutBuffSegments(
             segments, sourceEnd, actionBottom + positions.buffLineHeight + CLEARANCE, measurer, `-row-${start}`,
@@ -810,8 +811,8 @@ export const layoutInfographic = (input: LayoutInfographicInput, measurer: TextM
     }
 
     const contentWidth = Math.max(rotationEnd + CANVAS_PADDING, styles.widthInitial)
-    const width = Math.ceil(Math.max(contentWidth, requiredHeaderWidth(input, measurer)))
-    const header = addHeader(input, width, measurer)
+    let width = Math.ceil(Math.max(contentWidth, requiredHeaderWidth(input, measurer)))
+    let header = addHeader(input, width, measurer)
     const labels = layoutActionLabels(
         input.prepullRotation,
         prepull.mainIcons,
@@ -855,6 +856,8 @@ export const layoutInfographic = (input: LayoutInfographicInput, measurer: TextM
     )
     const pullX = hasPullLine ? pullLineX + positions.prepullPadding : rotationStart
     const buffs = addBuffs(shiftedRotationIcons, shiftedPrepullIcons, pullX, rotationEnd, buffBase, measurer)
+    width = Math.ceil(Math.max(width, ...[...actionPrimitives, ...buffs.primitives].map(primitive => primitive.bounds.x + primitive.bounds.width + CANVAS_PADDING)))
+    header = addHeader(input, width, measurer)
     const height = Math.ceil(Math.max(
         styles.height,
         buffs.bottom + CANVAS_PADDING,
