@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "revision": "physical-ranged-7.5-2026-09-05.2",
+  "sources": [],
+  "actions": [
+    {
+      "id": 7554,
+      "names": {
+        "en": "Leg Graze",
+        "ja": "レッググレイズ"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 14,
+          "durationMs": 10000,
+          "defaultEnabled": true,
+          "conditions": "Target; successful application to a susceptible target. Heavy reduces movement speed by 40%."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-role-actions",
+        "xivsloth-pve-role-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "The official guide explicitly establishes the Heavy application and 10-second duration. The supplementary common PvE role definitions establish canonical status ID 14, cross-checked against current XIVAPI identity and mechanics. Target immunity and early removal are not simulated."
+    },
+    {
+      "id": 7541,
+      "names": {
+        "en": "Second Wind",
+        "ja": "内丹"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-role-actions"
+      ],
+      "unresolved": [],
+      "notes": "Instant healing has no persistent status."
+    },
+    {
+      "id": 7553,
+      "names": {
+        "en": "Foot Graze",
+        "ja": "フットグレイズ"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 13,
+          "durationMs": 10000,
+          "defaultEnabled": true,
+          "conditions": "Target; successful application to a susceptible target. Ends if the target takes damage; early removal is not simulated."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-role-actions",
+        "xivsloth-pve-role-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "The official guide explicitly establishes the Bind application and 10-second duration. The supplementary common PvE role definitions establish canonical status ID 13, cross-checked against current XIVAPI identity and mechanics. Target immunity and early removal are not simulated."
+    },
+    {
+      "id": 7557,
+      "names": {
+        "en": "Peloton",
+        "ja": "プロトン"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 5000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 1199,
+          "durationMs": 30000,
+          "defaultEnabled": true,
+          "conditions": "Self and nearby party members outside combat; ends on entering combat."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-role-actions",
+        "bossmod-role-status-links"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "No combat or enmity simulation; displays the documented maximum duration."
+    },
+    {
+      "id": 7551,
+      "names": {
+        "en": "Head Graze",
+        "ja": "ヘッドグレイズ"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-role-actions"
+      ],
+      "unresolved": [],
+      "notes": "Interrupt is an event, not a persistent status; target interruptibility is not simulated."
+    },
+    {
+      "id": 7548,
+      "names": {
+        "en": "Arm's Length",
+        "ja": "アームズレングス"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 1209,
+          "durationMs": 6000,
+          "defaultEnabled": true,
+          "conditions": "Self; knockback and draw-in immunity. The retaliatory Slow requires a later physical hit and is not attached here."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-role-actions",
+        "xiva-role-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "The direct six-second immunity is enabled. The 15-second Slow is triggered by a subsequent physical hit, so its application time and target cannot be represented as an immediate action status."
+    }
+  ]
+}

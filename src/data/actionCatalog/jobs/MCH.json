@@ -1,0 +1,1478 @@
+{
+  "schemaVersion": 1,
+  "revision": "mch-7.5-2026-09-05.2",
+  "job": "MCH",
+  "level": 100,
+  "patch": "7.5",
+  "verifiedAt": "2026-09-05",
+  "sources": [
+    {
+      "id": "mch-official-en",
+      "url": "https://na.finalfantasyxiv.com/jobguide/machinist/",
+      "revision": "PvE Patch 7.5, level 100, updated 2026-04-28",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "mch-official-ja",
+      "url": "https://jp.finalfantasyxiv.com/jobguide/machinist/",
+      "revision": "PvE Patch 7.5, level 100, updated 2026-04-28",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-mch-actions",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/root/MCH.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-role-actions",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/root/ROLE.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-mch-statuses",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/STATUSES/root/MCH.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-role-statuses",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/STATUSES/root/ROLE.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-action-model",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/type.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-action-layers",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/layers/index.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-status-layers",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/STATUSES/layers/index.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-action-en",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/en/Action.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-status-en",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/en/Status.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-action-ja",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/ja/Action.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-status-ja",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/ja/Status.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-v2-sample",
+      "url": "https://v2.xivapi.com/api/sheet/Action/16498?fields=Name,Icon&language=ja",
+      "revision": "data 284bb7f44b9c0976; schema exdschema@2:rev:83e965d091116f895d5b17573cc5d12909a5f407",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "bossmod-mch-status-links",
+      "url": "https://github.com/awgil/ffxiv_bossmod/blob/162fde51b5e56ca133cbc13502ae03548a23f461/BossMod/ActionQueue/Ranged/MCH.cs",
+      "revision": "162fde51b5e56ca133cbc13502ae03548a23f461",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "bossmod-role-status-links",
+      "url": "https://github.com/awgil/ffxiv_bossmod/blob/162fde51b5e56ca133cbc13502ae03548a23f461/BossMod/ActionQueue/ClassShared.cs",
+      "revision": "162fde51b5e56ca133cbc13502ae03548a23f461",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivgear-mch-gcd",
+      "url": "https://github.com/xiv-gear-planner/gear-planner/blob/8b2df94f99a684f1c04da559e493726aa31d8194/packages/sims/src/ranged/mch/mch_actions.ts",
+      "revision": "8b2df94f99a684f1c04da559e493726aa31d8194",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivgear-gcd-calculation",
+      "url": "https://github.com/xiv-gear-planner/gear-planner/blob/8b2df94f99a684f1c04da559e493726aa31d8194/packages/sims/src/cycle_sim.ts",
+      "revision": "8b2df94f99a684f1c04da559e493726aa31d8194",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivsloth-pve-role-statuses",
+      "url": "https://github.com/Nik-Potokar/XIVSlothCombo/blob/08c5af92c9b6b1afadb4a06557ec512790c2e722/XIVSlothCombo/Combos/PvE/ALL.cs",
+      "revision": "08c5af92c9b6b1afadb4a06557ec512790c2e722 (final version 2024-11-21); canonical PvE role status IDs cross-checked against current official guide and XIVAPI 7.55h2",
+      "verifiedAt": "2026-09-05"
+    }
+  ],
+  "actions": [
+    {
+      "id": 2866,
+      "names": {
+        "en": "Split Shot",
+        "ja": "スプリットショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Heated Split Shot at level 54; retained for existing lower-level action selections. Gauge gain is not a status."
+    },
+    {
+      "id": 2868,
+      "names": {
+        "en": "Slug Shot",
+        "ja": "スラッグショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Heated Slug Shot at level 60. Combo success and gauge gain are not simulated."
+    },
+    {
+      "id": 2872,
+      "names": {
+        "en": "Hot Shot",
+        "ja": "ホットショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 40000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Air Anchor at level 76. The 40-second independent cooldown is metadata; the GCD applied to the player is 2500 ms."
+    },
+    {
+      "id": 2876,
+      "names": {
+        "en": "Reassemble",
+        "ja": "整備"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 55000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 851,
+          "durationMs": 5000,
+          "defaultEnabled": true,
+          "conditions": "Self; consumed by the next eligible weaponskill. Full Metal Field and damage over time are excluded."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "Two charges at maximum level. Displays the documented maximum buff duration without consuming it."
+    },
+    {
+      "id": 2874,
+      "names": {
+        "en": "Gauss Round",
+        "ja": "ガウスラウンド"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Double Check at level 92. Three charges at maximum level; charge recovery is not timeline spacing."
+    },
+    {
+      "id": 2870,
+      "names": {
+        "en": "Spread Shot",
+        "ja": "スプレッドショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Scattergun at level 82. Gauge gain is not a status."
+    },
+    {
+      "id": 2873,
+      "names": {
+        "en": "Clean Shot",
+        "ja": "クリーンショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Heated Clean Shot at level 64. Combo success and gauge gain are not simulated."
+    },
+    {
+      "id": 17209,
+      "names": {
+        "en": "Hypercharge",
+        "ja": "ハイパーチャージ"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 10000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 2688,
+          "durationMs": 10000,
+          "defaultEnabled": true,
+          "conditions": "Self; requires 50 Heat or Hypercharged. Five stacks; consumption is not simulated."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "Shows the maximum Overheated duration; does not track stacks or spend Heat."
+    },
+    {
+      "id": 7410,
+      "names": {
+        "en": "Heat Blast",
+        "ja": "ヒートブラスト"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 1500,
+      "speedCategory": "fixed",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Blazing Shot at level 68. Fixed rapid-fire recast is applied to other weaponskills and spells; charge-recovery reductions are not simulated."
+    },
+    {
+      "id": 2864,
+      "names": {
+        "en": "Rook Autoturret",
+        "ja": "オートタレット・ルーク"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 6000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Automaton Queen at level 80. The summon can be placed, but its 9-second lifetime, Battery expenditure and autonomous attacks are not modeled as statuses."
+    },
+    {
+      "id": 7415,
+      "names": {
+        "en": "Rook Overdrive",
+        "ja": "オーバードライブ・ルーク"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 15000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Queen Overdrive at level 80. Commands Rook Overload; the pet execution delay and automatic end-of-lifetime trigger are not modeled."
+    },
+    {
+      "id": 7416,
+      "names": {
+        "en": "Rook Overload",
+        "ja": "オーバーロード・ルーク"
+      },
+      "baseCastTimeMs": 0,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja"
+      ],
+      "unresolved": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model.",
+      "notes": "Inventory only. Pet recast and cast attributes are not player GCD timing, so no player recast or GCD classification is supplied."
+    },
+    {
+      "id": 2878,
+      "names": {
+        "en": "Wildfire",
+        "ja": "ワイルドファイア"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 861,
+          "durationMs": 10000,
+          "defaultEnabled": true,
+          "conditions": "Target; successful Wildfire application. Damage accumulation and early Detonator removal are not simulated."
+        },
+        {
+          "statusId": 1946,
+          "durationMs": 10000,
+          "defaultEnabled": true,
+          "conditions": "Self; active while the target is afflicted with Wildfire. Enables Detonator."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses",
+        "bossmod-mch-status-links"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "Both the target debuff (861) and self readiness effect (1946) are represented. Neither six-hit accumulation nor Detonator consumption is simulated."
+    },
+    {
+      "id": 16766,
+      "names": {
+        "en": "Detonator",
+        "ja": "デトネーター"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Conditional replacement of Wildfire. Does not apply a new status; manually ending Wildfire is not simulated."
+    },
+    {
+      "id": 2890,
+      "names": {
+        "en": "Ricochet",
+        "ja": "リコシェット"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Replaced by Checkmate at level 92. Three charges at maximum level; charge recovery is not timeline spacing."
+    },
+    {
+      "id": 16497,
+      "names": {
+        "en": "Auto Crossbow",
+        "ja": "オートボウガン"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 1500,
+      "speedCategory": "fixed",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Fixed 1500 ms recast applied to other weaponskills and spells. Requires Overheated; no resource or stack simulation."
+    },
+    {
+      "id": 7411,
+      "names": {
+        "en": "Heated Split Shot",
+        "ja": "ヒートスプリットショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Ordinary combo starter; gauge gain is not a status."
+    },
+    {
+      "id": 16889,
+      "names": {
+        "en": "Tactician",
+        "ja": "タクティシャン"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 90000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 1951,
+          "durationMs": 15000,
+          "defaultEnabled": true,
+          "conditions": "Self and nearby party members; cannot coexist with Troubadour or Shield Samba."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "Maximum-level 90-second cooldown and 15-second mitigation duration; party recipients are represented by one presentation line."
+    },
+    {
+      "id": 16498,
+      "names": {
+        "en": "Drill",
+        "ja": "ドリル"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 20000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xivgear-mch-gcd",
+        "xivgear-gcd-calculation"
+      ],
+      "unresolved": [],
+      "notes": "Two charges at maximum level; independent 20-second cooldown shared with Bioblaster. Base GCD remains 2500 ms and uses skill speed, independently of ability cooldown metadata."
+    },
+    {
+      "id": 7412,
+      "names": {
+        "en": "Heated Slug Shot",
+        "ja": "ヒートスラッグショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Combo success and gauge gain are not simulated."
+    },
+    {
+      "id": 2887,
+      "names": {
+        "en": "Dismantle",
+        "ja": "ウェポンブレイク"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 860,
+          "durationMs": 10000,
+          "defaultEnabled": true,
+          "conditions": "Target; successful Dismantle application."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "bossmod-mch-status-links"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "Association to status 860 is corroborated by the explicit BossMod action-to-target mapping, official effect, and XIVAPI identity."
+    },
+    {
+      "id": 7413,
+      "names": {
+        "en": "Heated Clean Shot",
+        "ja": "ヒートクリーンショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Combo success and gauge gain are not simulated."
+    },
+    {
+      "id": 7414,
+      "names": {
+        "en": "Barrel Stabilizer",
+        "ja": "バレルヒーター"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 3864,
+          "durationMs": 30000,
+          "defaultEnabled": true,
+          "conditions": "Self; in combat. Allows Hypercharge without spending Heat."
+        },
+        {
+          "statusId": 3866,
+          "durationMs": 30000,
+          "defaultEnabled": true,
+          "conditions": "Self; in combat, with level 100 Enhanced Barrel Stabilizer. Enables Full Metal Field."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "Both directly granted readiness effects are enabled at maximum level; neither effect is consumed automatically."
+    },
+    {
+      "id": 36978,
+      "names": {
+        "en": "Blazing Shot",
+        "ja": "ブレイズショット"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 1500,
+      "speedCategory": "fixed",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xivgear-mch-gcd",
+        "xivgear-gcd-calculation"
+      ],
+      "unresolved": [],
+      "notes": "Fixed 1500 ms recast. Requires Overheated; reductions to Double Check and Checkmate charge recovery are not simulated."
+    },
+    {
+      "id": 7418,
+      "names": {
+        "en": "Flamethrower",
+        "ja": "フレイムスロアー"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 60000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 1205,
+          "durationMs": 10000,
+          "defaultEnabled": true,
+          "conditions": "Self; channeled. Ends on another action, movement, or turning; maximum duration only."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation.",
+        "baseGcdRecastMs and speedCategory: official guide verifies the GCD interaction but gives no separate duration; editor generic timing is an approximation."
+      ],
+      "unsupported": "Channel interruption, tick schedule and occupied channel time cannot be modeled; only the instant activation and maximum-duration status are configured.",
+      "notes": "Classified as GCD-like because the official guide says it triggers weaponskill recast and xivanalysis marks onGcd. The channel status is shown at its maximum duration; this does not reserve 10 seconds on the timeline."
+    },
+    {
+      "id": 16499,
+      "names": {
+        "en": "Bioblaster",
+        "ja": "バイオブラスト"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "abilityCooldownMs": 20000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 1866,
+          "durationMs": 15000,
+          "defaultEnabled": true,
+          "conditions": "Targets hit in the cone; successful damage-over-time application."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation.",
+        "speedCategory: secondary GCD speed behavior is not explicitly established by the inspected job sources; no shared timing group is assigned."
+      ],
+      "notes": "Two charges at maximum level; independent 20-second cooldown shared with Drill. The separate player GCD is 2500 ms. Skill-speed behavior of that secondary GCD is not explicitly established by the inspected job sources, so shared timing is withheld."
+    },
+    {
+      "id": 16500,
+      "names": {
+        "en": "Air Anchor",
+        "ja": "エアアンカー"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 40000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Independent 40-second cooldown; separate 2500 ms player GCD. Battery gain is not a status."
+    },
+    {
+      "id": 16501,
+      "names": {
+        "en": "Automaton Queen",
+        "ja": "オートマトン・クイーン"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 6000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "The summon can be placed, but its 12-second lifetime, Battery expenditure and autonomous pet rotation are not modeled as statuses."
+    },
+    {
+      "id": 16502,
+      "names": {
+        "en": "Queen Overdrive",
+        "ja": "オーバードライブ・クイーン"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 15000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Commands Pile Bunker; pet execution delay and automatic end-of-lifetime triggering are not modeled."
+    },
+    {
+      "id": 16504,
+      "names": {
+        "en": "Arm Punch",
+        "ja": "クイーン・アームパンチ"
+      },
+      "baseCastTimeMs": 0,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model.",
+      "notes": "Inventory only. Pet recast and cast attributes are not player GCD timing, so no player recast or GCD classification is supplied."
+    },
+    {
+      "id": 17206,
+      "names": {
+        "en": "Roller Dash",
+        "ja": "クイーン・ローラーダッシュ"
+      },
+      "baseCastTimeMs": 0,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model.",
+      "notes": "Inventory only. Pet recast and cast attributes are not player GCD timing, so no player recast or GCD classification is supplied."
+    },
+    {
+      "id": 16503,
+      "names": {
+        "en": "Pile Bunker",
+        "ja": "クイーン・パイルバンカー"
+      },
+      "baseCastTimeMs": 0,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model.",
+      "notes": "Inventory only. Pet recast and cast attributes are not player GCD timing, so no player recast or GCD classification is supplied."
+    },
+    {
+      "id": 25786,
+      "names": {
+        "en": "Scattergun",
+        "ja": "スキャッターガン"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Gauge gain is not a status."
+    },
+    {
+      "id": 25787,
+      "names": {
+        "en": "Crowned Collider",
+        "ja": "クイーン・コレダー"
+      },
+      "baseCastTimeMs": 0,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model.",
+      "notes": "Inventory only. Pet recast and cast attributes are not player GCD timing, so no player recast or GCD classification is supplied."
+    },
+    {
+      "id": 25788,
+      "names": {
+        "en": "Chain Saw",
+        "ja": "回転のこぎり"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 60000,
+      "statusCoverage": "verified",
+      "statuses": [
+        {
+          "statusId": 3865,
+          "durationMs": 30000,
+          "defaultEnabled": true,
+          "conditions": "Self; with level 96 Enhanced Multiweapon II. Enables Excavator."
+        }
+      ],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xiva-mch-statuses"
+      ],
+      "unresolved": [
+        "applicationDelayMs: no verified application latency; the editor uses its existing zero-delay approximation."
+      ],
+      "notes": "Independent 60-second cooldown; separate 2500 ms player GCD. Directly grants Excavator Ready at maximum level."
+    },
+    {
+      "id": 36979,
+      "names": {
+        "en": "Double Check",
+        "ja": "ダブルチェック"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Three charges; charge recovery and Blazing Shot reductions are not simulated."
+    },
+    {
+      "id": 36980,
+      "names": {
+        "en": "Checkmate",
+        "ja": "チェックメイト"
+      },
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Three charges; charge recovery and Blazing Shot reductions are not simulated."
+    },
+    {
+      "id": 36981,
+      "names": {
+        "en": "Excavator",
+        "ja": "エクスカベーター"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "notes": "Conditional replacement of Chain Saw; consumes Excavator Ready in game, but consumption is not simulated."
+    },
+    {
+      "id": 36982,
+      "names": {
+        "en": "Full Metal Field",
+        "ja": "フルメタルバースト"
+      },
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "baseGcdRecastMs": 2500,
+      "speedCategory": "skill",
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions",
+        "xivgear-mch-gcd",
+        "xivgear-gcd-calculation"
+      ],
+      "unresolved": [],
+      "notes": "Requires Full Metal Machinist; excluded from Reassemble. Secondary GCD skill-speed behavior is corroborated by XIVGear, despite absent speedAttribute in xivanalysis."
+    },
+    {
+      "id": 2891,
+      "names": {
+        "en": "Volley Fire",
+        "ja": "ボレーファイア"
+      },
+      "baseCastTimeMs": 0,
+      "statusCoverage": "verified",
+      "statuses": [],
+      "sourceIds": [
+        "mch-official-en",
+        "mch-official-ja",
+        "xivapi-action-en",
+        "xivapi-action-ja",
+        "xiva-mch-actions"
+      ],
+      "unresolved": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model.",
+      "notes": "Inventory only. Pet recast and cast attributes are not player GCD timing, so no player recast or GCD classification is supplied."
+    }
+  ],
+  "roleActionIds": [
+    7554,
+    7541,
+    7553,
+    7557,
+    7551,
+    7548
+  ],
+  "inventory": [
+    {
+      "id": 2866,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2868,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2872,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2876,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2874,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2870,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2873,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 17209,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7410,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2864,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7415,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7416,
+      "disposition": "unsupported",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ],
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 2878,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16766,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2890,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16497,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7411,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16889,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16498,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7412,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2887,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7413,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7414,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 36978,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7418,
+      "disposition": "unsupported",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ],
+      "reason": "Channel interruption, tick schedule and occupied channel time cannot be modeled; only the instant activation and maximum-duration status are configured."
+    },
+    {
+      "id": 16499,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16500,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16501,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16502,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 16504,
+      "disposition": "unsupported",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ],
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 17206,
+      "disposition": "unsupported",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ],
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 16503,
+      "disposition": "unsupported",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ],
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 25786,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 25787,
+      "disposition": "unsupported",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ],
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 25788,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 36979,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 36980,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 36981,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 36982,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 2891,
+      "disposition": "unsupported",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ],
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 7554,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7541,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7553,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7557,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7551,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    },
+    {
+      "id": 7548,
+      "disposition": "configured",
+      "sourceIds": [
+        "mch-official-en",
+        "xivapi-action-en"
+      ]
+    }
+  ]
+}
