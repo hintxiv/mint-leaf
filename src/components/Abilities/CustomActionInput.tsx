@@ -1,3 +1,4 @@
+import { encodeCustomId } from '@/lib/customId'
 import { DataAction } from '@/app/api'
 import { Button, Input as BaseInput } from 'antd';
 import React, { useState } from 'react';
@@ -83,7 +84,7 @@ export const CustomActionInput: React.FC<CustomActionInputProps> = ({ onCreate }
 
         onCreate({
             name,
-            id: encodeURI(`custom-${iconUrl}-${name}`),
+            id: encodeCustomId(iconUrl, name),
             icon: new URL(iconUrl),
         });
         closeForm();

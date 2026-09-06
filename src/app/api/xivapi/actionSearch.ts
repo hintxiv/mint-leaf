@@ -1,5 +1,7 @@
 "use client";
 
+import { decodeCustomId } from '@/lib/customId'
+
 import { Locale } from '@/context/LanguageContext'
 import { Job } from '@/data/jobs'
 import { DataAction } from './types'
@@ -27,11 +29,11 @@ export const getActionByID = async (id: string, language: Locale): Promise<DataA
         const isCustom = id.startsWith('custom-');
 
         if (isCustom) {
-            const [_, icon, name] = decodeURI(id).split('-');
+            const { icon, name } = decodeCustomId(id);
             return {
                 id: id,
                 name: name,
-                icon: new URL(icon),
+                icon,
             };
         }
 
