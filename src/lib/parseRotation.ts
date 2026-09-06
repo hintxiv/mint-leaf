@@ -52,7 +52,8 @@ const parseLine = async (line: string, language: Locale): Promise<Action> => {
     const statusesApplied = await Promise.all(Array.from(statusSection.matchAll(/\[([^\[\]]+)\]/g)).map(match => parseStatus(match[1], language)))
     const data = await getActionByID(id, language)
     const base = { id, name: data.name ?? '', imageSrc: data.icon?.toString() ?? '', instanceId: crypto.randomUUID(), prepull, statusesApplied,
-        defaults: { job: '', recastSource: 'import' as const } }
+        defaults: { job: '', recastSource: 'import' as const, originalName: data.name ?? '',
+            originalKind: data.kind, baseGcdRecastMs: data.baseGcdRecastMs, baseCastTimeMs: data.baseCastTimeMs } }
     return type === 'GCD' ? { ...base, type: 'gcd', recastTime, castTime }
         : { ...base, type: 'ogcd', lateWeave: timing === 'lateWeave' }
 }

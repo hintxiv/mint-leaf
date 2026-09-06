@@ -17,7 +17,7 @@ export const findCatalogAction = (job: string, id: string): CatalogAction | unde
             : undefined)
 }
 
-export const matchingGcdGroup = (job: string, action?: CatalogAction): string | undefined =>
-    action?.kind === 'gcd' && action.baseGcdRecastMs !== undefined && action.speedCategory
-        ? `${job}:${action.baseGcdRecastMs}:${action.speedCategory}`
+export const matchingGcdGroup = (job: string, action?: { kind?: string; baseGcdRecastMs?: number }): string | undefined =>
+    action?.kind === 'gcd' && action.baseGcdRecastMs !== undefined
+        ? `${job}:${action.baseGcdRecastMs}`
         : undefined

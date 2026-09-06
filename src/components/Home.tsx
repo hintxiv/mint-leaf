@@ -269,7 +269,7 @@ export const Home = ({ discordAuth }: HomeProps) => {
 
             const jobKey = Object.keys(jobs).find(key => jobs[key].id === job.id) ?? ''
             const imported = parsedRotation.map(action => ({ ...action, defaults: {
-                job: jobKey, gcdGroup: matchingGcdGroup(jobKey, findCatalogAction(jobKey, action.id)), recastSource: 'import' as const,
+                ...action.defaults, job: jobKey, gcdGroup: matchingGcdGroup(jobKey, findCatalogAction(jobKey, action.id) ?? { kind: action.defaults?.originalKind, baseGcdRecastMs: action.defaults?.baseGcdRecastMs }), recastSource: 'import' as const,
             } }))
             setRotation(imported.filter(action => action.prepull === undefined))
             setPrepullRotation(

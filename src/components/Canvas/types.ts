@@ -20,6 +20,10 @@ interface BaseAction {
     defaults?: {
         job: string;
         catalogRevision?: string;
+        originalName?: string;
+        baseGcdRecastMs?: number;
+        baseCastTimeMs?: number;
+        originalKind?: 'gcd' | 'ogcd';
         gcdGroup?: string;
         recastSource: 'inherited' | 'action' | 'import';
     };

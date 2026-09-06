@@ -45,7 +45,7 @@ describe('action defaults and explicit preferences', () => {
         } finally { definition.baseCastTimeMs = old }
     })
 
-    it('shares 2.50 to 2.45 across existing prepull/rotation and future additions, with protected exceptions', () => {
+    it('shares 2.50 to 2.45 across existing prepull/rotation and future additions, including previously specific and imported values', () => {
         const selected = add()
         if (selected.type !== 'gcd') throw new Error('Expected GCD')
         const prepull = [{ ...add('7412'), prepull: -5 }]
@@ -57,9 +57,12 @@ describe('action defaults and explicit preferences', () => {
         expect(applySharedRecast(prepull, result.shared!.group, 2.45)[0]).toMatchObject({ recastTime: 2.45 })
         const updated = applySharedRecast([selected, special, imported, explicit, add('7411', 'DRK')], result.shared!.group, 2.45)
         expect(updated[0]).toMatchObject({ recastTime: 2.45, castTime: 0 })
-        expect(updated.slice(1)).toEqual([special, imported, explicit, addWithoutIdentity('7411', 'DRK', updated[4])])
+        expect(updated[1]).toEqual(special)
+        expect(updated[2]).toMatchObject({ recastTime: 2.45, defaults: { recastSource: 'inherited' } })
+        expect(updated[3]).toMatchObject({ recastTime: 2.45, defaults: { recastSource: 'inherited' } })
+        expect(updated[4]).toEqual(addWithoutIdentity('7411', 'DRK', updated[4]))
         expect(add('7412')).toMatchObject({ recastTime: 2.45 })
-        expect(add()).toMatchObject({ recastTime: 2.3 })
+        expect(add()).toMatchObject({ recastTime: 2.45 })
     })
 
     it('turns sharing off, saves only edited fields, and resets recast to inherited', () => {
@@ -117,3 +120,23 @@ describe('action defaults and explicit preferences', () => {
 function addWithoutIdentity(id: string, job: string, original: Action) {
     return { ...dataActionToDefaultAction(data(id), job), instanceId: original.instanceId }
 }
+
+it('shares uncataloged API actions by base recast and restores original names', () => {
+    const make = (id: string, baseGcdRecastMs = 2500) => dataActionToDefaultAction({ ...data(id), kind: 'gcd', baseGcdRecastMs }, 'WHM')
+    const first = make('100001')
+    const second = make('100002')
+    const specific = saveActionEdit(second, { ...second, recastTime: 2.2 } as Action, 'WHM', 'en', 'specific').action
+    const renamed = saveActionEdit(first, { ...first, name: 'My spell' }, 'WHM', 'en').action
+    expect(make('100001').name).toBe('My spell')
+    const shared = saveActionEdit(renamed, { ...renamed, recastTime: 2.4 } as Action, 'WHM', 'en')
+    expect(applySharedRecast([specific], shared.shared!.group, 2.4)[0]).toMatchObject({ recastTime: 2.4 })
+    expect(make('100002')).toMatchObject({ recastTime: 2.4 })
+    expect(make('100003', 1500)).toMatchObject({ recastTime: 1.5 })
+    expect(saveActionEdit(renamed, renamed, 'WHM', 'en', 'reset').action.name).toBe('Cached name')
+})
+
+it('reads legacy speed groups without writes and combines equal base recasts', () => {
+    localStorage.setItem(PREFERENCES_KEY, JSON.stringify({ version: 1, actions: {}, sharedGcds: { 'MCH:2500:skill': 2.4 } }))
+    expect(add()).toMatchObject({ recastTime: 2.4, defaults: { gcdGroup: 'MCH:2500' } })
+    expect(localStorage.getItem(PREFERENCES_KEY)).toContain('MCH:2500:skill')
+})
