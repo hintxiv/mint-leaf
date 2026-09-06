@@ -273,6 +273,7 @@ const statusesEqual = (left: Status | undefined, right: Status | undefined): boo
         && left.color === right.color
         && left.applicationDelay === right.applicationDelay
         && left.duration === right.duration
+        && left.enabled === right.enabled
     )
 }
 
@@ -286,7 +287,9 @@ const actionsEqual = (left: Action, right: Action): boolean => {
         || left.imageSrc !== right.imageSrc
         || left.instanceId !== right.instanceId
         || left.prepull !== right.prepull
-        || !statusesEqual(left.statusApplied, right.statusApplied)
+        || (left.statusesApplied?.length ?? 0) !== (right.statusesApplied?.length ?? 0)
+        || (left.statusesApplied ?? []).some((status, index) => !statusesEqual(status, right.statusesApplied?.[index]))
+        || JSON.stringify(left.defaults) !== JSON.stringify(right.defaults)
     ) {
         return false
     }
