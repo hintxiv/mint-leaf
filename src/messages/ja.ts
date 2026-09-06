@@ -108,7 +108,7 @@ export const ja: Messages = {
         levelPrefix: 'Lv.',
         rows: '行数',
         rowSpacing: '行間隔',
-        rowSpacingHelp: '行の間の余白（キャンバスのピクセル単位）。空欄の場合は128。',
+        rowSpacingHelp: '行の間の余白（キャンバスのピクセル単位）。',
         preview: 'プレビュー',
         previewClose: 'プレビューを閉じる',
         fitToWindow: 'ウィンドウに合わせる',

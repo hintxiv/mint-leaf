@@ -106,7 +106,7 @@ export const en = {
         levelPrefix: 'LV.',
         rows: 'Rows',
         rowSpacing: 'Row spacing',
-        rowSpacingHelp: 'Empty gap between rows in canvas pixels. Blank uses 128.',
+        rowSpacingHelp: 'Empty gap between rows in canvas pixels.',
         preview: 'Preview',
         previewClose: 'Close preview',
         fitToWindow: 'Fit to window',
