@@ -1,5 +1,6 @@
 import { expect, test, Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
+import sharp from 'sharp'
 
 const actions = [
     { id: '7411', name: 'Heated Split Shot', level: 54 },
@@ -15,7 +16,12 @@ const actions = [
 
 async function setup(page: Page) {
     const icon = await readFile('public/Balance_Logo-02.png')
-    await page.route('**/_next/image?**', route => route.fulfill({ contentType: 'image/png', body: icon }))
+    const redStatus = await sharp({ create: { width: 32, height: 32, channels: 4, background: '#280808' } }).png().toBuffer()
+    const goldStatus = await sharp({ create: { width: 32, height: 32, channels: 4, background: '#e6b134' } }).png().toBuffer()
+    await page.route('**/_next/image?**', route => {
+        const source = new URL(route.request().url()).searchParams.get('url') ?? ''
+        return route.fulfill({ contentType: 'image/png', body: source.includes('213001') ? redStatus : source.includes('test.tex') ? goldStatus : icon })
+    })
     await page.route('https://v2.xivapi.com/**', route => {
         const url = new URL(route.request().url())
         if (url.pathname.includes('/asset/')) return route.fulfill({ contentType: 'image/png', body: icon })
@@ -100,20 +106,24 @@ test('multiple independent status rows persist edits and render in preview and P
     await second.getByRole('checkbox').uncheck()
     await expect(await exported(page)).toHaveValue(/\[99901 0 13 #cc33ee disabled\]/)
     await second.getByRole('checkbox').check()
+    const firstColor = page.getByTestId('status-row').first().locator('input[type=color]')
+    await expect(firstColor).not.toHaveValue('#74d6b4')
+    const automatic = await firstColor.inputValue()
     for (let i = 0; i < 9; i++) await add(page, 'Heated Split Shot')
     await page.locator('canvas').waitFor()
     await expect(page.locator('canvas')).toHaveAttribute('data-render-state', 'ready')
-    // Actual raster must contain both independently colored status lines.
-    const colors = await page.locator('canvas').evaluate(element => {
+    // Actual raster must contain the icon-derived colour and the independent override.
+    const colors = await page.locator('canvas').evaluate((element, automatic) => {
         const canvas = element as HTMLCanvasElement
         const pixels = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data
         const counts = [0, 0]
+        const rgb = [1, 3, 5].map(offset => parseInt(automatic.slice(offset, offset + 2), 16))
         for (let i = 0; i < pixels.length; i += 4) {
-            if (pixels[i] === 116 && pixels[i + 1] === 214 && pixels[i + 2] === 180) counts[0]++
+            if (pixels[i] === rgb[0] && pixels[i + 1] === rgb[1] && pixels[i + 2] === rgb[2]) counts[0]++
             if (pixels[i] === 204 && pixels[i + 1] === 51 && pixels[i + 2] === 238) counts[1]++
         }
         return counts
-    })
+    }, automatic)
     expect(colors.every(count => count > 100)).toBe(true)
     await page.getByRole('button', { name: 'Preview', exact: true }).click()
     await expect(page.getByRole('dialog').locator('img')).toBeVisible()
@@ -127,6 +137,64 @@ test('multiple independent status rows persist edits and render in preview and P
     await expect(page.getByTestId('status-row')).toHaveCount(2)
     await page.getByTestId('status-row').nth(1).getByRole('button', { name: 'Test status Settings' }).click()
     await expect(page.getByTestId('status-row').nth(1).locator('input[type=color]')).toHaveValue('#cc33ee')
+})
+
+test('automatic status colours are readable, distinct, resettable, and round-trip without preference writes', async ({ page }) => {
+    await setup(page)
+    await add(page, 'Reassemble')
+    const rows = page.getByTestId('status-row')
+    await rows.first().getByRole('button', { name: 'API Reassembled Settings' }).click()
+    const picker = rows.first().locator('input[type=color]')
+    await expect(picker).not.toHaveValue('#74d6b4')
+    const red = await picker.inputValue()
+    const rgb = [1, 3, 5].map(offset => parseInt(red.slice(offset, offset + 2), 16))
+    expect(rgb[0]).toBeGreaterThan(rgb[1] * 2)
+    const luminance = (hex: string) => [1, 3, 5].map(offset => parseInt(hex.slice(offset, offset + 2), 16) / 255)
+        .map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4)
+        .reduce((sum, value, i) => sum + value * [0.2126, 0.7152, 0.0722][i], 0)
+    expect((luminance(red) + 0.05) / (luminance('#121213') + 0.05)).toBeGreaterThanOrEqual(3)
+    expect(await page.evaluate(() => localStorage.getItem('mint-leaf-action-preferences-v1'))).toBeNull()
+    await expect(await exported(page)).toHaveValue(/\[851 0 5 auto\]/)
+    await picker.fill('#123456')
+    await expect(await exported(page)).toHaveValue(/\[851 0 5 #123456\]/)
+    await rows.first().getByRole('button', { name: 'Reset to automatic' }).click()
+    await expect(picker).toHaveValue(red)
+    await page.getByRole('button', { name: 'Add status', exact: true }).click()
+    await page.getByRole('combobox').last().fill('Test status')
+    await page.getByRole('option', { name: 'Test status' }).click()
+    await expect(rows.last().locator('input[type=color]')).not.toHaveValue('#74d6b4')
+    expect(await rows.last().locator('input[type=color]').inputValue()).not.toBe(red)
+    const text = await exported(page)
+    const before = await text.inputValue()
+    await page.getByRole('button', { name: 'Apply import', exact: true }).click()
+    await expect(text).toHaveValue(before)
+    await expect(page.locator('canvas')).toHaveAttribute('data-render-state', 'ready')
+})
+
+test('a late icon response cannot overwrite a manually chosen status colour', async ({ page }) => {
+    await setup(page)
+    let release!: () => void
+    let requested!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    const loading = new Promise<void>(resolve => { requested = resolve })
+    await page.route('**/_next/image?**', async route => {
+        if ((new URL(route.request().url()).searchParams.get('url') ?? '').includes('213001')) {
+            requested()
+            await gate
+        }
+        await route.fallback()
+    })
+    try {
+        await add(page, 'Reassemble')
+        await loading
+        const row = page.getByTestId('status-row').first()
+        await row.getByRole('button', { name: 'API Reassembled Settings' }).click()
+        await row.locator('input[type=color]').fill('#123456')
+        release()
+        await expect(page.locator('canvas')).toHaveAttribute('data-render-state', 'ready')
+        await expect(row.locator('input[type=color]')).toHaveValue('#123456')
+        await expect(await exported(page)).toHaveValue(/\[851 0 5 #123456\]/)
+    } finally { release() }
 })
 
 test('API readiness status names and shared recasts for imported actions', async ({ page }) => {

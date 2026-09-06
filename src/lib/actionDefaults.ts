@@ -87,7 +87,7 @@ export const dataActionToDefaultAction = (
         const status = catalogStatuses.find(item => item.id === association.statusId)
         return status ? [{
             id: String(status.id), name: '', imageSrc: status.icon,
-            color: '#74d6b4', enabled: association.defaultEnabled ?? true,
+            color: 'auto', enabled: association.defaultEnabled ?? true,
             duration: association.durationMs / 1000,
             applicationDelay: (association.applicationDelayMs ?? 0) / 1000,
         }] : []

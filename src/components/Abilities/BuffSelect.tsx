@@ -35,7 +35,7 @@ export const BuffSelect: React.FC<BuffSelectProps> = ({ job, setStatus, preloade
     const [currentStatus, setCurrentStatus] = useState<DataStatus | null>(null);
     const [applicationDelay, setApplicationDelay] = useState<number | null>(0);
     const [duration, setDuration] = useState<number | null>(20);
-    const [color, setColor] = useState<string>();
+    const [color, setColor] = useState<string>('auto');
     
     // Effect to populate fields from preloaded status
     useEffect(() => {
@@ -62,7 +62,7 @@ export const BuffSelect: React.FC<BuffSelectProps> = ({ job, setStatus, preloade
             id: currentStatus.id,
             name: currentStatus.name ?? t('buffBuilder.unknown'),
             imageSrc: currentStatus.icon.toString(),
-            color: color ?? '#000000',
+            color: color ?? 'auto',
             duration: duration ?? 0,
             applicationDelay: applicationDelay ?? 0,
         };
@@ -96,7 +96,6 @@ export const BuffSelect: React.FC<BuffSelectProps> = ({ job, setStatus, preloade
             duration={duration}
             setDuration={setDuration}
             color={color}
-            setColor={setColor}
             onCreate={onCreate}
         />
     );
