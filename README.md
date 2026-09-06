@@ -12,6 +12,15 @@ A tool for creating FFXIV rotation infographics.
 * [node.js](https://nodejs.org/en/)
 * [yarn](https://yarnpkg.com/)
 
+Copy `.env.example` to `.env.local` and set `AUTH_SECRET` to the output of:
+
+```bash
+node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
+```
+
+Discord sign-in also requires `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, and a JSON array of allowed Discord user IDs in `DISCORD_WHITELISTED_USERS`.
+Restart the development server after changing environment variables.
+
 Install dependencies and run the development server:
 
 ```bash
