@@ -1,0 +1,686 @@
+{
+  "schemaVersion": 1,
+  "revision": "mch-7.5-2026-09-05.2-recast-overrides",
+  "job": "MCH",
+  "level": 100,
+  "patch": "7.5",
+  "verifiedAt": "2026-09-05",
+  "sources": [
+    {
+      "id": "mch-official-en",
+      "url": "https://na.finalfantasyxiv.com/jobguide/machinist/",
+      "revision": "PvE Patch 7.5, level 100, updated 2026-04-28",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "mch-official-ja",
+      "url": "https://jp.finalfantasyxiv.com/jobguide/machinist/",
+      "revision": "PvE Patch 7.5, level 100, updated 2026-04-28",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-mch-actions",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/root/MCH.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-role-actions",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/root/ROLE.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-mch-statuses",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/STATUSES/root/MCH.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-role-statuses",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/STATUSES/root/ROLE.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-action-model",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/type.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-action-layers",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/ACTIONS/layers/index.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xiva-status-layers",
+      "url": "https://github.com/xivanalysis/xivanalysis/blob/f90bfac9ad9984354437b83e529f5dd709346413/src/data/STATUSES/layers/index.ts",
+      "revision": "f90bfac9ad9984354437b83e529f5dd709346413",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-action-en",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/en/Action.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-status-en",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/en/Status.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-action-ja",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/ja/Action.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-status-ja",
+      "url": "https://github.com/xivapi/ffxiv-datamining/blob/64ff8a5d2903b429cb9d95066547ce57fc53bfc8/csv/ja/Status.csv",
+      "revision": "7.55h2 64ff8a5d2903b429cb9d95066547ce57fc53bfc8",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivapi-v2-sample",
+      "url": "https://v2.xivapi.com/api/sheet/Action/16498?fields=Name,Icon&language=ja",
+      "revision": "data 284bb7f44b9c0976; schema exdschema@2:rev:83e965d091116f895d5b17573cc5d12909a5f407",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "bossmod-mch-status-links",
+      "url": "https://github.com/awgil/ffxiv_bossmod/blob/162fde51b5e56ca133cbc13502ae03548a23f461/BossMod/ActionQueue/Ranged/MCH.cs",
+      "revision": "162fde51b5e56ca133cbc13502ae03548a23f461",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "bossmod-role-status-links",
+      "url": "https://github.com/awgil/ffxiv_bossmod/blob/162fde51b5e56ca133cbc13502ae03548a23f461/BossMod/ActionQueue/ClassShared.cs",
+      "revision": "162fde51b5e56ca133cbc13502ae03548a23f461",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivgear-mch-gcd",
+      "url": "https://github.com/xiv-gear-planner/gear-planner/blob/8b2df94f99a684f1c04da559e493726aa31d8194/packages/sims/src/ranged/mch/mch_actions.ts",
+      "revision": "8b2df94f99a684f1c04da559e493726aa31d8194",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivgear-gcd-calculation",
+      "url": "https://github.com/xiv-gear-planner/gear-planner/blob/8b2df94f99a684f1c04da559e493726aa31d8194/packages/sims/src/cycle_sim.ts",
+      "revision": "8b2df94f99a684f1c04da559e493726aa31d8194",
+      "verifiedAt": "2026-09-05"
+    },
+    {
+      "id": "xivsloth-pve-role-statuses",
+      "url": "https://github.com/Nik-Potokar/XIVSlothCombo/blob/08c5af92c9b6b1afadb4a06557ec512790c2e722/XIVSlothCombo/Combos/PvE/ALL.cs",
+      "revision": "08c5af92c9b6b1afadb4a06557ec512790c2e722 (final version 2024-11-21); canonical PvE role status IDs cross-checked against current official guide and XIVAPI 7.55h2",
+      "verifiedAt": "2026-09-05"
+    }
+  ],
+  "actions": [
+    {
+      "id": 2866,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 2868,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 2872,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 40000,
+      "statuses": [],
+      "gcdRecastOverrideMs": 2500,
+      "gcdRecastOverrideReason": "XIVAPI Recast100ms describes the separate action cooldown; this action triggers a 2500 ms GCD."
+    },
+    {
+      "id": 2876,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 55000,
+      "statuses": [
+        {
+          "statusId": 851,
+          "durationMs": 5000,
+          "defaultEnabled": true
+        }
+      ]
+    },
+    {
+      "id": 2874,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statuses": []
+    },
+    {
+      "id": 2870,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 2873,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 17209,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 10000,
+      "statuses": [
+        {
+          "statusId": 2688,
+          "durationMs": 10000,
+          "defaultEnabled": true
+        }
+      ]
+    },
+    {
+      "id": 7410,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "fixed",
+      "statuses": [],
+      "gcdRecastOverrideMs": 1500,
+      "gcdRecastOverrideReason": "Rapid-fire effect sets a 1500 ms GCD; XIVAPI Recast100ms reports 2500 ms before that effect."
+    },
+    {
+      "id": 2864,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 6000,
+      "statuses": []
+    },
+    {
+      "id": 7415,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 15000,
+      "statuses": []
+    },
+    {
+      "id": 7416,
+      "baseCastTimeMs": 0,
+      "statuses": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 2878,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statuses": [
+        {
+          "statusId": 861,
+          "durationMs": 10000,
+          "defaultEnabled": true
+        },
+        {
+          "statusId": 1946,
+          "durationMs": 10000,
+          "defaultEnabled": true
+        }
+      ]
+    },
+    {
+      "id": 16766,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000,
+      "statuses": []
+    },
+    {
+      "id": 2890,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statuses": []
+    },
+    {
+      "id": 16497,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "fixed",
+      "statuses": [],
+      "gcdRecastOverrideMs": 1500,
+      "gcdRecastOverrideReason": "Rapid-fire effect sets a 1500 ms GCD; XIVAPI Recast100ms reports 2500 ms before that effect."
+    },
+    {
+      "id": 7411,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 16889,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 90000,
+      "statuses": [
+        {
+          "statusId": 1951,
+          "durationMs": 15000,
+          "defaultEnabled": true
+        }
+      ]
+    },
+    {
+      "id": 16498,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 20000,
+      "statuses": [],
+      "gcdRecastOverrideMs": 2500,
+      "gcdRecastOverrideReason": "XIVAPI Recast100ms describes the separate action cooldown; this action triggers a 2500 ms GCD."
+    },
+    {
+      "id": 7412,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 2887,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statuses": [
+        {
+          "statusId": 860,
+          "durationMs": 10000,
+          "defaultEnabled": true
+        }
+      ]
+    },
+    {
+      "id": 7413,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 7414,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000,
+      "statuses": [
+        {
+          "statusId": 3864,
+          "durationMs": 30000,
+          "defaultEnabled": true
+        },
+        {
+          "statusId": 3866,
+          "durationMs": 30000,
+          "defaultEnabled": true
+        }
+      ]
+    },
+    {
+      "id": 36978,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "fixed",
+      "statuses": [],
+      "gcdRecastOverrideMs": 1500,
+      "gcdRecastOverrideReason": "Rapid-fire effect sets a 1500 ms GCD; XIVAPI Recast100ms reports 2500 ms before that effect."
+    },
+    {
+      "id": 7418,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 60000,
+      "statuses": [
+        {
+          "statusId": 1205,
+          "durationMs": 10000,
+          "defaultEnabled": true
+        }
+      ],
+      "unsupported": "Channel interruption, tick schedule and occupied channel time cannot be modeled; only the instant activation and maximum-duration status are configured."
+    },
+    {
+      "id": 16499,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 20000,
+      "statuses": [
+        {
+          "statusId": 1866,
+          "durationMs": 15000,
+          "defaultEnabled": true
+        }
+      ],
+      "gcdRecastOverrideMs": 2500,
+      "gcdRecastOverrideReason": "XIVAPI Recast100ms describes the separate action cooldown; this action triggers a 2500 ms GCD."
+    },
+    {
+      "id": 16500,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 40000,
+      "statuses": [],
+      "gcdRecastOverrideMs": 2500,
+      "gcdRecastOverrideReason": "XIVAPI Recast100ms describes the separate action cooldown; this action triggers a 2500 ms GCD."
+    },
+    {
+      "id": 16501,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 6000,
+      "statuses": []
+    },
+    {
+      "id": 16502,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 15000,
+      "statuses": []
+    },
+    {
+      "id": 16504,
+      "baseCastTimeMs": 0,
+      "statuses": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 17206,
+      "baseCastTimeMs": 0,
+      "statuses": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 16503,
+      "baseCastTimeMs": 0,
+      "statuses": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 25786,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 25787,
+      "baseCastTimeMs": 0,
+      "statuses": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 25788,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "abilityCooldownMs": 60000,
+      "statuses": [
+        {
+          "statusId": 3865,
+          "durationMs": 30000,
+          "defaultEnabled": true
+        }
+      ],
+      "gcdRecastOverrideMs": 2500,
+      "gcdRecastOverrideReason": "XIVAPI Recast100ms describes the separate action cooldown; this action triggers a 2500 ms GCD."
+    },
+    {
+      "id": 36979,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statuses": []
+    },
+    {
+      "id": 36980,
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000,
+      "statuses": []
+    },
+    {
+      "id": 36981,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 36982,
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill",
+      "statuses": []
+    },
+    {
+      "id": 2891,
+      "baseCastTimeMs": 0,
+      "statuses": [],
+      "unsupported": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    }
+  ],
+  "roleActionIds": [
+    7554,
+    7541,
+    7553,
+    7557,
+    7551,
+    7548
+  ],
+  "inventory": [
+    {
+      "id": 2866,
+      "disposition": "configured"
+    },
+    {
+      "id": 2868,
+      "disposition": "configured"
+    },
+    {
+      "id": 2872,
+      "disposition": "configured"
+    },
+    {
+      "id": 2876,
+      "disposition": "configured"
+    },
+    {
+      "id": 2874,
+      "disposition": "configured"
+    },
+    {
+      "id": 2870,
+      "disposition": "configured"
+    },
+    {
+      "id": 2873,
+      "disposition": "configured"
+    },
+    {
+      "id": 17209,
+      "disposition": "configured"
+    },
+    {
+      "id": 7410,
+      "disposition": "configured"
+    },
+    {
+      "id": 2864,
+      "disposition": "configured"
+    },
+    {
+      "id": 7415,
+      "disposition": "configured"
+    },
+    {
+      "id": 7416,
+      "disposition": "unsupported",
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 2878,
+      "disposition": "configured"
+    },
+    {
+      "id": 16766,
+      "disposition": "configured"
+    },
+    {
+      "id": 2890,
+      "disposition": "configured"
+    },
+    {
+      "id": 16497,
+      "disposition": "configured"
+    },
+    {
+      "id": 7411,
+      "disposition": "configured"
+    },
+    {
+      "id": 16889,
+      "disposition": "configured"
+    },
+    {
+      "id": 16498,
+      "disposition": "configured"
+    },
+    {
+      "id": 7412,
+      "disposition": "configured"
+    },
+    {
+      "id": 2887,
+      "disposition": "configured"
+    },
+    {
+      "id": 7413,
+      "disposition": "configured"
+    },
+    {
+      "id": 7414,
+      "disposition": "configured"
+    },
+    {
+      "id": 36978,
+      "disposition": "configured"
+    },
+    {
+      "id": 7418,
+      "disposition": "unsupported",
+      "reason": "Channel interruption, tick schedule and occupied channel time cannot be modeled; only the instant activation and maximum-duration status are configured."
+    },
+    {
+      "id": 16499,
+      "disposition": "configured"
+    },
+    {
+      "id": 16500,
+      "disposition": "configured"
+    },
+    {
+      "id": 16501,
+      "disposition": "configured"
+    },
+    {
+      "id": 16502,
+      "disposition": "configured"
+    },
+    {
+      "id": 16504,
+      "disposition": "unsupported",
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 17206,
+      "disposition": "unsupported",
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 16503,
+      "disposition": "unsupported",
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 25786,
+      "disposition": "configured"
+    },
+    {
+      "id": 25787,
+      "disposition": "unsupported",
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 25788,
+      "disposition": "configured"
+    },
+    {
+      "id": 36979,
+      "disposition": "configured"
+    },
+    {
+      "id": 36980,
+      "disposition": "configured"
+    },
+    {
+      "id": 36981,
+      "disposition": "configured"
+    },
+    {
+      "id": 36982,
+      "disposition": "configured"
+    },
+    {
+      "id": 2891,
+      "disposition": "unsupported",
+      "reason": "Autonomous pet action; the timeline has no pet actor, pet recast clock, scheduling, or Battery-dependent execution model."
+    },
+    {
+      "id": 7554,
+      "disposition": "configured"
+    },
+    {
+      "id": 7541,
+      "disposition": "configured"
+    },
+    {
+      "id": 7553,
+      "disposition": "configured"
+    },
+    {
+      "id": 7557,
+      "disposition": "configured"
+    },
+    {
+      "id": 7551,
+      "disposition": "configured"
+    },
+    {
+      "id": 7548,
+      "disposition": "configured"
+    }
+  ]
+}

@@ -571,7 +571,6 @@ const requiredHeaderWidth = (input: LayoutInfographicInput, measurer: TextMeasur
 }
 
 interface BuffSegment extends CanvasBuffLine {
-    sourceIndex: number
     lane?: number
     continuesBefore?: boolean
     continuesAfter?: boolean
@@ -606,7 +605,6 @@ const addBuffs = (
     const timeline = calculateTimeline(prepullIcons, rotationIcons, rotationEnd, pullX)
     const refs = { current: [] as Array<HTMLImageElement | null> }
     const buffs = calculateBuffLinePositions([...prepullIcons, ...rotationIcons], timeline, refs, rotationEnd)
-        .map((buff, index) => ({ ...buff, sourceIndex: index }))
     return layoutBuffSegments(buffs, rotationEnd, baseY, measurer)
 }
 
@@ -625,7 +623,7 @@ const layoutBuffSegments = (
     bins.forEach((bin, row) => {
         const y = baseY + row * positions.buffLineHeight
         bin.forEach(buff => {
-            const ownerId = `buff-${buff.sourceIndex}${rowId}`
+            const ownerId = `buff-${buff.instanceKey}${rowId}`
             const endpoint = Math.min(buff.endX, rotationEnd)
             const labelValue = truncateLabel(buff.status.name)
             const labelWidth = measurer.measure(labelValue, fonts.label).width
@@ -716,7 +714,6 @@ const layoutRows = (
     // only translates interval segments; it never restarts the timeline.
     const timeline = calculateTimeline(prepull.icons, rotation.icons, rotationEnd, pullX)
     const fullBuffs = calculateBuffLinePositions([...prepull.icons, ...rotation.icons], timeline, { current: [] }, rotationEnd)
-        .map((buff, sourceIndex) => ({ ...buff, sourceIndex }))
     const buffs = packBuffLanes(fullBuffs).flatMap((laneBuffs, lane) => laneBuffs.map(buff => ({ ...buff, lane })))
 
     const buildRow = (start: number, end: number) => {

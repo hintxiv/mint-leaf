@@ -95,7 +95,7 @@ describe('infographic layout plan', () => {
         const status = { id: 'buff', name: 'Buff', imageSrc: '/favicon.ico', color: '#74d6b4', applicationDelay: 0, duration: 100 }
         const plan = layoutInfographic({
             ...baseInput,
-            rotation: [action('g1', 'gcd', { statusApplied: status }), ...Array.from({ length: 5 }, (_, index) => action(`g${index + 2}`))],
+            rotation: [action('g1', 'gcd', { statusesApplied: [status] }), ...Array.from({ length: 5 }, (_, index) => action(`g${index + 2}`))],
             rowCount: 3,
         }, measurer)
         const ids = plan.primitives.map(primitive => primitive.id)
@@ -111,11 +111,11 @@ describe('infographic layout plan', () => {
         const status = { id: 'buff', name: 'Buff', imageSrc: '/favicon.ico', color: '#74d6b4', applicationDelay: 5, duration: 0.1 }
         const plan = layoutInfographic({
             ...baseInput, rowCount: 4,
-            rotation: [action('g1', 'gcd', { statusApplied: status }), action('g2'), action('g3'), action('g4')],
+            rotation: [action('g1', 'gcd', { statusesApplied: [status] }), action('g2'), action('g3'), action('g4')],
         }, measurer)
         const buffs = plan.primitives.filter(primitive => primitive.ownerId?.startsWith('buff-'))
         expect(buffs.length).toBeGreaterThan(0)
-        expect(buffs.every(primitive => primitive.ownerId === 'buff-0-row-2')).toBe(true)
+        expect(buffs.every(primitive => primitive.ownerId === 'buff-g1:0-row-2')).toBe(true)
         const boundaryRotation = [action('g1'), action('g2'), action('g3')]
         const positioned = calculateIconPositions(boundaryRotation)
         const timeline = calculateTimeline([], positioned.icons, positioned.width, 0)
@@ -125,20 +125,20 @@ describe('infographic layout plan', () => {
         const beforeTime = before.time + (before.addedWeaveTime ?? 0)
         const afterTime = after.time + (after.addedWeaveTime ?? 0)
         const duration = beforeTime + (afterTime - beforeTime) * (boundary - before.x) / (after.x - before.x)
-        boundaryRotation[0].statusApplied = { ...status, applicationDelay: 0, duration }
+        boundaryRotation[0].statusesApplied = [{ ...status, applicationDelay: 0, duration }]
         const boundaryPlan = layoutInfographic({
             ...baseInput, rowCount: 3,
             rotation: boundaryRotation,
         }, measurer)
-        expect(boundaryPlan.primitives.filter(primitive => primitive.ownerId?.startsWith('buff-')).every(primitive => primitive.ownerId === 'buff-0-row-0')).toBe(true)
+        expect(boundaryPlan.primitives.filter(primitive => primitive.ownerId?.startsWith('buff-')).every(primitive => primitive.ownerId === 'buff-g1:0-row-0')).toBe(true)
         expect(auditRenderPlan(plan)).toEqual([])
     })
 
     it.each([8, 30])('keeps nested buff lanes consistent without crossing connectors (inner duration %s)', (innerDuration) => {
         const status = { id: 'outer', name: 'Outer Buff', imageSrc: '/favicon.ico', color: '#74d6b4', applicationDelay: 0, duration: 30 }
         const input = { ...baseInput, rotation: [
-            action('g1', 'gcd', { statusApplied: status }),
-            action('g2', 'gcd', { statusApplied: { ...status, id: 'inner', name: 'Inner Buff', duration: innerDuration } }),
+            action('g1', 'gcd', { statusesApplied: [status] }),
+            action('g2', 'gcd', { statusesApplied: [{ ...status, id: 'inner', name: 'Inner Buff', duration: innerDuration }] }),
             action('g3'), action('g4'), action('g5'), action('g6'),
         ] }
         const single = layoutInfographic(input, measurer)
@@ -147,9 +147,9 @@ describe('infographic layout plan', () => {
             primitive.kind === 'line' && primitive.role === 'buff' && primitive.points.length === 2 && primitive.points[0].y === primitive.points[1].y,
         )
         const laneY = (source: RenderPlan, ownerId: string) => horizontalLines(source).find(primitive => primitive.ownerId === ownerId)!.points[0].y
-        expect(laneY(single, 'buff-0')).toBeGreaterThan(laneY(single, 'buff-1'))
+        expect(laneY(single, 'buff-g1:0')).toBeGreaterThan(laneY(single, 'buff-g2:0'))
         for (const row of [0, 3]) {
-            expect(laneY(plan, `buff-0-row-${row}`)).toBeGreaterThan(laneY(plan, `buff-1-row-${row}`))
+            expect(laneY(plan, `buff-g1:0-row-${row}`)).toBeGreaterThan(laneY(plan, `buff-g2:0-row-${row}`))
         }
         const starts = plan.primitives.filter((primitive): primitive is LinePrimitive => primitive.kind === 'line' && primitive.role === 'buff' && primitive.id.endsWith('-start'))
         starts.forEach(start => horizontalLines(plan).filter(line => line.ownerId !== start.ownerId).forEach(line => {
@@ -160,6 +160,23 @@ describe('infographic layout plan', () => {
             expect(crosses).toBe(false)
         }))
         expect(auditRenderPlan(plan)).toEqual([])
+    })
+
+    it('renders independent statuses per occurrence with stable identities and no disabled images', () => {
+        const status = { id: 'same-id', name: 'Buff', imageSrc: '/favicon.ico', color: '#74d6b4', applicationDelay: 0, duration: 30 }
+        const first = action('multi', 'gcd', { statusesApplied: [status, { ...status, color: '#123456' }, { ...status, enabled: false, imageSrc: '/disabled.png' }] })
+        const input = { ...baseInput, rotation: [first, action('g2'), action('g3'), action('g4')] }
+        const plan = layoutInfographic(input, measurer)
+        const owners = new Set(plan.primitives.filter(primitive => primitive.ownerId?.startsWith('buff-')).map(primitive => primitive.ownerId))
+        expect(Array.from(owners).sort()).toEqual(['buff-multi:0', 'buff-multi:1'])
+        expect(plan.requiredImages).not.toContain('/disabled.png')
+        first.statusesApplied![0].enabled = false
+        const toggled = layoutInfographic(input, measurer)
+        expect(toggled.primitives.filter(primitive => primitive.ownerId?.startsWith('buff-')).every(primitive => primitive.ownerId === 'buff-multi:1')).toBe(true)
+        expect(auditRenderPlan(plan)).toEqual([])
+        const rows = layoutInfographic({ ...input, rowCount: 2 }, measurer)
+        expect(new Set(rows.primitives.map(primitive => primitive.id)).size).toBe(rows.primitives.length)
+        expect(auditRenderPlan(rows)).toEqual([])
     })
 
     it('limits rows to available GCD groups and preserves single-row edge cases', () => {
@@ -259,13 +276,13 @@ describe('infographic layout plan', () => {
                 name: 'Prepull Buff Action',
                 imageSrc: '/favicon.ico',
                 prepull: -2,
-                statusApplied: status,
+                statusesApplied: [status],
             }],
             rotation: [{ id: 'g1', instanceId: 'instance-g1', type: 'gcd', name: 'First GCD', imageSrc: '/favicon.ico' }],
         }, measurer)
         const prepullIcon = plan.primitives.find(primitive => primitive.id === 'prepull-0-image-0')
         const pullLine = plan.primitives.find((primitive): primitive is LinePrimitive => primitive.id === 'pull-line')
-        const buffStart = plan.primitives.find((primitive): primitive is LinePrimitive => primitive.id === 'buff-0-start')
+        const buffStart = plan.primitives.find((primitive): primitive is LinePrimitive => primitive.kind === 'line' && primitive.role === 'buff' && primitive.id.endsWith('-start'))
 
         expect(prepullIcon).toBeDefined()
         expect(pullLine).toBeDefined()
@@ -285,14 +302,14 @@ describe('infographic layout plan', () => {
                 name: 'Prepull Buff Action',
                 imageSrc: '/favicon.ico',
                 prepull: -5,
-                statusApplied: {
+                statusesApplied: [{
                     id: 'prepull-only-buff',
                     name: 'Prepull-only Buff',
                     imageSrc: '/favicon.ico',
                     color: '#74d6b4',
                     applicationDelay: 0,
                     duration: 20,
-                },
+                }],
             }],
         }, measurer)
 

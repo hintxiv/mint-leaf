@@ -6,18 +6,13 @@ const JOB_ACTIONS_KEY = 'mint-leaf-job-actions'
 // Version of the job-actions localStorage entry shape / semantics.
 // Changing this value forces a refresh: mismatched cache entries are ignored
 // and the list is fetched again.
-export const JOB_ACTIONS_CACHE_FORMAT = 3
+export const JOB_ACTIONS_CACHE_FORMAT = 4
 
 // Cache TTL (7 days). After a patch, use manual reload.
 export const JOB_ACTIONS_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000
 
-interface StoredJobAction {
-    id: string
-    name: string | null
+interface StoredJobAction extends Omit<JobListAction, 'icon'> {
     iconUrl: string | null
-    isPlayerAction: boolean
-    description: string | null
-    classJobLevel: number
 }
 
 export interface JobActionsCacheEntry {
@@ -68,23 +63,15 @@ const writeStore = (store: JobActionsStore): void => {
 }
 
 const toJobListActions = (actions: StoredJobAction[]): JobListAction[] =>
-    actions.map(({ id, name, iconUrl, isPlayerAction, description, classJobLevel }) => ({
-        id,
-        name,
+    actions.map(({ iconUrl, ...action }) => ({
+        ...action,
         icon: iconUrl ? new URL(iconUrl) : null,
-        isPlayerAction,
-        description,
-        classJobLevel,
     }))
 
 const toStoredActions = (actions: JobListAction[]): StoredJobAction[] =>
-    actions.map(({ id, name, icon, isPlayerAction, description, classJobLevel }) => ({
-        id,
-        name,
+    actions.map(({ icon, ...action }) => ({
+        ...action,
         iconUrl: icon ? icon.toString() : null,
-        isPlayerAction,
-        description,
-        classJobLevel,
     }))
 
 // Whether a cache entry is still within the TTL.

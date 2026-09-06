@@ -126,19 +126,20 @@ export const calculateBuffLinePositions = (
 
     icons.forEach((icon, index) => {
         if (icon.type !== 'gcd' && icon.type !== 'ogcd') return
-        if (!icon.statusApplied) return
+        ;(icon.statusesApplied ?? []).forEach((status, statusIndex) => {
+            if (status.enabled === false) return
+            const initialX = icon.x + icon.width
+            const actionTime = icon.prepull ?? interpolateTime(timeline, initialX)
+            const startTime = actionTime + (status.applicationDelay ?? 0)
+            const startX = interpolateX(timeline, startTime, finalX)
 
-        const status = icon.statusApplied
-        const initialX = icon.x + icon.width
-        const actionTime = icon.prepull ?? interpolateTime(timeline, initialX)
-        const startTime = actionTime + (status.applicationDelay ?? 0)
-        const startX = interpolateX(timeline, startTime, finalX)
-
-        buffLines.push({
-            status: status,
-            icon: iconRefs.current[index],
-            startX: startX,
-            endX: interpolateX(timeline, startTime + status.duration, finalX),
+            buffLines.push({
+                instanceKey: `${icon.instanceId}:${statusIndex}`,
+                status: status,
+                icon: iconRefs.current[index] ?? null,
+                startX: startX,
+                endX: interpolateX(timeline, startTime + status.duration, finalX),
+            })
         })
     })
 

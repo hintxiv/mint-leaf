@@ -31,14 +31,14 @@ const sampleRecord = (): RotationRecord => ({
             imageSrc: 'https://example.com/hs.png',
             recastTime: 2.5,
             castTime: 0,
-            statusApplied: {
+            statusesApplied: [{
                 id: '742',
                 name: 'Blood Weapon',
                 imageSrc: 'https://example.com/bw.png',
                 color: '#ff0000',
                 applicationDelay: 0.5,
                 duration: 15,
-            },
+            }],
         },
     ],
 })
@@ -63,8 +63,28 @@ describe('rotationRecordText', () => {
         expect(imported.rotation).toHaveLength(1)
         expect(imported.rotation[0]?.type).toBe('gcd')
         if (imported.rotation[0]?.type === 'gcd') {
-            expect(imported.rotation[0].statusApplied?.id).toBe('742')
+            expect(imported.rotation[0].statusesApplied?.[0]?.id).toBe('742')
         }
+    })
+
+    it('restores legacy single statuses from clipboard records', () => {
+        const record = sampleRecord()
+        const { statusesApplied, ...action } = record.rotation[0]
+        const payload = { format: 'mint-leaf-rotation', version: 1,
+            record: { ...record, rotation: [{ ...action, statusApplied: statusesApplied![0] }] } }
+        const imported = textToRotationRecord(JSON.stringify(payload))
+        expect(imported.rotation[0].statusesApplied).toEqual(statusesApplied)
+        expect(imported.rotation[0]).not.toHaveProperty('statusApplied')
+    })
+
+    it('preserves multiple statuses and rejects malformed status arrays', () => {
+        const record = sampleRecord()
+        const status = record.rotation[0].statusesApplied![0]
+        record.rotation[0].statusesApplied!.push({ ...status, id: '743', enabled: false })
+        expect(textToRotationRecord(rotationRecordToText(record)).rotation).toEqual(record.rotation)
+        const payload = JSON.parse(rotationRecordToText(record))
+        payload.record.rotation[0].statusesApplied = [null]
+        expect(() => textToRotationRecord(JSON.stringify(payload))).toThrow(/invalid/)
     })
 
     it('rejects an unexpected format', () => {

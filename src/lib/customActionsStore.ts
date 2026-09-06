@@ -11,6 +11,7 @@ export interface StoredCustomAction {
     isGCD: boolean;
     lateWeave?: boolean;
     appliesBuff: boolean;
+    statusesApplied?: Status[];
     buffDetails?: {
         id: string;
         name: string;

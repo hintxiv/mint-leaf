@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import styled from 'styled-components'
 import { Job } from '@/data/jobs'
+import { ActionEdit } from '@/lib/actionDefaults'
 import { Action } from '../Canvas/types'
 import { DataAction, searchForAction } from '@/app/api'
 import SearchInput from '../Abilities/SearchInput'
@@ -10,18 +11,7 @@ import { useLanguage, useTranslation } from '@/context/LanguageContext'
 import { SequenceList, SequenceListKind, SequenceSelection } from './SequenceList'
 import { SequenceDetail } from './SequenceDetail'
 import { ImportExport } from './ImportExport'
-import {
-    buffDetailsToStatus,
-    getStoredCustomAction,
-    saveCustomAction,
-    statusToBuffDetails,
-    type StoredCustomAction,
-} from '@/lib/customActionsStore'
 import { LIBRARY_TAB_GUTTER_PX } from '@/components/Library/LibraryPanel'
-
-const DEFAULT_RECAST_TIME = 2.5
-const DEFAULT_CAST_TIME = 0
-
 const Column = styled.div`
     display: flex;
     flex-direction: column;
@@ -88,81 +78,11 @@ interface EditorPanelProps {
     selection: SequenceSelection | null
     importError: boolean
     onSelect: (selection: SequenceSelection | null) => void
-    onUpdateAction: (list: SequenceListKind, index: number, next: Action) => void
+    onUpdateAction: (list: SequenceListKind, index: number, next: Action, edit?: ActionEdit) => void
     onRemoveAction: (list: SequenceListKind, index: number) => void
     onReorderAction: (list: SequenceListKind, fromIndex: number, toIndex: number) => void
     onImport: (text: string) => void
     onPaletteSelect: (dataAction: DataAction) => void
-}
-
-// Save cast/recast/buff defaults for this action id to localStorage.
-export const persistActionSettings = (action: Action) => {
-    const storedAction: StoredCustomAction = {
-        id: action.id,
-        name: action.name,
-        iconUrl: action.imageSrc,
-        isGCD: action.type === 'gcd',
-        appliesBuff: !!action.statusApplied,
-    }
-
-    if (action.type === 'gcd') {
-        storedAction.recastTime = action.recastTime
-        storedAction.castTime = action.castTime
-    } else {
-        storedAction.lateWeave = action.lateWeave
-    }
-
-    if (action.statusApplied) {
-        storedAction.buffDetails = statusToBuffDetails(action.statusApplied)
-    }
-
-    saveCustomAction(storedAction)
-}
-
-export const dataActionToDefaultAction = (dataAction: DataAction): Action => {
-    const imageSrc = dataAction.icon ? dataAction.icon.toString() : ''
-    const stored = getStoredCustomAction(dataAction.id)
-    const instanceId = crypto.randomUUID()
-
-    // No saved prefs: start as a plain GCD with default timings.
-    if (!stored) {
-        return {
-            type: 'gcd',
-            id: dataAction.id,
-            name: dataAction.name ?? '',
-            imageSrc,
-            instanceId,
-            recastTime: DEFAULT_RECAST_TIME,
-            castTime: DEFAULT_CAST_TIME,
-        }
-    }
-
-    const status = stored.appliesBuff
-        ? buffDetailsToStatus(stored.buffDetails)
-        : undefined
-
-    if (stored.isGCD) {
-        return {
-            type: 'gcd',
-            id: dataAction.id,
-            name: dataAction.name ?? stored.name,
-            imageSrc: imageSrc || stored.iconUrl,
-            instanceId,
-            recastTime: stored.recastTime ?? DEFAULT_RECAST_TIME,
-            castTime: stored.castTime ?? DEFAULT_CAST_TIME,
-            statusApplied: status,
-        }
-    }
-
-    return {
-        type: 'ogcd',
-        id: dataAction.id,
-        name: dataAction.name ?? stored.name,
-        imageSrc: imageSrc || stored.iconUrl,
-        instanceId,
-        lateWeave: stored.lateWeave ?? false,
-        statusApplied: status,
-    }
 }
 
 // Left editor strip: palette, sequence list, and optional detail pane.
@@ -194,14 +114,6 @@ export const EditorPanel = ({
             : selection.list === 'prepull'
                 ? prepullRotation[selection.index] ?? null
                 : rotation[selection.index] ?? null
-
-    const onDetailChange = useCallback(
-        (list: SequenceListKind, index: number, next: Action) => {
-            persistActionSettings(next)
-            onUpdateAction(list, index, next)
-        },
-        [onUpdateAction],
-    )
 
     return (
         <>
@@ -248,7 +160,7 @@ export const EditorPanel = ({
                         action={selectedAction}
                         list={selection.list}
                         index={selection.index}
-                        onChange={onDetailChange}
+                        onChange={onUpdateAction}
                     />
                 </DetailColumn>
             )}

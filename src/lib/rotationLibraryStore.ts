@@ -72,6 +72,7 @@ const isStatus = (value: unknown): value is Status => {
         && typeof status['color'] === 'string'
         && typeof status['applicationDelay'] === 'number'
         && typeof status['duration'] === 'number'
+        && (status['enabled'] === undefined || typeof status['enabled'] === 'boolean')
     )
 }
 
@@ -93,6 +94,11 @@ const isAction = (value: unknown): value is Action => {
         return false
     }
     if (action['statusApplied'] !== undefined && !isStatus(action['statusApplied'])) {
+        return false
+    }
+
+    if (action['statusesApplied'] !== undefined
+        && (!Array.isArray(action['statusesApplied']) || !action['statusesApplied'].every(isStatus))) {
         return false
     }
 
@@ -118,6 +124,13 @@ const isAction = (value: unknown): value is Action => {
 
 const isActionArray = (value: unknown): value is Action[] =>
     Array.isArray(value) && value.every(isAction)
+
+// Normalize legacy single-status records when reading storage or clipboard JSON.
+const normalizeAction = (action: Action): Action => {
+    const { statusApplied, ...rest } = action as Action & { statusApplied?: Status }
+    return statusApplied && rest.statusesApplied === undefined
+        ? { ...rest, statusesApplied: [statusApplied] } : rest
+}
 
 // Parse one rotation record from untrusted JSON.
 // idMode 'required': keep the payload id (localStorage).
@@ -172,8 +185,8 @@ export const parseRotationRecord = (
         level: record['level'],
         rowCount: record['rowCount'],
         rowSpacing: record['rowSpacing'] as number | null,
-        prepullRotation: record['prepullRotation'],
-        rotation: record['rotation'],
+        prepullRotation: record['prepullRotation'].map(normalizeAction),
+        rotation: record['rotation'].map(normalizeAction),
     }
 }
 
