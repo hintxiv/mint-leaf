@@ -247,8 +247,19 @@ const StatusHeader = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    padding: 8px 10px;
-    .ant-btn { flex-shrink: 0; width: 32px; padding: 0; justify-content: center; color: #adb2bf !important; }
+    padding: 8px 4px 8px 10px;
+    .ant-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 32px;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        line-height: 1;
+        color: #adb2bf !important;
+    }
+    .ant-btn svg { display: block; flex-shrink: 0; }
     .ant-btn:hover {
         border-color: transparent !important;
         background: transparent !important;
