@@ -10,12 +10,12 @@ import { Canvas } from '@/components/Canvas/Canvas'
 // Synthetic nonzero cast fixture, accessible only through the gated render-harness route.
 export const DefaultsHarness = () => {
     const [action, setAction] = useState(() => {
-        const definition = { id: 999999, names: { en: 'Synthetic spell', ja: 'テスト魔法' }, kind: 'gcd' as const,
-            baseCastTimeMs: 1800, baseGcdRecastMs: 2500, speedCategory: 'spell' as const,
-            statusCoverage: 'verified' as const, statuses: [], sourceIds: [], unresolved: [] }
+        const definition = { id: 999999, kind: 'gcd' as const,
+            baseCastTimeMs: 1800, speedCategory: 'spell' as const,
+            statuses: [] }
         catalogs.MCH.actions.push(definition)
         try {
-            return dataActionToDefaultAction({ id: '999999', name: 'Synthetic spell', icon: new URL('https://v2.xivapi.com/api/asset/test.png') }, 'MCH')
+            return dataActionToDefaultAction({ id: '999999', name: 'Synthetic spell', kind: 'gcd', baseGcdRecastMs: 2500, icon: new URL('https://v2.xivapi.com/api/asset/test.png') }, 'MCH')
         } finally { catalogs.MCH.actions.pop() }
     })
     return <div style={{ display: 'flex', height: 800 }}>

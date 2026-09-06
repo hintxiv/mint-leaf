@@ -14,57 +14,78 @@ function fixture() {
     const job = {
         schemaVersion: 1, revision: 'fixture1', job: 'MCH', level: 100, patch: 'fixture', verifiedAt: '2026-09-05',
         sources: [{ id: 'fixture', url: 'https://example.com/fixture', revision: 'fixture-commit', verifiedAt: '2026-09-05' }],
-        roleActionIds: [2], inventory: [{ id: 1, disposition: 'configured', sourceIds: ['fixture'] }, { id: 2, disposition: 'configured', sourceIds: ['fixture'] }],
-        actions: [{ id: 1, names: { en: 'Test', ja: '試験' }, kind: 'gcd', baseCastTimeMs: 0, baseGcdRecastMs: 2500, abilityCooldownMs: 20000, speedCategory: 'skill', statusCoverage: 'verified', statuses: [{ statusId: 3, durationMs: 0, applicationDelayMs: 0, defaultEnabled: false, conditions: 'direct' }], sourceIds: ['fixture'], unresolved: [] }],
+        roleActionIds: [2], inventory: [{ id: 1, disposition: 'configured' }, { id: 2, disposition: 'configured' }],
+        actions: [{ id: 1, kind: 'gcd', baseCastTimeMs: 0, gcdRecastOverrideMs: 2500, gcdRecastOverrideReason: 'Fixture exception', abilityCooldownMs: 20000, speedCategory: 'skill', statuses: [{ statusId: 3, durationMs: 0, applicationDelayMs: 0, defaultEnabled: false }] }],
     }
-    const roles = { sources: [], actions: [{ id: 2, names: { en: 'Role', ja: 'ロール' }, kind: 'ogcd', baseCastTimeMs: 0, abilityCooldownMs: 0, statusCoverage: 'verified', statuses: [], sourceIds: ['fixture'], unresolved: [] }] }
-    const statuses = { sources: [], statuses: [{ id: 3, names: { en: 'Status', ja: '状態' }, icon: '/icons/3.png', sourceIds: ['fixture'] }] }
+    const roles = { sources: [], actions: [{ id: 2, kind: 'ogcd', baseCastTimeMs: 0, abilityCooldownMs: 0, statuses: [] }] }
+    const statuses = { sources: [], statuses: [{ id: 3, icon: '/icons/3.png' }] }
     const save = () => { write(join(dir, 'jobs/MCH.json'), job); write(join(dir, 'roles.json'), roles); write(join(dir, 'statuses.json'), statuses) }
     save()
     return { dir, job, roles, statuses, save }
 }
 
-test('nested job sources resolve shared definitions, genuine zero timings and verified empty lists', () => {
+test('validates shared definitions, genuine zero timings and empty status lists', () => {
     const { dir } = fixture()
     const result = validateCatalog(dir)
     assert.deepEqual(result.errors, [])
     assert.deepEqual(result.jobs, [{ job: 'MCH', actions: 2, inventory: 2, unsupported: 0 }])
 })
 
-test('rejects duplicate IDs, broken references, missing provenance, and incomplete inventory', () => {
+test('rejects presentation and research fields in catalog data', () => {
     const f = fixture()
-    f.job.actions.push({ ...f.job.actions[0] })
-    f.job.actions[0].sourceIds = ['missing']
-    f.job.actions[0].statuses[0].statusId = 99
-    f.job.inventory.pop()
-    f.statuses.statuses[0].names.ja = ''
+    f.job.actions[0].statuses[0].conditions = 'Research commentary'
+    f.job.actions[0].statusCoverage = 'verified'
+    f.job.actions[0].notes = 'Research commentary'
+    f.job.actions[0].unresolved = []
+    f.statuses.statuses[0].names = { en: 'Status' }
+    f.job.inventory[0].sourceIds = ['fixture']
     f.save()
     const result = validateCatalog(f.dir)
     assert.equal(result.valid, false)
-    for (const fragment of ['duplicate action ID', 'unknown source missing', 'unknown status 99', 'missing Japanese', 'missing from inventory']) assert(result.errors.some(error => error.includes(fragment)), fragment)
+    for (const key of ['notes', 'unresolved', 'names', 'sourceIds', 'conditions', 'statusCoverage']) {
+        assert(result.errors.some(error => error.includes(`.${key}: field does not belong`)))
+    }
 })
 
-test('rejects invalid units, invalid dates, and undocumented delay fallback', () => {
+test('rejects duplicate IDs, broken status references, and incomplete inventory', () => {
+    const f = fixture()
+    f.job.actions.push({ ...f.job.actions[0] })
+    f.job.actions[0].statuses[0].statusId = 99
+    f.job.inventory.pop()
+    f.save()
+    const result = validateCatalog(f.dir)
+    assert.equal(result.valid, false)
+    for (const fragment of ['duplicate action ID', 'unknown status 99', 'missing from inventory']) assert(result.errors.some(error => error.includes(fragment)), fragment)
+})
+
+test('rejects invalid units and invalid dates', () => {
     const f = fixture()
     f.job.actions[0].baseCastTimeMs = -1
     f.job.actions[0].recast = 2.5
-    delete f.job.actions[0].statuses[0].applicationDelayMs
     f.job.verifiedAt = '2026-99-99'
     f.save()
     const result = validateCatalog(f.dir)
     assert.equal(result.valid, false)
-    for (const fragment of ['finite nonnegative', 'explicit millisecond', 'zero-delay fallback', 'invalid verification date']) assert(result.errors.some(error => error.includes(fragment)), fragment)
+    for (const fragment of ['finite nonnegative', 'explicit millisecond', 'invalid verification date']) assert(result.errors.some(error => error.includes(fragment)), fragment)
 })
 
-test('unknown coverage stays explicit and unsupported inventory requires a reason', () => {
+test('recast exceptions require explanations and redundant base recast fields are rejected', () => {
     const f = fixture()
-    f.job.actions[0].statusCoverage = 'unknown'
+    delete f.job.actions[0].gcdRecastOverrideReason
+    write(join(f.dir, 'jobs/MCH.json'), f.job)
+    assert.equal(validateCatalog(f.dir).valid, false)
+    delete f.job.actions[0].gcdRecastOverrideMs
+    f.job.actions[0].baseGcdRecastMs = 2500
+    write(join(f.dir, 'jobs/MCH.json'), f.job)
+    assert.equal(validateCatalog(f.dir).valid, false)
+})
+
+test('unsupported inventory requires a reason', () => {
+    const f = fixture()
     f.job.actions[0].statuses = []
-    f.job.actions[0].unresolved = ['Status evidence unavailable; preserve previously verified timings.']
-    f.job.inventory.push({ id: 4, disposition: 'unsupported', reason: 'Pet schedule requires simulation', sourceIds: ['fixture'] })
+    f.job.inventory.push({ id: 4, disposition: 'unsupported', reason: 'Pet schedule requires simulation' })
     f.save()
     assert.equal(validateCatalog(f.dir).valid, true)
-    assert(validateCatalog(f.dir).warnings.some(warning => warning.includes('unknown status coverage')))
     delete f.job.inventory[2].reason
     f.save()
     assert.equal(validateCatalog(f.dir).valid, false)
@@ -123,9 +144,9 @@ test('report does not claim complete without actual recorded checks or with miss
     write(evidenceFile, { complete: true, checks, gaps: [] })
     assert.equal(run().outcome, 'no-change')
     const data = JSON.parse(readFileSync(join(f.repo, 'src/data/actionCatalog/jobs/MCH.json')))
-    data.actions[0].baseGcdRecastMs = 2450
+    data.actions[0].gcdRecastOverrideMs = 2450
     write(join(f.repo, 'src/data/actionCatalog/jobs/MCH.json'), data)
-    assert.equal(run().changes[0].fields[0].field, 'baseGcdRecastMs')
+    assert.equal(run().changes[0].fields[0].field, 'gcdRecastOverrideMs')
     write(evidenceFile, { complete: false, checks, gaps: ['XIVAPI status unavailable; old identity preserved'] })
     assert.equal(run().outcome, 'incomplete')
     assert.equal(run().sources.length, 1)

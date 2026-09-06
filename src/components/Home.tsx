@@ -10,7 +10,7 @@ import { Job, jobs } from '../data/jobs'
 import { Title } from './Title/Title'
 import { MetaBar } from './MetaBar/MetaBar'
 import { EditorPanel } from './Editor/EditorPanel'
-import { ActionEdit, applySharedRecast, dataActionToDefaultAction, saveActionEdit } from '@/lib/actionDefaults'
+import { ActionEdit, applySharedRecast, dataActionToDefaultAction, resolveActionTiming, saveActionEdit } from '@/lib/actionDefaults'
 import { SequenceListKind, SequenceSelection } from './Editor/SequenceList'
 import { CanvasActionsBar } from './Canvas/CanvasActionsBar'
 import { CanvasPreviewModal } from './Canvas/CanvasPreviewModal'
@@ -19,7 +19,8 @@ import { useTranslation } from '@/context/LanguageContext'
 import { getJobName } from '@/lib/jobs'
 import { DataAction } from '@/app/api'
 import { type RotationRecord } from '@/lib/rotationLibraryStore'
-import { findCatalogAction, matchingGcdGroup } from '@/data/actionCatalog'
+import { matchingGcdGroup } from '@/data/actionCatalog'
+import { applyStatusNames, loadStatusNames } from '@/lib/statusNames'
 
 const Container = styled.div`
     display: flex;
@@ -80,6 +81,20 @@ export const Home = ({ discordAuth }: HomeProps) => {
     const [previewImageSrc, setPreviewImageSrc] = useState<string | null>(null)
     const [renderReady, setRenderReady] = useState(false)
     const canvasRef = useRef<HTMLCanvasElement>(null)
+
+    const pendingStatusIds = JSON.stringify(Array.from(new Set([...prepullRotation, ...rotation]
+        .flatMap(action => (action.statusesApplied ?? []).filter(status => !status.name).map(status => status.id)))).sort())
+    useEffect(() => {
+        const ids: string[] = JSON.parse(pendingStatusIds)
+        if (!ids.length) return
+        let cancelled = false
+        void loadStatusNames(ids, locale).then(names => {
+            if (cancelled) return
+            setRotation(current => applyStatusNames(current, names))
+            setPrepullRotation(current => applyStatusNames(current, names))
+        })
+        return () => { cancelled = true }
+    }, [pendingStatusIds, locale])
 
     const onRenderStateChange = useCallback((state: CanvasRenderState) => {
         setRenderReady(state.status === 'ready')
@@ -269,7 +284,7 @@ export const Home = ({ discordAuth }: HomeProps) => {
 
             const jobKey = Object.keys(jobs).find(key => jobs[key].id === job.id) ?? ''
             const imported = parsedRotation.map(action => ({ ...action, defaults: {
-                ...action.defaults, job: jobKey, gcdGroup: matchingGcdGroup(jobKey, findCatalogAction(jobKey, action.id) ?? { kind: action.defaults?.originalKind, baseGcdRecastMs: action.defaults?.baseGcdRecastMs }), recastSource: 'import' as const,
+                ...action.defaults, job: jobKey, gcdGroup: matchingGcdGroup(jobKey, resolveActionTiming(jobKey, { id: action.id, kind: action.defaults?.originalKind, baseGcdRecastMs: action.defaults?.baseGcdRecastMs })), recastSource: 'import' as const,
             } }))
             setRotation(imported.filter(action => action.prepull === undefined))
             setPrepullRotation(

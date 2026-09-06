@@ -61,6 +61,16 @@ export const legacyOverrides = (id: string): ActionOverrides => {
 const overridesFor = (preferences: Preferences, job: string, id: string): ActionOverrides =>
     preferences.actions[actionKey(job, id)] ?? legacyOverrides(id)
 
+// Catalog entries contain mechanics exceptions, while API metadata supplies base timing.
+export const resolveActionTiming = (job: string, data: Partial<DataAction> & { id: string }) => {
+    const definition = findCatalogAction(job, data.id)
+    return {
+        kind: definition?.kind ?? data.kind,
+        baseGcdRecastMs: definition?.gcdRecastOverrideMs ?? data.baseGcdRecastMs,
+        baseCastTimeMs: definition?.baseCastTimeMs ?? data.baseCastTimeMs,
+    }
+}
+
 export const dataActionToDefaultAction = (
     data: DataAction,
     job = '',
@@ -71,12 +81,12 @@ export const dataActionToDefaultAction = (
     const catalog = catalogs[job]
     const overrides = overridesFor(preferences, job, data.id)
     const legacy = getStoredCustomAction(data.id)
-    const timing = definition ?? data
+    const timing = resolveActionTiming(job, data)
     const group = matchingGcdGroup(job, timing)
     const statuses: Status[] = (definition?.statuses ?? []).flatMap(association => {
         const status = catalogStatuses.find(item => item.id === association.statusId)
         return status ? [{
-            id: String(status.id), name: status.names[locale], imageSrc: status.icon,
+            id: String(status.id), name: '', imageSrc: status.icon,
             color: '#74d6b4', enabled: association.defaultEnabled ?? true,
             duration: association.durationMs / 1000,
             applicationDelay: (association.applicationDelayMs ?? 0) / 1000,
@@ -84,16 +94,16 @@ export const dataActionToDefaultAction = (
     })
     const common = {
         id: data.id,
-        name: overrides.name ?? data.name ?? definition?.names[locale] ?? legacy?.name ?? '',
+        name: overrides.name ?? data.name ?? legacy?.name ?? '',
         imageSrc: data.icon?.toString() ?? legacy?.iconUrl ?? '',
         instanceId: crypto.randomUUID(),
         statusesApplied: structuredClone(overrides.statusesApplied ?? statuses).map(status => {
             const presentation = catalogStatuses.find(item => String(item.id) === status.id)
-            return presentation ? { ...status, name: presentation.names[locale], imageSrc: presentation.icon } : status
+            return presentation ? { ...status, name: '', imageSrc: presentation.icon } : status
         }),
         defaults: {
             job, catalogRevision: definition ? catalog?.revision : undefined, gcdGroup: group,
-            originalName: data.name ?? definition?.names[locale] ?? legacy?.name ?? '',
+            originalName: data.name ?? legacy?.name ?? '',
             baseGcdRecastMs: timing.baseGcdRecastMs, baseCastTimeMs: timing.baseCastTimeMs,
             originalKind: timing.kind,
             recastSource: overrides.recastTime !== undefined ? 'action' as const : 'inherited' as const,
@@ -123,9 +133,9 @@ export const saveActionEdit = (previous: Action, next: Action, job: string, loca
     const scope = previous.defaults?.job || job
     const key = actionKey(scope, next.id)
     const overrides = { ...overridesFor(preferences, scope, next.id) }
-    const group = previous.defaults?.gcdGroup ?? matchingGcdGroup(scope, findCatalogAction(scope, next.id))
+    const group = previous.defaults?.gcdGroup ?? matchingGcdGroup(scope, resolveActionTiming(scope, { id: next.id, kind: previous.defaults?.originalKind, baseGcdRecastMs: previous.defaults?.baseGcdRecastMs }))
     let shared: { group: string; value: number } | undefined
-    const identity = { id: next.id, name: next.defaults?.originalName ?? findCatalogAction(scope, next.id)?.names[locale] ?? next.name,
+    const identity = { id: next.id, name: next.defaults?.originalName ?? next.name,
         kind: next.defaults?.originalKind, baseGcdRecastMs: next.defaults?.baseGcdRecastMs, baseCastTimeMs: next.defaults?.baseCastTimeMs, icon: next.imageSrc ? new URL(next.imageSrc, 'http://localhost') : null }
     if (edit === 'reset' || edit === 'reset-recast') {
         if (edit === 'reset') {
@@ -170,7 +180,7 @@ export const saveActionEdit = (previous: Action, next: Action, job: string, loca
         preferences.sharedGcds[shared.group] = shared.value
         const cachedActions = getCachedJobActions(scope, locale)?.actions ?? []
         const groupFor = (id: string) => matchingGcdGroup(scope,
-            findCatalogAction(scope, id) ?? cachedActions.find(action => action.id === id))
+            resolveActionTiming(scope, cachedActions.find(action => action.id === id) ?? { id }))
         // Preserve other legacy fields, while removing recast exceptions in the shared group.
         for (const id of Object.keys(getStoredCustomActions())) {
             const savedKey = actionKey(scope, id)
@@ -180,7 +190,7 @@ export const saveActionEdit = (previous: Action, next: Action, job: string, loca
         }
         for (const [savedKey, saved] of Object.entries(preferences.actions)) {
             const [savedJob, savedId] = savedKey.split(':')
-            const savedGroup = preferences.recastGroups?.[savedKey] ?? (savedJob === scope ? groupFor(savedId) : matchingGcdGroup(savedJob, findCatalogAction(savedJob, savedId)))
+            const savedGroup = preferences.recastGroups?.[savedKey] ?? (savedJob === scope ? groupFor(savedId) : matchingGcdGroup(savedJob, resolveActionTiming(savedJob, getCachedJobActions(savedJob, locale)?.actions.find(action => action.id === savedId) ?? { id: savedId })))
             if (savedGroup === shared.group) delete saved.recastTime
         }
     }

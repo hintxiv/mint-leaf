@@ -1,7 +1,6 @@
 import { getActionByID, getStatusByID } from '@/app/api'
 import { Locale } from '@/context/LanguageContext'
 import { Action, Status } from '../components/Canvas/types'
-import { catalogStatuses } from '@/data/actionCatalog'
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value))
 const number = (value: string | undefined, max: number, min = 0): number => {
@@ -27,8 +26,7 @@ const parseStatus = async (section: string, language: Locale): Promise<Status> =
     if ((marker !== undefined && marker !== 'disabled') || !/^#[\da-f]{6}$/i.test(color)) throw new Error('Invalid status settings')
     const applicationDelay = number(delay, 30)
     const durationSeconds = number(duration, 999)
-    const bundled = catalogStatuses.find(status => String(status.id) === id)
-    const data = bundled ? { name: bundled.names[language], icon: bundled.icon } : await getStatusByID(id, language)
+    const data = await getStatusByID(id, language)
     return { id, name: data.name ?? '', imageSrc: data.icon?.toString() ?? '', color,
         applicationDelay, duration: durationSeconds, enabled: marker !== 'disabled' }
 }

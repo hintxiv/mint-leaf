@@ -3,185 +3,63 @@
   "statuses": [
     {
       "id": 13,
-      "names": {
-        "en": "Bind",
-        "ja": "バインド"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215003_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja",
-        "xivsloth-pve-role-statuses"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215003_hr1.tex&format=png"
     },
     {
       "id": 14,
-      "names": {
-        "en": "Heavy",
-        "ja": "ヘヴィ"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215002_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja",
-        "xivsloth-pve-role-statuses"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215002_hr1.tex&format=png"
     },
     {
       "id": 851,
-      "names": {
-        "en": "Reassembled",
-        "ja": "整備"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213001_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213001_hr1.tex&format=png"
     },
     {
       "id": 860,
-      "names": {
-        "en": "Dismantled",
-        "ja": "ウェポンブレイク"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213009_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213009_hr1.tex&format=png"
     },
     {
       "id": 861,
-      "names": {
-        "en": "Wildfire",
-        "ja": "ワイルドファイア"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213011_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213011_hr1.tex&format=png"
     },
     {
       "id": 1199,
-      "names": {
-        "en": "Peloton",
-        "ja": "プロトン"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213908_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213908_hr1.tex&format=png"
     },
     {
       "id": 1205,
-      "names": {
-        "en": "Flamethrower",
-        "ja": "フレイムスロアー"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213017_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213017_hr1.tex&format=png"
     },
     {
       "id": 1209,
-      "names": {
-        "en": "Arm's Length",
-        "ja": "アームズレングス"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213915_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213915_hr1.tex&format=png"
     },
     {
       "id": 1866,
-      "names": {
-        "en": "Bioblaster",
-        "ja": "バイオブラスト"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213020_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213020_hr1.tex&format=png"
     },
     {
       "id": 1946,
-      "names": {
-        "en": "Wildfire",
-        "ja": "ワイルドファイア"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213019_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213019_hr1.tex&format=png"
     },
     {
       "id": 1951,
-      "names": {
-        "en": "Tactician",
-        "ja": "タクティシャン"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213021_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213021_hr1.tex&format=png"
     },
     {
       "id": 2688,
-      "names": {
-        "en": "Overheated",
-        "ja": "オーバーヒート"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218385_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218385_hr1.tex&format=png"
     },
     {
       "id": 3864,
-      "names": {
-        "en": "Hypercharged",
-        "ja": "ハイパーチャージ実行可"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213022_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213022_hr1.tex&format=png"
     },
     {
       "id": 3865,
-      "names": {
-        "en": "Excavator Ready",
-        "ja": "エクスカベーター実行可"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213023_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213023_hr1.tex&format=png"
     },
     {
       "id": 3866,
-      "names": {
-        "en": "Full Metal Machinist",
-        "ja": "フルメタルバースト実行可"
-      },
-      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213024_hr1.tex&format=png",
-      "sourceIds": [
-        "xivapi-status-en",
-        "xivapi-status-ja"
-      ]
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213024_hr1.tex&format=png"
     }
   ]
 }

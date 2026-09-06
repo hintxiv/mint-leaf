@@ -18,7 +18,7 @@ async function setup(page: Page) {
         if (url.pathname.includes('/asset/')) return route.fulfill({ contentType: 'image/png', body: icon })
         if (url.pathname.includes('/sheet/')) {
             const id = url.pathname.split('/').pop()!
-            return route.fulfill({ json: { fields: { Name: actions.find(action => action.id === id)?.name ?? 'Fixture', Icon: { path_hr1: 'ui/icon/test.tex' } } } })
+            return route.fulfill({ json: { fields: { Name: url.pathname.includes('/Status/') ? ({ '851': 'API Reassembled', '3864': 'API Hypercharged', '3866': 'API Full Metal Machinist' }[id] ?? 'API status') : actions.find(action => action.id === id)?.name ?? 'Fixture', Icon: { path_hr1: 'ui/icon/test.tex' }, ActionCategory: { row_id: ['7541', '2876', '7414'].includes(id) ? 4 : 3 }, Recast100ms: id === '16498' ? 200 : 25, Cast100ms: 0 } } })
         }
         const query = url.searchParams.get('query') ?? ''
         const status = url.searchParams.get('sheets') === 'Status'
@@ -26,6 +26,7 @@ async function setup(page: Page) {
             ? actions.filter(action => query.toLowerCase().includes(action.name.toLowerCase())) : actions
         return route.fulfill({ json: { results: list.map(action => ({ row_id: Number(action.id), sheet: status ? 'Status' : 'Action', fields: {
             Name: action.name, Icon: { path_hr1: 'ui/icon/test.tex' }, ClassJobLevel: action.level, IsPlayerAction: true,
+            IsRoleAction: action.id === '7541', ActionCategory: { row_id: action.id === '7541' ? 4 : 2 }, Recast100ms: action.id === '16498' ? 200 : 25, Cast100ms: 0,
         } })), version: 'fixture-version', schema: 'fixture-schema' } })
     })
     await page.addInitScript(({ actions }) => {
@@ -80,6 +81,7 @@ test('library and search share inherited GCDs across prepull, existing and futur
 test('multiple independent status rows persist edits and render in preview and PNG', async ({ page }) => {
     await setup(page)
     await add(page, 'Reassemble')
+    await expect(page.getByRole('checkbox', { name: 'API Reassembled', exact: true })).toBeChecked()
     await expect(page.getByRole('switch')).not.toBeChecked()
     await expect(page.getByTestId('status-row')).toHaveCount(1)
     await page.getByRole('button', { name: 'Add status', exact: true }).click()
@@ -122,19 +124,19 @@ test('multiple independent status rows persist edits and render in preview and P
     await expect(page.getByTestId('status-row').nth(1).locator('input[type=color]')).toHaveValue('#cc33ee')
 })
 
-test('automatic multiple readiness statuses and imported timing exceptions', async ({ page }) => {
+test('API readiness status names and shared recasts for imported actions', async ({ page }) => {
     await setup(page)
     await add(page, 'Barrel Stabilizer')
     await expect(page.getByTestId('status-row')).toHaveCount(2)
-    await expect(page.getByRole('checkbox', { name: 'Hypercharged', exact: true })).toBeChecked()
-    await expect(page.getByRole('checkbox', { name: 'Full Metal Machinist', exact: true })).toBeChecked()
+    await expect(page.getByRole('checkbox', { name: 'API Hypercharged', exact: true })).toBeChecked()
+    await expect(page.getByRole('checkbox', { name: 'API Full Metal Machinist', exact: true })).toBeChecked()
     const text = await exported(page)
     await text.fill('7411 GCD 2.1 1.8 [3864 0 30 #123456 disabled] [3866 0 30 #abcdef]')
     await page.getByRole('button', { name: 'Apply import', exact: true }).click()
     await add(page, 'Heated Slug Shot')
     await recast(page).fill('2.45')
     await recast(page).blur()
-    await expect(text).toHaveValue('7411 GCD 2.1 1.8 [3864 0 30 #123456 disabled] [3866 0 30 #abcdef]\n7412 GCD 2.45 0')
+    await expect(text).toHaveValue('7411 GCD 2.45 1.8 [3864 0 30 #123456 disabled] [3866 0 30 #abcdef]\n7412 GCD 2.45 0')
     await expect(page.locator('canvas')).toHaveAttribute('data-render-state', 'ready')
 })
 

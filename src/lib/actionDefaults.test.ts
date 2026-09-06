@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { dataActionToDefaultAction, applySharedRecast, saveActionEdit, readPreferences, PREFERENCES_KEY } from './actionDefaults'
+import { applyStatusNames, loadStatusNames } from './statusNames'
+vi.mock('@/app/api', () => ({ getStatusByID: vi.fn(async (id: string, locale: string) => ({ id, name: `${locale} status ${id}` })) }))
 import { catalogs } from '@/data/actionCatalog'
 import { setCachedJobActions, getCachedJobActions } from './jobActionsStore'
 import type { Action } from '@/components/Canvas/types'
 
-const data = (id = '7411') => ({ id, name: 'Cached name', icon: new URL('https://example.test/action.png') })
+const data = (id = '7411') => ({ id, name: 'Cached name', icon: new URL('https://example.test/action.png'), kind: 'gcd' as const, baseGcdRecastMs: 2500, baseCastTimeMs: 0 })
 const add = (id = '7411', job = 'MCH') => dataActionToDefaultAction(data(id), job)
 beforeEach(() => {
     const storage = new Map<string, string>()
@@ -18,16 +20,16 @@ beforeEach(() => {
 
 describe('action defaults and explicit preferences', () => {
     it('prefills by ID without writing settings; preserves zero and casts with synthetic metadata', () => {
-        const synthetic = { id: 999999, names: { en: 'Spell', ja: '魔法' }, kind: 'gcd' as const,
-            baseCastTimeMs: 1800, baseGcdRecastMs: 0, speedCategory: 'spell' as const,
-            statusCoverage: 'verified' as const, statuses: [], sourceIds: [], unresolved: [] }
+        const synthetic = { id: 999999, kind: 'gcd' as const,
+            baseCastTimeMs: 1800, gcdRecastOverrideMs: 0, gcdRecastOverrideReason: 'Synthetic zero', speedCategory: 'spell' as const,
+            statuses: [] }
         catalogs.MCH.actions.push(synthetic)
         try {
             expect(add('999999')).toMatchObject({ type: 'gcd', recastTime: 0, castTime: 1.8 })
             expect(localStorage.getItem(PREFERENCES_KEY)).toBeNull()
             expect(add('custom-999999')).toMatchObject({ type: 'gcd', recastTime: 2.5, castTime: 0 })
-            delete (synthetic as { baseGcdRecastMs?: number }).baseGcdRecastMs
-            expect(add('999999').defaults?.gcdGroup).toBeUndefined()
+            delete (synthetic as { gcdRecastOverrideMs?: number }).gcdRecastOverrideMs
+            expect(add('999999').defaults?.gcdGroup).toBe('MCH:2500')
         } finally { catalogs.MCH.actions.pop() }
     })
 
@@ -65,6 +67,17 @@ describe('action defaults and explicit preferences', () => {
         expect(add()).toMatchObject({ recastTime: 2.45 })
     })
 
+    it('uses API base recasts except for documented mechanics and never treats an ability cooldown as a GCD', () => {
+        const make = (id: string, baseGcdRecastMs?: number, kind: 'gcd' | 'ogcd' = 'gcd') =>
+            dataActionToDefaultAction({ ...data(id), kind, baseGcdRecastMs }, 'MCH')
+        expect(make('7411', 2400)).toMatchObject({ recastTime: 2.4, defaults: { gcdGroup: 'MCH:2400' } })
+        expect(make('7411', 0)).toMatchObject({ recastTime: 0 })
+        expect(make('7411')).toMatchObject({ recastTime: 2.5, defaults: { gcdGroup: undefined } })
+        expect(make('16497', 2500)).toMatchObject({ recastTime: 1.5, defaults: { gcdGroup: 'MCH:1500' } })
+        expect(make('16498', 20000)).toMatchObject({ recastTime: 2.5, defaults: { gcdGroup: 'MCH:2500' } })
+        expect(make('7418', undefined, 'ogcd')).toMatchObject({ type: 'gcd', recastTime: 2.5, defaults: { gcdGroup: undefined } })
+    })
+
     it('turns sharing off, saves only edited fields, and resets recast to inherited', () => {
         const first = add()
         const specific = saveActionEdit(first, first, 'MCH', 'en', 'specific').action
@@ -98,13 +111,13 @@ describe('action defaults and explicit preferences', () => {
         expect(add()).toMatchObject({ recastTime: 2.5, statusesApplied: [] })
     })
 
-    it('localizes future status presentation without losing edited colors or timings', () => {
-        const first = add('2876')
+    it('localizes future status presentation without losing edited colors or timings', async () => {
+        const first = applyStatusNames([add('2876')], await loadStatusNames(['851'], 'en'))[0]
         const status = { ...first.statusesApplied![0], color: '#abcdef', duration: 3, enabled: false }
         saveActionEdit(first, { ...first, statusesApplied: [status] }, 'MCH', 'en')
-        const japanese = dataActionToDefaultAction(data('2876'), 'MCH', 'ja')
-        expect(japanese.statusesApplied![0]).toMatchObject({ name: '整備', color: '#abcdef', duration: 3, enabled: false })
-        expect(first.statusesApplied![0].name).toBe('Reassembled')
+        const japanese = applyStatusNames([dataActionToDefaultAction(data('2876'), 'MCH', 'ja')], await loadStatusNames(['851'], 'ja'))[0]
+        expect(japanese.statusesApplied![0]).toMatchObject({ name: 'ja status 851', color: '#abcdef', duration: 3, enabled: false })
+        expect(first.statusesApplied![0].name).toBe('en status 851')
     })
 
     it('keeps independent toggles and edited status settings on future additions', () => {

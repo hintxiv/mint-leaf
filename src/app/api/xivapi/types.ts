@@ -13,7 +13,7 @@ export interface DataStatus {
     icon: URL | null
 }
 
-// XIVAPI expresses timing in tenths of a second. Catalog mechanics take precedence.
+// XIVAPI expresses timing in tenths of a second. Catalog mechanics exceptions are resolved separately.
 export const actionTimingFromFields = (fields: {
     ActionCategory?: { row_id?: number }
     Recast100ms?: number
