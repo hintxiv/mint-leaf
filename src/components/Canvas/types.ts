@@ -5,6 +5,7 @@ export interface Status {
     color: string;
     applicationDelay: number;
     duration: number;
+    enabled?: boolean;
 }
 
 interface BaseAction {
@@ -15,7 +16,13 @@ interface BaseAction {
     instanceId: string;
     /* The number of seconds before the pull to use this action */
     prepull?: number;
-    statusApplied?: Status;
+    statusesApplied?: Status[];
+    defaults?: {
+        job: string;
+        catalogRevision?: string;
+        gcdGroup?: string;
+        recastSource: 'inherited' | 'action' | 'import';
+    };
 }
 
 export interface GCD extends BaseAction {
@@ -65,6 +72,7 @@ export interface CanvasIconOther extends BaseCanvasIcon {
 export type CanvasIcon = CanvasGCD | CanvasoGCD | CanvasIconWeaveSlot | CanvasIconOther;
 
 export interface CanvasBuffLine {
+    instanceKey: string;
     status: Status;
     icon: HTMLImageElement | null;
     startX: number;

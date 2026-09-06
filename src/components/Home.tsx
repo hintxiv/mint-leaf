@@ -3,13 +3,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, CanvasRenderState } from './Canvas/Canvas'
 import styled from 'styled-components'
-import { Action, Status } from './Canvas/types'
+import { Action } from './Canvas/types'
 import { normalizeRowCount, rotationGroupStarts } from './Canvas/rotationRows'
 import { textToRotation } from '../lib/parseRotation'
 import { Job, jobs } from '../data/jobs'
 import { Title } from './Title/Title'
 import { MetaBar } from './MetaBar/MetaBar'
-import { EditorPanel, dataActionToDefaultAction, persistActionSettings } from './Editor/EditorPanel'
+import { EditorPanel } from './Editor/EditorPanel'
+import { ActionEdit, applySharedRecast, dataActionToDefaultAction, saveActionEdit } from '@/lib/actionDefaults'
 import { SequenceListKind, SequenceSelection } from './Editor/SequenceList'
 import { CanvasActionsBar } from './Canvas/CanvasActionsBar'
 import { CanvasPreviewModal } from './Canvas/CanvasPreviewModal'
@@ -18,6 +19,7 @@ import { useTranslation } from '@/context/LanguageContext'
 import { getJobName } from '@/lib/jobs'
 import { DataAction } from '@/app/api'
 import { type RotationRecord } from '@/lib/rotationLibraryStore'
+import { findCatalogAction, matchingGcdGroup } from '@/data/actionCatalog'
 
 const Container = styled.div`
     display: flex;
@@ -132,9 +134,7 @@ export const Home = ({ discordAuth }: HomeProps) => {
     }, [localeReady]) // eslint-disable-line react-hooks/exhaustive-deps -- run once when locale is ready
 
     // Append an action from search/palette (prepull list if it has a prepull time)
-    const addAction = useCallback((action: Action, status?: Status) => {
-        const nextAction = status ? { ...action, statusApplied: status } : action
-        persistActionSettings(nextAction)
+    const addAction = useCallback((nextAction: Action) => {
 
         if (nextAction.prepull !== undefined) {
             setPrepullRotation((current) => sortPrepull([...current, nextAction]))
@@ -147,8 +147,8 @@ export const Home = ({ discordAuth }: HomeProps) => {
     // Palette pick: add to rotation and select the new trailing item
     const onPaletteSelect = useCallback((dataAction: DataAction) => {
         setSelection({ list: 'rotation', index: rotation.length })
-        addAction(dataActionToDefaultAction(dataAction))
-    }, [addAction, rotation.length])
+        addAction(dataActionToDefaultAction(dataAction, Object.keys(jobs).find(key => jobs[key].id === job.id), locale))
+    }, [addAction, rotation.length, job, locale])
 
     // Remove one action; keep selection valid for the same list
     const removeAction = useCallback((list: SequenceListKind, index: number) => {
@@ -226,36 +226,28 @@ export const Home = ({ discordAuth }: HomeProps) => {
         list: SequenceListKind,
         index: number,
         next: Action,
+        edit: ActionEdit = 'edit',
     ) => {
-        const willBePrepull = next.prepull !== undefined
-        let nextSelection: SequenceSelection = { list, index }
-
-        if (list === 'rotation' && willBePrepull) {
-            const updatedPrepull = sortPrepull([...prepullRotation, next])
-            const nextIndex = updatedPrepull.indexOf(next)
-            setRotation((current) => current.filter((_, i) => i !== index))
-            setPrepullRotation(updatedPrepull)
-            nextSelection = { list: 'prepull', index: Math.max(0, nextIndex) }
-        } else if (list === 'prepull' && !willBePrepull) {
-            const nextIndex = rotation.length
-            setPrepullRotation((current) => current.filter((_, i) => i !== index))
-            setRotation((current) => [...current, next])
-            nextSelection = { list: 'rotation', index: nextIndex }
-        } else if (list === 'prepull') {
-            const updatedPrepull = sortPrepull(
-                prepullRotation.map((action, i) => (i === index ? next : action)),
-            )
-            const nextIndex = updatedPrepull.indexOf(next)
-            setPrepullRotation(updatedPrepull)
-            nextSelection = { list: 'prepull', index: Math.max(0, nextIndex) }
+        const previous = (list === 'prepull' ? prepullRotation : rotation)[index]
+        if (!previous) return
+        const result = saveActionEdit(previous, next, Object.keys(jobs).find(key => jobs[key].id === job.id) ?? '', locale, edit)
+        next = result.action
+        let prepull = prepullRotation.filter(action => action.instanceId !== previous.instanceId)
+        let main = rotation.filter(action => action.instanceId !== previous.instanceId)
+        const target = next.prepull !== undefined ? 'prepull' : 'rotation'
+        if (target === 'prepull') {
+            prepull = sortPrepull([...prepull, next])
         } else {
-            setRotation((current) => current.map((action, i) => (i === index ? next : action)))
+            main.splice(list === 'rotation' ? index : main.length, 0, next)
         }
-
-        if (nextSelection.list !== list || nextSelection.index !== index) {
-            setSelection(nextSelection)
+        if (result.shared) {
+            prepull = applySharedRecast(prepull, result.shared.group, result.shared.value)
+            main = applySharedRecast(main, result.shared.group, result.shared.value)
         }
-    }, [prepullRotation, rotation])
+        setPrepullRotation(prepull)
+        setRotation(main)
+        setSelection({ list: target, index: (target === 'prepull' ? prepull : main).findIndex(action => action.instanceId === next.instanceId) })
+    }, [prepullRotation, rotation, job, locale])
 
     // Parse import text into prepull + rotation lists
     const importRotationText = useCallback(async (text: string) => {
@@ -275,16 +267,20 @@ export const Home = ({ discordAuth }: HomeProps) => {
                 return
             }
 
-            setRotation(parsedRotation.filter((action) => !action.prepull))
+            const jobKey = Object.keys(jobs).find(key => jobs[key].id === job.id) ?? ''
+            const imported = parsedRotation.map(action => ({ ...action, defaults: {
+                job: jobKey, gcdGroup: matchingGcdGroup(jobKey, findCatalogAction(jobKey, action.id)), recastSource: 'import' as const,
+            } }))
+            setRotation(imported.filter(action => action.prepull === undefined))
             setPrepullRotation(
-                sortPrepull(parsedRotation.filter((action) => action.prepull)),
+                sortPrepull(imported.filter(action => action.prepull !== undefined)),
             )
             setSelection(null)
             setImportError(false)
         } catch {
             setImportError(true)
         }
-    }, [locale])
+    }, [locale, job])
 
     // Download the canvas as a PNG
     const exportInfographic = () => {

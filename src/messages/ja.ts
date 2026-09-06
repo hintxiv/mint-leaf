@@ -28,6 +28,17 @@ export const ja: Messages = {
         },
     },
     editor: {
+        recastScope: 'リキャスト設定',
+        shareGcd: '同じGCDに適用',
+        sharedValue: '共有値',
+        specificValue: 'アクション固有の値',
+        resetRecast: '継承したリキャストに戻す',
+        statuses: 'ステータス',
+        statusSettings: '設定',
+        statusColor: '色',
+        addStatus: 'ステータスを追加',
+        resetDefaults: 'デフォルトに戻す',
+
         palette: 'ジョブスキル',
         sequence: 'シーケンス',
         prepull: '事前プル',

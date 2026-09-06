@@ -26,6 +26,17 @@ export const en = {
         },
     },
     editor: {
+        recastScope: 'Recast setting',
+        shareGcd: 'Use for matching GCDs',
+        sharedValue: 'Shared value',
+        specificValue: 'Action-specific value',
+        resetRecast: 'Reset to inherited recast',
+        statuses: 'Statuses',
+        statusSettings: 'Settings',
+        statusColor: 'Color',
+        addStatus: 'Add status',
+        resetDefaults: 'Reset to defaults',
+
         palette: 'Job skills',
         sequence: 'Sequence',
         prepull: 'Prepull',

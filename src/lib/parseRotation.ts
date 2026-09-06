@@ -1,129 +1,63 @@
 import { getActionByID, getStatusByID } from '@/app/api'
 import { Locale } from '@/context/LanguageContext'
-import { Action, GCD, Status, oGCD } from '../components/Canvas/types'
+import { Action, Status } from '../components/Canvas/types'
+import { catalogStatuses } from '@/data/actionCatalog'
 
-// Helper function to clamp numeric values to valid ranges
-const clamp = (value: number, min: number, max: number): number => {
-    return Math.max(min, Math.min(max, value));
+const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value))
+const number = (value: string | undefined, max: number, min = 0): number => {
+    if (!value || !/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value) || !Number.isFinite(Number(value))) throw new Error('Invalid timing')
+    return clamp(Number(value), min, max)
 }
 
-export const rotationToText = (rotation: Action[]): string => {
-    return rotation.reduce((text: string, action: Action) => {
-        const textSoFar = `${text ? text + '\n' : ''}${action.prepull ? action.prepull + ' ' : ''}${action.id} ${action.type === 'gcd' ? 'GCD' : 'oGCD'} ${action.type === 'gcd' ? (action.recastTime ?? 0) + ' ' : ''}${action.type === 'gcd' ? (action.castTime ?? 0) : ''}${action.type === 'ogcd' ? (action.lateWeave ? 'lateWeave' : 'normal') : ''}`
-        
-        if (action.statusApplied) {
-            return `${textSoFar} [${action.statusApplied.id} ${action.statusApplied.applicationDelay} ${action.statusApplied.duration} ${action.statusApplied.color}]`;
-        }
-        
-        return textSoFar;
-    }, '');
+export const rotationToText = (rotation: Action[]): string => rotation.map(action => {
+    const prefix = action.prepull !== undefined ? `${action.prepull} ` : ''
+    const timing = action.type === 'gcd'
+        ? `GCD ${action.recastTime ?? 2.5} ${action.castTime ?? 0}`
+        : `oGCD ${action.lateWeave ? 'lateWeave' : 'normal'}`
+    const statuses = (action.statusesApplied ?? []).map(status =>
+        ` [${status.id} ${status.applicationDelay} ${status.duration} ${status.color}${status.enabled === false ? ' disabled' : ''}]`,
+    ).join('')
+    return `${prefix}${action.id} ${timing}${statuses}`
+}).join('\n')
+
+const parseStatus = async (section: string, language: Locale): Promise<Status> => {
+    const tokens = section.trim().split(/[ ,]+/)
+    if (tokens.length !== 4 && tokens.length !== 5) throw new Error('Invalid status')
+    const [id, delay, duration, color, marker] = tokens
+    if ((marker !== undefined && marker !== 'disabled') || !/^#[\da-f]{6}$/i.test(color)) throw new Error('Invalid status settings')
+    const applicationDelay = number(delay, 30)
+    const durationSeconds = number(duration, 999)
+    const bundled = catalogStatuses.find(status => String(status.id) === id)
+    const data = bundled ? { name: bundled.names[language], icon: bundled.icon } : await getStatusByID(id, language)
+    return { id, name: data.name ?? '', imageSrc: data.icon?.toString() ?? '', color,
+        applicationDelay, duration: durationSeconds, enabled: marker !== 'disabled' }
 }
 
-const parseActionLine = async (line: string, language: Locale): Promise<Action | null> => {
-    try {
-        const tokens = line.split(/[ ,]+/);
-
-        if (tokens.length < 3) return null;
-
-        const prepull = parseFloat(tokens[0]) < 0 ? tokens[0] : undefined;
-
-        if (prepull) {
-            tokens.shift();
-        }
-
-        const [id, type] = tokens;
-
-        // Has errors if the action doesn't exist
-        const action = await getActionByID(id, language);
-        const actionIconSrc = action.icon ? action.icon.toString() : '';
-
-        switch (type) {
-            case 'GCD':
-                const [recastTime, castTime] = tokens.slice(2);
-                return {
-                    type: 'gcd',
-                    id: id,
-                    name: action.name,
-                    imageSrc: actionIconSrc,
-                    instanceId: crypto.randomUUID(),
-                    prepull: prepull ? clamp(parseFloat(prepull), -30, 0) : undefined,
-                    recastTime: recastTime ? clamp(parseFloat(recastTime), 0, 30) : undefined,
-                    castTime: castTime ? clamp(parseFloat(castTime), 0, 30) : undefined,
-                } as GCD;
-            case 'oGCD':
-                const [lateWeave] = tokens.slice(2);
-                return {
-                    type: 'ogcd',
-                    id: id,
-                    name: action.name,
-                    imageSrc: actionIconSrc,
-                    instanceId: crypto.randomUUID(),
-                    prepull: prepull ? clamp(parseFloat(prepull), -30, 0) : undefined,
-                    lateWeave: lateWeave === 'lateWeave' ? true : false,
-                } as oGCD;
-            default:
-                throw new Error("Invalid action type");
-            }
-    } catch (e) {
-        return null;
+const parseLine = async (line: string, language: Locale): Promise<Action> => {
+    const start = line.indexOf('[')
+    const actionSection = (start < 0 ? line : line.slice(0, start)).trim()
+    const statusSection = start < 0 ? '' : line.slice(start)
+    // Validate the entire suffix before resolving identities. Stray brackets/text are errors.
+    if (!/^(?:\s*\[[^\[\]]+\]\s*)*$/.test(statusSection) || /[\[\]]/.test(actionSection)) throw new Error('Malformed statuses')
+    const tokens = actionSection.split(/[ ,]+/)
+    let prepull: number | undefined
+    if (tokens[0]?.startsWith('-') || (tokens[0] === '0' && tokens[2] && ['GCD', 'oGCD'].includes(tokens[2]))) {
+        prepull = number(tokens.shift(), 0, -60)
     }
-}
-
-const parseStatusLine = async (line: string, language: Locale): Promise<Status | null> => {
-    try {
-        const tokens = line.split(/[ ,]+/);
-
-        if (tokens.length < 4) return null;
-
-        const [id, applicationDelay, duration, color] = tokens;
-
-        // Has errors if the status doesn't exist
-        const status = await getStatusByID(id, language);
-        const statusIconSrc = status.icon ? status.icon.toString() : '';
-
-        return {
-            id: id,
-            name: status.name,
-            imageSrc: statusIconSrc,
-            color: color,
-            applicationDelay: clamp(parseFloat(applicationDelay), 0, 30),
-            duration: clamp(parseFloat(duration), 0, 999),
-        } as Status;
-    } catch (e) {
-        return null;
-    }
-}
-
-const parseRotationLine = async (line: string, language: Locale): Promise<Action | null> => {
-    try {
-        const sections = line.split('[');
-        let statusApplied: Status | null = null;
-
-        if (sections.length > 1) {
-            const statusSection = sections[1].split(']')[0];
-            statusApplied = await parseStatusLine(statusSection, language);
-        }
-
-        const action = await parseActionLine(sections[0], language);
-        if (action === null) return null;
-
-        if (statusApplied) {
-            action.statusApplied = statusApplied;
-        }
-
-        return action;
-    } catch (e) {
-        return null;
-    }
+    const [id, type, timing, cast] = tokens
+    if (!id || (type !== 'GCD' && type !== 'oGCD')) throw new Error('Invalid action')
+    if (type === 'GCD' ? tokens.length !== 4 : tokens.length !== 3 || !['normal', 'lateWeave'].includes(timing)) throw new Error('Invalid action fields')
+    const recastTime = type === 'GCD' ? number(timing, 30) : undefined
+    const castTime = type === 'GCD' ? number(cast, 30) : undefined
+    const statusesApplied = await Promise.all(Array.from(statusSection.matchAll(/\[([^\[\]]+)\]/g)).map(match => parseStatus(match[1], language)))
+    const data = await getActionByID(id, language)
+    const base = { id, name: data.name ?? '', imageSrc: data.icon?.toString() ?? '', instanceId: crypto.randomUUID(), prepull, statusesApplied,
+        defaults: { job: '', recastSource: 'import' as const } }
+    return type === 'GCD' ? { ...base, type: 'gcd', recastTime, castTime }
+        : { ...base, type: 'ogcd', lateWeave: timing === 'lateWeave' }
 }
 
 export const textToRotation = async (text: string, language: Locale): Promise<Action[] | false> => {
-    return Promise.all(text.split('\n').map(line => parseRotationLine(line, language)))
-        .then(actions => {
-            if (actions.includes(null)) {
-                return false;
-            }
-
-            return actions as Action[];
-        })
+    try { return await Promise.all(text.trim().split('\n').map(line => parseLine(line, language))) }
+    catch { return false }
 }

@@ -40,7 +40,7 @@ const ogcd = (id: string, name: string, extra: Partial<Action> = {}): Action => 
 const fixtures: Record<string, { prepullRotation: Action[]; rotation: Action[]; title?: string; expansion?: string; patch?: string; logo?: boolean }> = {
     empty: { prepullRotation: [], rotation: [] },
     ordinary: {
-        prepullRotation: [ogcd('p1', 'Grade 6 Gemdraught of Intelligence', { prepull: -2, statusApplied: buff })],
+        prepullRotation: [ogcd('p1', 'Grade 6 Gemdraught of Intelligence', { prepull: -2, statusesApplied: [buff] })],
         rotation: [gcd('g1', 'Hard Slash'), ogcd('o1', 'Edge of Shadow'), gcd('g2', 'Syphon Strike')],
     },
     reported: {
@@ -53,10 +53,10 @@ const fixtures: Record<string, { prepullRotation: Action[]; rotation: Action[]; 
     dense: {
         prepullRotation: [gcd('p0', 'Prepull Spell', { prepull: -4 }), ogcd('p1', 'First Preparation', { prepull: -2 }), ogcd('p2', 'Second Preparation', { prepull: -2 })],
         rotation: [
-            gcd('g1', 'An Extremely Long Multiline Global Cooldown Name', { statusApplied: buff }),
+            gcd('g1', 'An Extremely Long Multiline Global Cooldown Name', { statusesApplied: [buff] }),
             ogcd('o1', 'Wide Neighboring Weave Label'), ogcd('o2', 'Second Weave'), ogcd('o3', 'Hard Clip'),
             gcd('g2', 'Second Global', { castTime: 2.5 }), ogcd('o4', 'Late Weave', { lateWeave: true }),
-            gcd('g3', 'Third Global', { statusApplied: { ...buff, id: 'buff-2', name: 'Short Buff', duration: 1 } }),
+            gcd('g3', 'Third Global', { statusesApplied: [{ ...buff, id: 'buff-2', name: 'Short Buff', duration: 1 }] }),
         ],
         logo: true,
     },
@@ -71,8 +71,8 @@ const fixtures: Record<string, { prepullRotation: Action[]; rotation: Action[]; 
     'nested-buffs': {
         prepullRotation: [],
         rotation: [
-            gcd('g1', 'First Global', { statusApplied: { ...buff, name: 'Outer Buff', duration: 30, applicationDelay: 0 } }),
-            gcd('g2', 'Second Global', { statusApplied: { ...buff, id: 'inner', name: 'Inner Buff', duration: 8, applicationDelay: 0, color: '#f0c674' } }),
+            gcd('g1', 'First Global', { statusesApplied: [{ ...buff, name: 'Outer Buff', duration: 30, applicationDelay: 0 }] }),
+            gcd('g2', 'Second Global', { statusesApplied: [{ ...buff, id: 'inner', name: 'Inner Buff', duration: 8, applicationDelay: 0, color: '#f0c674' }] }),
             gcd('g3', 'Third Global'), gcd('g4', 'Fourth Global'), gcd('g5', 'Fifth Global'), gcd('g6', 'Sixth Global'),
         ],
     },
