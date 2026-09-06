@@ -82,7 +82,7 @@ const ActionScroll = styled.div`
     background: #1a1c24;
 `
 
-const ActionRow = styled.button<{ $muted?: boolean }>`
+const ActionRow = styled.button`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -92,14 +92,10 @@ const ActionRow = styled.button<{ $muted?: boolean }>`
     border: none;
     border-bottom: 1px solid #333;
     background: transparent;
-    color: ${props => props.$muted ? '#888' : 'white'};
+    color: white;
     cursor: pointer;
     text-align: left;
     font-size: 14px;
-
-    img {
-        opacity: ${props => props.$muted ? 0.55 : 1};
-    }
 
     &:last-child {
         border-bottom: none;
@@ -107,7 +103,6 @@ const ActionRow = styled.button<{ $muted?: boolean }>`
 
     &:hover {
         background: #2a2d3a;
-        color: ${props => props.$muted ? '#aaa' : 'white'};
     }
 `
 
@@ -334,7 +329,6 @@ export const JobActionList: React.FC<JobActionListProps> = ({
                         <ActionRow
                             key={action.id}
                             type="button"
-                            $muted={!action.isPlayerAction}
                             onClick={() => onSelect(action)}
                         >
                             {action.icon && <ActionIconWithDescription action={action} />}

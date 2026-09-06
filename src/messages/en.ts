@@ -37,7 +37,7 @@ export const en = {
         addStatus: 'Add status',
         resetDefaults: 'Reset to defaults',
 
-        palette: 'Job skills',
+        palette: 'Action library',
         sequence: 'Sequence',
         prepull: 'Prepull',
         rotation: 'Rotation',
