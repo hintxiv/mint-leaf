@@ -1,0 +1,407 @@
+{
+  "job": "RPR",
+  "revision": "rpr-7.55-2026-09-06.1",
+  "actions": [
+    {
+      "id": 24373,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24374,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24375,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24376,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24377,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24378,
+      "statuses": [
+        {
+          "statusId": 2586,
+          "durationMs": 60000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24379,
+      "statuses": [
+        {
+          "statusId": 2586,
+          "durationMs": 60000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24380,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "fixed",
+      "abilityCooldownMs": 30000,
+      "gcdRecastOverrideMs": 2500
+    },
+    {
+      "id": 24381,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "fixed",
+      "abilityCooldownMs": 30000,
+      "gcdRecastOverrideMs": 2500
+    },
+    {
+      "id": 24382,
+      "statuses": [
+        {
+          "statusId": 2589,
+          "durationMs": 60000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24383,
+      "statuses": [
+        {
+          "statusId": 2588,
+          "durationMs": 60000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24384,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24385,
+      "statuses": [
+        {
+          "statusId": 3859,
+          "durationMs": 30000
+        },
+        {
+          "statusId": 3905,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 24386,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 1300,
+      "speedCategory": "spell"
+    },
+    {
+      "id": 24387,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 5000,
+      "speedCategory": "spell"
+    },
+    {
+      "id": 24388,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "spell"
+    },
+    {
+      "id": 24389,
+      "statuses": [
+        {
+          "statusId": 2587,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 24390,
+      "statuses": [
+        {
+          "statusId": 2587,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 24391,
+      "statuses": [
+        {
+          "statusId": 2587,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 24392,
+      "statuses": [
+        {
+          "statusId": 2587,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 24393,
+      "statuses": [
+        {
+          "statusId": 3858,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 60000
+    },
+    {
+      "id": 24394,
+      "statuses": [
+        {
+          "statusId": 2593,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 5000
+    },
+    {
+      "id": 24395,
+      "statuses": [
+        {
+          "statusId": 2591,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "fixed",
+      "gcdRecastOverrideMs": 1500
+    },
+    {
+      "id": 24396,
+      "statuses": [
+        {
+          "statusId": 2590,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "gcdRecastOverrideMs": 1500,
+      "speedCategory": "fixed"
+    },
+    {
+      "id": 24397,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "gcdRecastOverrideMs": 1500,
+      "speedCategory": "fixed"
+    },
+    {
+      "id": 24398,
+      "statuses": [
+        {
+          "statusId": 3860,
+          "durationMs": 30000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 1300,
+      "speedCategory": "spell"
+    },
+    {
+      "id": 24399,
+      "statuses": [],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 24400,
+      "statuses": [],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 24401,
+      "statuses": [
+        {
+          "statusId": 2845,
+          "durationMs": 10000
+        },
+        {
+          "statusId": 2595,
+          "durationMs": 10000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 20000
+    },
+    {
+      "id": 24402,
+      "statuses": [
+        {
+          "statusId": 2845,
+          "durationMs": 10000
+        },
+        {
+          "statusId": 2595,
+          "durationMs": 10000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 20000
+    },
+    {
+      "id": 24403,
+      "statuses": [],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 24404,
+      "statuses": [
+        {
+          "statusId": 2597,
+          "durationMs": 5000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 30000
+    },
+    {
+      "id": 24405,
+      "statuses": [
+        {
+          "statusId": 2599,
+          "durationMs": 20000
+        },
+        {
+          "statusId": 2600,
+          "durationMs": 5000
+        },
+        {
+          "statusId": 2972,
+          "durationMs": 6000
+        }
+      ],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 120000
+    },
+    {
+      "id": 36969,
+      "statuses": [],
+      "kind": "ogcd",
+      "baseCastTimeMs": 0,
+      "abilityCooldownMs": 1000
+    },
+    {
+      "id": 36970,
+      "statuses": [
+        {
+          "statusId": 2589,
+          "durationMs": 60000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 36971,
+      "statuses": [
+        {
+          "statusId": 2588,
+          "durationMs": 60000
+        }
+      ],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 36972,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    },
+    {
+      "id": 36973,
+      "statuses": [],
+      "kind": "gcd",
+      "baseCastTimeMs": 0,
+      "speedCategory": "skill"
+    }
+  ],
+  "roleActionIds": [
+    7541,
+    7542,
+    7546,
+    7548,
+    7549,
+    7863
+  ]
+}

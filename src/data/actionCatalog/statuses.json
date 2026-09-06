@@ -1,6 +1,21 @@
 {
-  "sources": [],
   "statuses": [
+    {
+      "id": 1,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215001_hr1.tex&format=png"
+    },
+    {
+      "id": 2,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215004_hr1.tex&format=png"
+    },
+    {
+      "id": 3,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215013_hr1.tex&format=png"
+    },
+    {
+      "id": 9,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215009_hr1.tex&format=png"
+    },
     {
       "id": 13,
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215003_hr1.tex&format=png"
@@ -8,6 +23,282 @@
     {
       "id": 14,
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215002_hr1.tex&format=png"
+    },
+    {
+      "id": 15,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215012_hr1.tex&format=png"
+    },
+    {
+      "id": 17,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215006_hr1.tex&format=png"
+    },
+    {
+      "id": 18,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/215000/215007_hr1.tex&format=png"
+    },
+    {
+      "id": 74,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210151_hr1.tex&format=png"
+    },
+    {
+      "id": 76,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210155_hr1.tex&format=png"
+    },
+    {
+      "id": 77,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210156_hr1.tex&format=png"
+    },
+    {
+      "id": 80,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212501_hr1.tex&format=png"
+    },
+    {
+      "id": 81,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212502_hr1.tex&format=png"
+    },
+    {
+      "id": 82,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212504_hr1.tex&format=png"
+    },
+    {
+      "id": 84,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213913_hr1.tex&format=png"
+    },
+    {
+      "id": 86,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217217_hr1.tex&format=png"
+    },
+    {
+      "id": 87,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210254_hr1.tex&format=png"
+    },
+    {
+      "id": 89,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210256_hr1.tex&format=png"
+    },
+    {
+      "id": 102,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210206_hr1.tex&format=png"
+    },
+    {
+      "id": 107,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210212_hr1.tex&format=png"
+    },
+    {
+      "id": 108,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210213_hr1.tex&format=png"
+    },
+    {
+      "id": 109,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210214_hr1.tex&format=png"
+    },
+    {
+      "id": 110,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217564_hr1.tex&format=png"
+    },
+    {
+      "id": 116,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210302_hr1.tex&format=png"
+    },
+    {
+      "id": 118,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210307_hr1.tex&format=png"
+    },
+    {
+      "id": 124,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210352_hr1.tex&format=png"
+    },
+    {
+      "id": 125,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210354_hr1.tex&format=png"
+    },
+    {
+      "id": 128,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210356_hr1.tex&format=png"
+    },
+    {
+      "id": 129,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210360_hr1.tex&format=png"
+    },
+    {
+      "id": 141,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212601_hr1.tex&format=png"
+    },
+    {
+      "id": 143,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210403_hr1.tex&format=png"
+    },
+    {
+      "id": 144,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210409_hr1.tex&format=png"
+    },
+    {
+      "id": 150,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210413_hr1.tex&format=png"
+    },
+    {
+      "id": 155,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210410_hr1.tex&format=png"
+    },
+    {
+      "id": 157,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212627_hr1.tex&format=png"
+    },
+    {
+      "id": 158,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212626_hr1.tex&format=png"
+    },
+    {
+      "id": 160,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210452_hr1.tex&format=png"
+    },
+    {
+      "id": 161,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210457_hr1.tex&format=png"
+    },
+    {
+      "id": 162,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210458_hr1.tex&format=png"
+    },
+    {
+      "id": 163,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210459_hr1.tex&format=png"
+    },
+    {
+      "id": 167,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210454_hr1.tex&format=png"
+    },
+    {
+      "id": 168,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210456_hr1.tex&format=png"
+    },
+    {
+      "id": 179,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210504_hr1.tex&format=png"
+    },
+    {
+      "id": 189,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210505_hr1.tex&format=png"
+    },
+    {
+      "id": 248,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210158_hr1.tex&format=png"
+    },
+    {
+      "id": 297,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212801_hr1.tex&format=png"
+    },
+    {
+      "id": 315,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212826_hr1.tex&format=png"
+    },
+    {
+      "id": 317,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212828_hr1.tex&format=png"
+    },
+    {
+      "id": 409,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210266_hr1.tex&format=png"
+    },
+    {
+      "id": 488,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210605_hr1.tex&format=png"
+    },
+    {
+      "id": 496,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212901_hr1.tex&format=png"
+    },
+    {
+      "id": 497,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212902_hr1.tex&format=png"
+    },
+    {
+      "id": 501,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212904_hr1.tex&format=png"
+    },
+    {
+      "id": 727,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212509_hr1.tex&format=png"
+    },
+    {
+      "id": 735,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212555_hr1.tex&format=png"
+    },
+    {
+      "id": 737,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212653_hr1.tex&format=png"
+    },
+    {
+      "id": 742,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217926_hr1.tex&format=png"
+    },
+    {
+      "id": 746,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213114_hr1.tex&format=png"
+    },
+    {
+      "id": 747,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213113_hr1.tex&format=png"
+    },
+    {
+      "id": 749,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213104_hr1.tex&format=png"
+    },
+    {
+      "id": 786,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212578_hr1.tex&format=png"
+    },
+    {
+      "id": 791,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212805_hr1.tex&format=png"
+    },
+    {
+      "id": 792,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212806_hr1.tex&format=png"
+    },
+    {
+      "id": 810,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213115_hr1.tex&format=png"
+    },
+    {
+      "id": 815,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213228_hr1.tex&format=png"
+    },
+    {
+      "id": 835,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213215_hr1.tex&format=png"
+    },
+    {
+      "id": 836,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213216_hr1.tex&format=png"
+    },
+    {
+      "id": 838,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213213_hr1.tex&format=png"
+    },
+    {
+      "id": 841,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213220_hr1.tex&format=png"
+    },
+    {
+      "id": 843,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213214_hr1.tex&format=png"
+    },
+    {
+      "id": 845,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213223_hr1.tex&format=png"
+    },
+    {
+      "id": 846,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213224_hr1.tex&format=png"
+    },
+    {
+      "id": 848,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213227_hr1.tex&format=png"
+    },
+    {
+      "id": 849,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213226_hr1.tex&format=png"
     },
     {
       "id": 851,
@@ -22,8 +313,84 @@
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213011_hr1.tex&format=png"
     },
     {
+      "id": 866,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212611_hr1.tex&format=png"
+    },
+    {
+      "id": 956,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213225_hr1.tex&format=png"
+    },
+    {
+      "id": 1174,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212511_hr1.tex&format=png"
+    },
+    {
+      "id": 1175,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212512_hr1.tex&format=png"
+    },
+    {
+      "id": 1177,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217247_hr1.tex&format=png"
+    },
+    {
+      "id": 1178,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213118_hr1.tex&format=png"
+    },
+    {
+      "id": 1179,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212527_hr1.tex&format=png"
+    },
+    {
+      "id": 1181,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212528_hr1.tex&format=png"
+    },
+    {
+      "id": 1182,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212529_hr1.tex&format=png"
+    },
+    {
+      "id": 1185,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212532_hr1.tex&format=png"
+    },
+    {
+      "id": 1186,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212911_hr1.tex&format=png"
+    },
+    {
+      "id": 1191,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213911_hr1.tex&format=png"
+    },
+    {
+      "id": 1193,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213901_hr1.tex&format=png"
+    },
+    {
+      "id": 1195,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213904_hr1.tex&format=png"
+    },
+    {
       "id": 1199,
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213908_hr1.tex&format=png"
+    },
+    {
+      "id": 1200,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212616_hr1.tex&format=png"
+    },
+    {
+      "id": 1201,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212617_hr1.tex&format=png"
+    },
+    {
+      "id": 1202,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212618_hr1.tex&format=png"
+    },
+    {
+      "id": 1203,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213917_hr1.tex&format=png"
+    },
+    {
+      "id": 1204,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213909_hr1.tex&format=png"
     },
     {
       "id": 1205,
@@ -34,8 +401,368 @@
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213915_hr1.tex&format=png"
     },
     {
+      "id": 1210,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212657_hr1.tex&format=png"
+    },
+    {
+      "id": 1211,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219621_hr1.tex&format=png"
+    },
+    {
+      "id": 1212,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219481_hr1.tex&format=png"
+    },
+    {
+      "id": 1217,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212631_hr1.tex&format=png"
+    },
+    {
+      "id": 1218,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212632_hr1.tex&format=png"
+    },
+    {
+      "id": 1219,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212637_hr1.tex&format=png"
+    },
+    {
+      "id": 1220,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212808_hr1.tex&format=png"
+    },
+    {
+      "id": 1221,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212809_hr1.tex&format=png"
+    },
+    {
+      "id": 1224,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213241_hr1.tex&format=png"
+    },
+    {
+      "id": 1228,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213304_hr1.tex&format=png"
+    },
+    {
+      "id": 1231,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213306_hr1.tex&format=png"
+    },
+    {
+      "id": 1232,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213307_hr1.tex&format=png"
+    },
+    {
+      "id": 1233,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219641_hr1.tex&format=png"
+    },
+    {
+      "id": 1234,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213402_hr1.tex&format=png"
+    },
+    {
+      "id": 1235,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213403_hr1.tex&format=png"
+    },
+    {
+      "id": 1236,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213310_hr1.tex&format=png"
+    },
+    {
+      "id": 1238,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213405_hr1.tex&format=png"
+    },
+    {
+      "id": 1239,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213409_hr1.tex&format=png"
+    },
+    {
+      "id": 1243,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212583_hr1.tex&format=png"
+    },
+    {
+      "id": 1248,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213242_hr1.tex&format=png"
+    },
+    {
+      "id": 1250,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213903_hr1.tex&format=png"
+    },
+    {
+      "id": 1297,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213410_hr1.tex&format=png"
+    },
+    {
+      "id": 1298,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213311_hr1.tex&format=png"
+    },
+    {
+      "id": 1299,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213312_hr1.tex&format=png"
+    },
+    {
+      "id": 1368,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218345_hr1.tex&format=png"
+    },
+    {
+      "id": 1457,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212557_hr1.tex&format=png"
+    },
+    {
+      "id": 1714,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213501_hr1.tex&format=png"
+    },
+    {
+      "id": 1715,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213502_hr1.tex&format=png"
+    },
+    {
+      "id": 1716,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213503_hr1.tex&format=png"
+    },
+    {
+      "id": 1717,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213504_hr1.tex&format=png"
+    },
+    {
+      "id": 1718,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213505_hr1.tex&format=png"
+    },
+    {
+      "id": 1720,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213507_hr1.tex&format=png"
+    },
+    {
+      "id": 1721,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213508_hr1.tex&format=png"
+    },
+    {
+      "id": 1722,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213509_hr1.tex&format=png"
+    },
+    {
+      "id": 1723,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213510_hr1.tex&format=png"
+    },
+    {
+      "id": 1724,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213511_hr1.tex&format=png"
+    },
+    {
+      "id": 1727,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213512_hr1.tex&format=png"
+    },
+    {
+      "id": 1731,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213513_hr1.tex&format=png"
+    },
+    {
+      "id": 1736,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213514_hr1.tex&format=png"
+    },
+    {
+      "id": 1737,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213515_hr1.tex&format=png"
+    },
+    {
+      "id": 1738,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213516_hr1.tex&format=png"
+    },
+    {
+      "id": 1818,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213705_hr1.tex&format=png"
+    },
+    {
+      "id": 1819,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213706_hr1.tex&format=png"
+    },
+    {
+      "id": 1820,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213707_hr1.tex&format=png"
+    },
+    {
+      "id": 1821,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213708_hr1.tex&format=png"
+    },
+    {
+      "id": 1822,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213709_hr1.tex&format=png"
+    },
+    {
+      "id": 1825,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213714_hr1.tex&format=png"
+    },
+    {
+      "id": 1826,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213715_hr1.tex&format=png"
+    },
+    {
+      "id": 1827,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213716_hr1.tex&format=png"
+    },
+    {
+      "id": 1831,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213601_hr1.tex&format=png"
+    },
+    {
+      "id": 1832,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213602_hr1.tex&format=png"
+    },
+    {
+      "id": 1834,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213604_hr1.tex&format=png"
+    },
+    {
+      "id": 1835,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213605_hr1.tex&format=png"
+    },
+    {
+      "id": 1836,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213606_hr1.tex&format=png"
+    },
+    {
+      "id": 1837,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213607_hr1.tex&format=png"
+    },
+    {
+      "id": 1838,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213608_hr1.tex&format=png"
+    },
+    {
+      "id": 1839,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213609_hr1.tex&format=png"
+    },
+    {
+      "id": 1840,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213610_hr1.tex&format=png"
+    },
+    {
+      "id": 1842,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213611_hr1.tex&format=png"
+    },
+    {
+      "id": 1843,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213612_hr1.tex&format=png"
+    },
+    {
+      "id": 1844,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213613_hr1.tex&format=png"
+    },
+    {
+      "id": 1847,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213710_hr1.tex&format=png"
+    },
+    {
+      "id": 1848,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213711_hr1.tex&format=png"
+    },
+    {
+      "id": 1856,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212510_hr1.tex&format=png"
+    },
+    {
+      "id": 1857,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212558_hr1.tex&format=png"
+    },
+    {
+      "id": 1858,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212559_hr1.tex&format=png"
+    },
+    {
+      "id": 1863,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212585_hr1.tex&format=png"
+    },
+    {
+      "id": 1864,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210304_hr1.tex&format=png"
+    },
+    {
+      "id": 1865,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219501_hr1.tex&format=png"
+    },
+    {
       "id": 1866,
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213020_hr1.tex&format=png"
+    },
+    {
+      "id": 1868,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212732_hr1.tex&format=png"
+    },
+    {
+      "id": 1870,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212590_hr1.tex&format=png"
+    },
+    {
+      "id": 1871,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212635_hr1.tex&format=png"
+    },
+    {
+      "id": 1872,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212634_hr1.tex&format=png"
+    },
+    {
+      "id": 1878,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213245_hr1.tex&format=png"
+    },
+    {
+      "id": 1879,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213246_hr1.tex&format=png"
+    },
+    {
+      "id": 1881,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213248_hr1.tex&format=png"
+    },
+    {
+      "id": 1889,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213250_hr1.tex&format=png"
+    },
+    {
+      "id": 1890,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213251_hr1.tex&format=png"
+    },
+    {
+      "id": 1892,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213253_hr1.tex&format=png"
+    },
+    {
+      "id": 1894,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213122_hr1.tex&format=png"
+    },
+    {
+      "id": 1895,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212812_hr1.tex&format=png"
+    },
+    {
+      "id": 1896,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212813_hr1.tex&format=png"
+    },
+    {
+      "id": 1897,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212560_hr1.tex&format=png"
+    },
+    {
+      "id": 1898,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213614_hr1.tex&format=png"
+    },
+    {
+      "id": 1902,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212522_hr1.tex&format=png"
+    },
+    {
+      "id": 1911,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212629_hr1.tex&format=png"
+    },
+    {
+      "id": 1917,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212848_hr1.tex&format=png"
+    },
+    {
+      "id": 1918,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212814_hr1.tex&format=png"
+    },
+    {
+      "id": 1934,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212615_hr1.tex&format=png"
+    },
+    {
+      "id": 1944,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212802_hr1.tex&format=png"
     },
     {
       "id": 1946,
@@ -46,8 +773,744 @@
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213021_hr1.tex&format=png"
     },
     {
+      "id": 1954,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219681_hr1.tex&format=png"
+    },
+    {
+      "id": 1971,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213407_hr1.tex&format=png"
+    },
+    {
+      "id": 2108,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212567_hr1.tex&format=png"
+    },
+    {
+      "id": 2114,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213517_hr1.tex&format=png"
+    },
+    {
+      "id": 2115,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213518_hr1.tex&format=png"
+    },
+    {
+      "id": 2116,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213519_hr1.tex&format=png"
+    },
+    {
+      "id": 2117,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213520_hr1.tex&format=png"
+    },
+    {
+      "id": 2118,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213521_hr1.tex&format=png"
+    },
+    {
+      "id": 2119,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213522_hr1.tex&format=png"
+    },
+    {
+      "id": 2120,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213523_hr1.tex&format=png"
+    },
+    {
+      "id": 2121,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213524_hr1.tex&format=png"
+    },
+    {
+      "id": 2122,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213525_hr1.tex&format=png"
+    },
+    {
+      "id": 2123,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213526_hr1.tex&format=png"
+    },
+    {
+      "id": 2127,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213530_hr1.tex&format=png"
+    },
+    {
+      "id": 2130,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219581_hr1.tex&format=png"
+    },
+    {
+      "id": 2216,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212610_hr1.tex&format=png"
+    },
+    {
+      "id": 2217,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212603_hr1.tex&format=png"
+    },
+    {
+      "id": 2218,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212605_hr1.tex&format=png"
+    },
+    {
+      "id": 2492,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213531_hr1.tex&format=png"
+    },
+    {
+      "id": 2493,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213532_hr1.tex&format=png"
+    },
+    {
+      "id": 2495,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213534_hr1.tex&format=png"
+    },
+    {
+      "id": 2496,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213535_hr1.tex&format=png"
+    },
+    {
+      "id": 2499,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213538_hr1.tex&format=png"
+    },
+    {
+      "id": 2500,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213539_hr1.tex&format=png"
+    },
+    {
+      "id": 2501,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213540_hr1.tex&format=png"
+    },
+    {
+      "id": 2502,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213541_hr1.tex&format=png"
+    },
+    {
+      "id": 2513,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212535_hr1.tex&format=png"
+    },
+    {
+      "id": 2514,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212536_hr1.tex&format=png"
+    },
+    {
+      "id": 2586,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212926_hr1.tex&format=png"
+    },
+    {
+      "id": 2587,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217097_hr1.tex&format=png"
+    },
+    {
+      "id": 2588,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212927_hr1.tex&format=png"
+    },
+    {
+      "id": 2589,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212928_hr1.tex&format=png"
+    },
+    {
+      "id": 2590,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212929_hr1.tex&format=png"
+    },
+    {
+      "id": 2591,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212930_hr1.tex&format=png"
+    },
+    {
+      "id": 2593,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212931_hr1.tex&format=png"
+    },
+    {
+      "id": 2595,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212933_hr1.tex&format=png"
+    },
+    {
+      "id": 2597,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212934_hr1.tex&format=png"
+    },
+    {
+      "id": 2599,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212936_hr1.tex&format=png"
+    },
+    {
+      "id": 2600,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212937_hr1.tex&format=png"
+    },
+    {
+      "id": 2607,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212954_hr1.tex&format=png"
+    },
+    {
+      "id": 2608,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212955_hr1.tex&format=png"
+    },
+    {
+      "id": 2609,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212954_hr1.tex&format=png"
+    },
+    {
+      "id": 2610,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219756_hr1.tex&format=png"
+    },
+    {
+      "id": 2611,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212957_hr1.tex&format=png"
+    },
+    {
+      "id": 2612,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212958_hr1.tex&format=png"
+    },
+    {
+      "id": 2613,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212959_hr1.tex&format=png"
+    },
+    {
+      "id": 2614,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212960_hr1.tex&format=png"
+    },
+    {
+      "id": 2615,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212961_hr1.tex&format=png"
+    },
+    {
+      "id": 2616,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212962_hr1.tex&format=png"
+    },
+    {
+      "id": 2617,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212963_hr1.tex&format=png"
+    },
+    {
+      "id": 2618,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212964_hr1.tex&format=png"
+    },
+    {
+      "id": 2619,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212965_hr1.tex&format=png"
+    },
+    {
+      "id": 2620,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212966_hr1.tex&format=png"
+    },
+    {
+      "id": 2621,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212967_hr1.tex&format=png"
+    },
+    {
+      "id": 2622,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212968_hr1.tex&format=png"
+    },
+    {
+      "id": 2624,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212566_hr1.tex&format=png"
+    },
+    {
+      "id": 2642,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217585_hr1.tex&format=png"
+    },
+    {
+      "id": 2643,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217355_hr1.tex&format=png"
+    },
+    {
+      "id": 2673,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212521_hr1.tex&format=png"
+    },
+    {
+      "id": 2674,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212515_hr1.tex&format=png"
+    },
+    {
+      "id": 2675,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212516_hr1.tex&format=png"
+    },
+    {
+      "id": 2676,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212517_hr1.tex&format=png"
+    },
+    {
+      "id": 2677,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212561_hr1.tex&format=png"
+    },
+    {
+      "id": 2678,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212562_hr1.tex&format=png"
+    },
+    {
+      "id": 2679,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212563_hr1.tex&format=png"
+    },
+    {
+      "id": 2680,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212564_hr1.tex&format=png"
+    },
+    {
+      "id": 2681,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212565_hr1.tex&format=png"
+    },
+    {
+      "id": 2682,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213123_hr1.tex&format=png"
+    },
+    {
+      "id": 2683,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213615_hr1.tex&format=png"
+    },
+    {
+      "id": 2684,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213616_hr1.tex&format=png"
+    },
+    {
+      "id": 2685,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213617_hr1.tex&format=png"
+    },
+    {
+      "id": 2686,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213618_hr1.tex&format=png"
+    },
+    {
+      "id": 2687,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212537_hr1.tex&format=png"
+    },
+    {
       "id": 2688,
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218385_hr1.tex&format=png"
+    },
+    {
+      "id": 2689,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212914_hr1.tex&format=png"
+    },
+    {
+      "id": 2690,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217597_hr1.tex&format=png"
+    },
+    {
+      "id": 2692,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212621_hr1.tex&format=png"
+    },
+    {
+      "id": 2693,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213718_hr1.tex&format=png"
+    },
+    {
+      "id": 2694,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213719_hr1.tex&format=png"
+    },
+    {
+      "id": 2695,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213720_hr1.tex&format=png"
+    },
+    {
+      "id": 2696,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217350_hr1.tex&format=png"
+    },
+    {
+      "id": 2697,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213721_hr1.tex&format=png"
+    },
+    {
+      "id": 2698,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213722_hr1.tex&format=png"
+    },
+    {
+      "id": 2699,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213723_hr1.tex&format=png"
+    },
+    {
+      "id": 2700,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213724_hr1.tex&format=png"
+    },
+    {
+      "id": 2702,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212691_hr1.tex&format=png"
+    },
+    {
+      "id": 2703,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212699_hr1.tex&format=png"
+    },
+    {
+      "id": 2704,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212693_hr1.tex&format=png"
+    },
+    {
+      "id": 2706,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212695_hr1.tex&format=png"
+    },
+    {
+      "id": 2707,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213408_hr1.tex&format=png"
+    },
+    {
+      "id": 2708,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212638_hr1.tex&format=png"
+    },
+    {
+      "id": 2709,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218373_hr1.tex&format=png"
+    },
+    {
+      "id": 2710,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212815_hr1.tex&format=png"
+    },
+    {
+      "id": 2711,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212816_hr1.tex&format=png"
+    },
+    {
+      "id": 2712,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212817_hr1.tex&format=png"
+    },
+    {
+      "id": 2717,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213262_hr1.tex&format=png"
+    },
+    {
+      "id": 2718,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213263_hr1.tex&format=png"
+    },
+    {
+      "id": 2719,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212586_hr1.tex&format=png"
+    },
+    {
+      "id": 2720,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/210000/210303_hr1.tex&format=png"
+    },
+    {
+      "id": 2723,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212917_hr1.tex&format=png"
+    },
+    {
+      "id": 2845,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212939_hr1.tex&format=png"
+    },
+    {
+      "id": 2938,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212970_hr1.tex&format=png"
+    },
+    {
+      "id": 2959,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213313_hr1.tex&format=png"
+    },
+    {
+      "id": 2964,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212624_hr1.tex&format=png"
+    },
+    {
+      "id": 2972,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212938_hr1.tex&format=png"
+    },
+    {
+      "id": 3003,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212971_hr1.tex&format=png"
+    },
+    {
+      "id": 3017,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213725_hr1.tex&format=png"
+    },
+    {
+      "id": 3018,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213726_hr1.tex&format=png"
+    },
+    {
+      "id": 3019,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212520_hr1.tex&format=png"
+    },
+    {
+      "id": 3183,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/214000/214942_hr1.tex&format=png"
+    },
+    {
+      "id": 3254,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212918_hr1.tex&format=png"
+    },
+    {
+      "id": 3365,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212972_hr1.tex&format=png"
+    },
+    {
+      "id": 3631,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213542_hr1.tex&format=png"
+    },
+    {
+      "id": 3636,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213546_hr1.tex&format=png"
+    },
+    {
+      "id": 3637,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219447_hr1.tex&format=png"
+    },
+    {
+      "id": 3638,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213547_hr1.tex&format=png"
+    },
+    {
+      "id": 3639,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213548_hr1.tex&format=png"
+    },
+    {
+      "id": 3640,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/219000/219454_hr1.tex&format=png"
+    },
+    {
+      "id": 3641,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213549_hr1.tex&format=png"
+    },
+    {
+      "id": 3642,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213550_hr1.tex&format=png"
+    },
+    {
+      "id": 3644,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213552_hr1.tex&format=png"
+    },
+    {
+      "id": 3645,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213751_hr1.tex&format=png"
+    },
+    {
+      "id": 3646,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213752_hr1.tex&format=png"
+    },
+    {
+      "id": 3647,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213753_hr1.tex&format=png"
+    },
+    {
+      "id": 3648,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213754_hr1.tex&format=png"
+    },
+    {
+      "id": 3649,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213755_hr1.tex&format=png"
+    },
+    {
+      "id": 3650,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213756_hr1.tex&format=png"
+    },
+    {
+      "id": 3657,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213763_hr1.tex&format=png"
+    },
+    {
+      "id": 3658,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213764_hr1.tex&format=png"
+    },
+    {
+      "id": 3659,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213765_hr1.tex&format=png"
+    },
+    {
+      "id": 3660,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213766_hr1.tex&format=png"
+    },
+    {
+      "id": 3665,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213771_hr1.tex&format=png"
+    },
+    {
+      "id": 3666,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213772_hr1.tex&format=png"
+    },
+    {
+      "id": 3668,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213774_hr1.tex&format=png"
+    },
+    {
+      "id": 3669,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213775_hr1.tex&format=png"
+    },
+    {
+      "id": 3670,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213776_hr1.tex&format=png"
+    },
+    {
+      "id": 3671,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213777_hr1.tex&format=png"
+    },
+    {
+      "id": 3672,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213757_hr1.tex&format=png"
+    },
+    {
+      "id": 3675,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213801_hr1.tex&format=png"
+    },
+    {
+      "id": 3676,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213802_hr1.tex&format=png"
+    },
+    {
+      "id": 3680,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218677_hr1.tex&format=png"
+    },
+    {
+      "id": 3681,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213806_hr1.tex&format=png"
+    },
+    {
+      "id": 3684,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213807_hr1.tex&format=png"
+    },
+    {
+      "id": 3685,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213808_hr1.tex&format=png"
+    },
+    {
+      "id": 3686,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213809_hr1.tex&format=png"
+    },
+    {
+      "id": 3687,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213810_hr1.tex&format=png"
+    },
+    {
+      "id": 3688,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218155_hr1.tex&format=png"
+    },
+    {
+      "id": 3689,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213811_hr1.tex&format=png"
+    },
+    {
+      "id": 3690,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213813_hr1.tex&format=png"
+    },
+    {
+      "id": 3712,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213553_hr1.tex&format=png"
+    },
+    {
+      "id": 3772,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213758_hr1.tex&format=png"
+    },
+    {
+      "id": 3827,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212523_hr1.tex&format=png"
+    },
+    {
+      "id": 3828,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212524_hr1.tex&format=png"
+    },
+    {
+      "id": 3829,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213050_hr1.tex&format=png"
+    },
+    {
+      "id": 3830,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213051_hr1.tex&format=png"
+    },
+    {
+      "id": 3831,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213052_hr1.tex&format=png"
+    },
+    {
+      "id": 3832,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212568_hr1.tex&format=png"
+    },
+    {
+      "id": 3834,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212569_hr1.tex&format=png"
+    },
+    {
+      "id": 3835,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213125_hr1.tex&format=png"
+    },
+    {
+      "id": 3836,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217147_hr1.tex&format=png"
+    },
+    {
+      "id": 3837,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213126_hr1.tex&format=png"
+    },
+    {
+      "id": 3838,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213619_hr1.tex&format=png"
+    },
+    {
+      "id": 3839,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213620_hr1.tex&format=png"
+    },
+    {
+      "id": 3840,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213621_hr1.tex&format=png"
+    },
+    {
+      "id": 3841,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212539_hr1.tex&format=png"
+    },
+    {
+      "id": 3842,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212540_hr1.tex&format=png"
+    },
+    {
+      "id": 3843,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212541_hr1.tex&format=png"
+    },
+    {
+      "id": 3844,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212589_hr1.tex&format=png"
+    },
+    {
+      "id": 3845,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212587_hr1.tex&format=png"
+    },
+    {
+      "id": 3846,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212588_hr1.tex&format=png"
+    },
+    {
+      "id": 3847,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213053_hr1.tex&format=png"
+    },
+    {
+      "id": 3848,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212919_hr1.tex&format=png"
+    },
+    {
+      "id": 3849,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212920_hr1.tex&format=png"
+    },
+    {
+      "id": 3850,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212921_hr1.tex&format=png"
+    },
+    {
+      "id": 3851,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212922_hr1.tex&format=png"
+    },
+    {
+      "id": 3852,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213315_hr1.tex&format=png"
+    },
+    {
+      "id": 3853,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213316_hr1.tex&format=png"
+    },
+    {
+      "id": 3855,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213318_hr1.tex&format=png"
+    },
+    {
+      "id": 3856,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213319_hr1.tex&format=png"
+    },
+    {
+      "id": 3858,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/217000/217198_hr1.tex&format=png"
+    },
+    {
+      "id": 3859,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212942_hr1.tex&format=png"
+    },
+    {
+      "id": 3860,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212943_hr1.tex&format=png"
+    },
+    {
+      "id": 3861,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213075_hr1.tex&format=png"
+    },
+    {
+      "id": 3862,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213076_hr1.tex&format=png"
+    },
+    {
+      "id": 3863,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213077_hr1.tex&format=png"
     },
     {
       "id": 3864,
@@ -60,6 +1523,154 @@
     {
       "id": 3866,
       "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213024_hr1.tex&format=png"
+    },
+    {
+      "id": 3867,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213727_hr1.tex&format=png"
+    },
+    {
+      "id": 3868,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213728_hr1.tex&format=png"
+    },
+    {
+      "id": 3869,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213729_hr1.tex&format=png"
+    },
+    {
+      "id": 3871,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212661_hr1.tex&format=png"
+    },
+    {
+      "id": 3872,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212662_hr1.tex&format=png"
+    },
+    {
+      "id": 3873,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212750_hr1.tex&format=png"
+    },
+    {
+      "id": 3874,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212751_hr1.tex&format=png"
+    },
+    {
+      "id": 3875,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218665_hr1.tex&format=png"
+    },
+    {
+      "id": 3876,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213411_hr1.tex&format=png"
+    },
+    {
+      "id": 3877,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213412_hr1.tex&format=png"
+    },
+    {
+      "id": 3878,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213413_hr1.tex&format=png"
+    },
+    {
+      "id": 3879,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/218000/218669_hr1.tex&format=png"
+    },
+    {
+      "id": 3880,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212639_hr1.tex&format=png"
+    },
+    {
+      "id": 3881,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212640_hr1.tex&format=png"
+    },
+    {
+      "id": 3882,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212818_hr1.tex&format=png"
+    },
+    {
+      "id": 3883,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212819_hr1.tex&format=png"
+    },
+    {
+      "id": 3884,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212820_hr1.tex&format=png"
+    },
+    {
+      "id": 3885,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212823_hr1.tex&format=png"
+    },
+    {
+      "id": 3886,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213622_hr1.tex&format=png"
+    },
+    {
+      "id": 3887,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213204_hr1.tex&format=png"
+    },
+    {
+      "id": 3888,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213206_hr1.tex&format=png"
+    },
+    {
+      "id": 3889,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213207_hr1.tex&format=png"
+    },
+    {
+      "id": 3890,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213205_hr1.tex&format=png"
+    },
+    {
+      "id": 3891,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213208_hr1.tex&format=png"
+    },
+    {
+      "id": 3892,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213209_hr1.tex&format=png"
+    },
+    {
+      "id": 3893,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213264_hr1.tex&format=png"
+    },
+    {
+      "id": 3894,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213265_hr1.tex&format=png"
+    },
+    {
+      "id": 3895,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213266_hr1.tex&format=png"
+    },
+    {
+      "id": 3896,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213267_hr1.tex&format=png"
+    },
+    {
+      "id": 3897,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212973_hr1.tex&format=png"
+    },
+    {
+      "id": 3899,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212975_hr1.tex&format=png"
+    },
+    {
+      "id": 3900,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212570_hr1.tex&format=png"
+    },
+    {
+      "id": 3902,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213127_hr1.tex&format=png"
+    },
+    {
+      "id": 3903,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212641_hr1.tex&format=png"
+    },
+    {
+      "id": 3905,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212944_hr1.tex&format=png"
+    },
+    {
+      "id": 3906,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/212000/212923_hr1.tex&format=png"
+    },
+    {
+      "id": 5051,
+      "icon": "https://v2.xivapi.com/api/asset?path=ui/icon/213000/213623_hr1.tex&format=png"
     }
   ]
 }
