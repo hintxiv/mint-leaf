@@ -1,3 +1,4 @@
+import { encodeCustomId } from '@/lib/customId'
 import { DataStatus } from '@/app/api/xivapi/types'
 import { Button, Input as BaseInput } from 'antd';
 import React, { useState } from 'react';
@@ -24,22 +25,22 @@ const CustomBuffInputContainer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 60%;
+    width: 100%;
     &.enter {
         opacity: 0.5;
         width: 15%;
     }
     &.enter-active {
         opacity: 1;
-        width: 60%;
+        width: 100%;
         transition: width 0.5s, opacity 0.5s;
     }
     &.enter-done {
-        width: 60%;
+        width: 100%;
     }
     &.exit {
         opacity: 1;
-        width: 60%;
+        width: 100%;
     }
     &.exit-active {
         opacity: 0.5;
@@ -64,6 +65,7 @@ export const CustomBuffInput: React.FC<CustomBuffInputProps> = ({ onCreate }) =>
         try {
             new URL(e.target.value);
             setIconUrl(e.target.value);
+            toggleError(false);
         } catch {
             toggleError(true);
         }
@@ -74,7 +76,7 @@ export const CustomBuffInput: React.FC<CustomBuffInputProps> = ({ onCreate }) =>
 
         onCreate({
             name,
-            id: encodeURI(`custom-${iconUrl}-${name}`),
+            id: encodeCustomId(iconUrl, name),
             icon: new URL(iconUrl),
         });
     }
