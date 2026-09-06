@@ -1,7 +1,7 @@
 "use client";
 
 import { Locale } from '@/context/LanguageContext'
-import { DataAction } from './types'
+import { DataAction, actionTimingFromFields } from './types'
 import {
     buildJobActionListQuery,
     convertIconPath,
@@ -17,8 +17,9 @@ export interface JobListAction extends DataAction {
     isPlayerAction: boolean
     // Colored HTML from XIVAPI transient Description@as(html)
     description: string | null
-    // Used to sort the palette (level, then name)
+    // Palette order: job before role, descending level, then localized name
     classJobLevel: number
+    isRoleAction?: boolean
 }
 
 export interface JobActionFetchResult {
@@ -68,6 +69,8 @@ export const fetchJobActions = async (
 
         actions.push({
             id: row_id.toString(),
+            ...actionTimingFromFields(fields),
+            isRoleAction: fields.IsRoleAction === true,
             name: fields.Name ?? null,
             icon,
             isPlayerAction: fields.IsPlayerAction === true,
@@ -76,13 +79,11 @@ export const fetchJobActions = async (
         })
     }
 
-    const localeTag = language === 'ja' ? 'ja' : 'en'
-    actions.sort((a, b) => {
-        if (a.classJobLevel !== b.classJobLevel) {
-            return a.classJobLevel - b.classJobLevel
-        }
-        return (a.name ?? '').localeCompare(b.name ?? '', localeTag)
-    })
-
-    return { actions, version, schema }
+    return { actions: sortJobActions(actions, language), version, schema }
 }
+
+export const sortJobActions = (actions: JobListAction[], language: Locale): JobListAction[] =>
+    [...actions].sort((a, b) => Number(!!a.isRoleAction) - Number(!!b.isRoleAction)
+        || b.classJobLevel - a.classJobLevel
+        || (a.name ?? '').localeCompare(b.name ?? '', language)
+        || a.id.localeCompare(b.id, 'en', { numeric: true }))

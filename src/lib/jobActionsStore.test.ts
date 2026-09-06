@@ -17,6 +17,7 @@ const sampleActions: JobListAction[] = [
         isPlayerAction: true,
         description: 'Delivers an attack with a potency of 300.',
         classJobLevel: 1,
+        isRoleAction: true, kind: 'gcd', baseGcdRecastMs: 2500, baseCastTimeMs: 0,
     },
     {
         id: '2',
@@ -77,6 +78,7 @@ describe('job actions cache', () => {
         expect(cached!.actions[0].isPlayerAction).toBe(true)
         expect(cached!.actions[0].description).toBe('Delivers an attack with a potency of 300.')
         expect(cached!.actions[0].classJobLevel).toBe(1)
+        expect(cached!.actions[0]).toMatchObject({ isRoleAction: true, kind: 'gcd', baseGcdRecastMs: 2500, baseCastTimeMs: 0 })
         expect(cached!.actions[0].icon?.toString()).toBe(sampleActions[0].icon!.toString())
         expect(cached!.actions[1].isPlayerAction).toBe(false)
         expect(cached!.actions[1].classJobLevel).toBe(90)

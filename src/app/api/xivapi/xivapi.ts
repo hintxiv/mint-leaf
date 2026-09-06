@@ -10,7 +10,7 @@ const MAX_SEARCH_RESULTS = 10
 const DEFAULT_SEARCH_PAGE_LIMIT = 100
 
 // Fields requested when listing job actions
-const JOB_ACTION_LIST_FIELDS = 'Name,Icon,ClassJobLevel,IsPlayerAction'
+const JOB_ACTION_LIST_FIELDS = 'Name,Icon,ClassJobLevel,IsPlayerAction,IsRoleAction,ActionCategory,Recast100ms,Cast100ms'
 
 type XivapiSheet = 'Action' | 'Status' | 'Item' | 'ClassJob'
 
@@ -44,12 +44,14 @@ export const xivapiSearch = async (
     sheets: XivapiSheet[],
     query: string,
     language: Locale,
+    fields?: string,
 ): Promise<{ results: XivapiSearchResponse[] }> =>
     xivapi.get('search', {
         searchParams: {
             query,
             sheets: sheets.join(','),
             limit: MAX_SEARCH_RESULTS,
+            ...(fields ? { fields } : {}),
             ...(language === 'ja' ? { language: 'ja' } : {}),
         },
     }).json()
@@ -127,7 +129,8 @@ export const getObject = async (
     language: Locale,
 ): Promise<any> =>
     xivapi.get(`sheet/${sheet}/${id}`, {
-        searchParams: language === 'ja' ? { language: 'ja' } : {},
+        searchParams: { ...(language === 'ja' ? { language: 'ja' } : {}),
+            ...(sheet === 'Action' ? { fields: 'Name,Icon,ActionCategory,Recast100ms,Cast100ms' } : {}) },
     }).json()
 
 // Convert a game texture path (e.g. ui/icon/000000/000786_hr1.tex)

@@ -4,7 +4,7 @@ import { decodeCustomId } from '@/lib/customId'
 
 import { Locale } from '@/context/LanguageContext'
 import { Job } from '@/data/jobs'
-import { DataAction } from './types'
+import { DataAction, actionTimingFromFields } from './types'
 import { buildActionSearchQuery, convertIconPath, getObject, xivapiSearch } from './xivapi'
 
 const defaultIcon = 'https://v2.xivapi.com/api/asset/ui/icon/000000/000405_hr1.tex?format=png'
@@ -13,11 +13,12 @@ export const searchForAction = async (nameQuery: string, _job: Job, language: Lo
     if (nameQuery === "") return [];
 
     const query = buildActionSearchQuery(nameQuery, language);
-    const { results } = await xivapiSearch(['Action', 'Item'], query, language);
+    const { results } = await xivapiSearch(['Action', 'Item'], query, language, 'Name,Icon,ActionCategory,Recast100ms,Cast100ms');
 
     return results.map(({ row_id, fields, sheet }) => ({
         id: (sheet === 'Item' ? 'item-' : '') + row_id.toString(),
         name: fields.Name,
+        ...(sheet === 'Action' ? actionTimingFromFields(fields) : {}),
         icon: fields.Icon ? convertIconPath(fields.Icon.path_hr1) : null,
     })).filter(({ icon }) =>
         icon && icon.toString() !== defaultIcon
@@ -44,7 +45,7 @@ export const getActionByID = async (id: string, language: Locale): Promise<DataA
         const icon = fields.Icon ? convertIconPath(fields.Icon.path_hr1) : null;
         const name = fields.Name;
 
-        return { id, name, icon };
+        return { id, name, icon, ...(!isItem ? actionTimingFromFields(fields) : {}) };
     } catch (e) {
         throw new Error(`No action with ID ${id} exists`);
     }

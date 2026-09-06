@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { DataAction, JobListAction, fetchJobActions } from '@/app/api'
 import { Job } from '@/data/jobs'
 import { Locale, useTranslation } from '@/context/LanguageContext'
+import { sortJobActions } from '@/app/api/xivapi/jobActionList'
 import { getJobAbbreviation } from '@/lib/jobs'
 import { getCachedJobActions, setCachedJobActions } from '@/lib/jobActionsStore'
 
@@ -292,12 +293,12 @@ export const JobActionList: React.FC<JobActionListProps> = ({
     const filteredActions = useMemo(() => {
         const trimmed = filterText.trim().toLowerCase()
         if (!trimmed) {
-            return actions
+            return sortJobActions(actions, locale)
         }
-        return actions.filter((action) =>
+        return sortJobActions(actions, locale).filter((action) =>
             (action.name ?? '').toLowerCase().includes(trimmed),
         )
-    }, [actions, filterText])
+    }, [actions, filterText, locale])
 
     return (
         <ListContainer>
@@ -328,7 +329,7 @@ export const JobActionList: React.FC<JobActionListProps> = ({
             )}
 
             {filteredActions.length > 0 && (
-                <ActionScroll>
+                <ActionScroll data-testid="job-action-library">
                     {filteredActions.map((action) => (
                         <ActionRow
                             key={action.id}
