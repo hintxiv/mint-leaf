@@ -1,3 +1,4 @@
+import { StyleRegistry } from '@/components/StyleRegistry'
 import type { Metadata } from "next";
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/700.css'
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <StyleRegistry>{children}</StyleRegistry>
       </body>
     </html>
   );
