@@ -25,9 +25,17 @@ describe('icon-derived buff colours', () => {
         expect(getColor.mock.calls.length - before).toBe(1)
     })
     it('falls back on failure and permits a later retry', async () => {
+        const loadsBefore = loadRenderImages.mock.calls.length
+        const extractionsBefore = getColor.mock.calls.length
         loadRenderImages.mockRejectedValueOnce(new Error('Unavailable'))
         expect(await automaticBuffColor('/retry.png')).toBe(FALLBACK_BUFF_COLOR)
-        expect(await automaticBuffColor('/retry.png')).not.toBe(FALLBACK_BUFF_COLOR)
+        // Promise.all rejects before the parallel ColorThief import settles.
+        // Let Vitest finish resolving that mock before starting another import.
+        await vi.dynamicImportSettled()
+        expect(getColor.mock.calls.length).toBe(extractionsBefore)
+        expect(await automaticBuffColor('/retry.png')).toBe(readableBuffColor('#280808'))
+        expect(loadRenderImages.mock.calls.length - loadsBefore).toBe(2)
+        expect(getColor.mock.calls.length - extractionsBefore).toBe(1)
         expect(await automaticBuffColor('')).toBe(FALLBACK_BUFF_COLOR)
     })
     it('resolves only automatic enabled statuses without changing source actions', async () => {
