@@ -116,6 +116,13 @@ export const jobs: Record<string, Job> = {
         icon: "/job-icons/vpr.svg",
         borderedIcon: "/job-icons/bordered/vpr_bordered_temp.png",
     },
+    BST: {
+        id: 43,
+        name: "Beastmaster",
+        nameJa: "魔獣使い",
+        icon: "/job-icons/bst.svg",
+        borderedIcon: "/job-icons/bordered/062143_hr1.png",
+    },
     // Phys Ranged
     BRD: {
         id: 23,
@@ -181,6 +188,6 @@ export const jobs: Record<string, Job> = {
 
 export const tanks = ['DRK', 'GNB', 'PLD', 'WAR'] as const;
 export const healers = ['AST', 'SCH', 'SGE', 'WHM'] as const;
-export const melee = ['DRG', 'MNK', 'NIN', 'RPR', 'SAM', 'VPR'] as const;
+export const melee = ['DRG', 'MNK', 'NIN', 'RPR', 'SAM', 'VPR', 'BST'] as const;
 export const physRanged = ['BRD', 'DNC', 'MCH'] as const;
 export const casters = ['BLM', 'RDM', 'SMN', 'PCT', 'BLU'] as const;

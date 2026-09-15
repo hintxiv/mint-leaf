@@ -162,12 +162,25 @@ export const buildStatusSearchQuery = (nameQuery: string, language: Locale): str
 // every +ClassJobCategory.{job}=true query even though they are not job skills.
 const ALL_CLASSES_JOB_CATEGORY_ID = 1
 
+// BST has no ClassJobCategory.BST column; this is the BST-only category row.
+const BEASTMASTER_JOB_CATEGORY_ID = 203
+
 // Query for PvE actions usable by a job, including hotbar replacements
 // (Confiteor combo, ninjutsu, enchanted melee, etc.).
 // ClassJobCategory includes role actions.
 // ClassJobLevel>=1 drops Lv0 NPC/event junk.
 // -ClassJobCategory=1 drops all classes shared content (see ALL_CLASSES_JOB_CATEGORY_ID).
-export const buildJobActionListQuery = (jobAbbreviation: string): string =>
-    `+ClassJobCategory.${jobAbbreviation}=true +IsPvP=false +ClassJobLevel>=1 -ClassJobCategory=${ALL_CLASSES_JOB_CATEGORY_ID}`
+//
+// BST replacements have an empty ClassJob, so Abbreviation="BST" misses them.
+// Player-facing BST actions, including unplaceable replacements, are
+// IsPlayerAction=true; internal copies in the same category are false.
+// Other jobs must not add +IsPlayerAction=true: their hotbar replacements
+// (ninjutsu, Confiteor combo, ...) are false.
+export const buildJobActionListQuery = (jobAbbreviation: string): string => {
+    const jobClause = jobAbbreviation === 'BST'
+        ? `+ClassJobCategory=${BEASTMASTER_JOB_CATEGORY_ID} +IsPlayerAction=true`
+        : `+ClassJobCategory.${jobAbbreviation}=true`
+    return `${jobClause} +IsPvP=false +ClassJobLevel>=1 -ClassJobCategory=${ALL_CLASSES_JOB_CATEGORY_ID}`
+}
 
 export { JOB_ACTION_LIST_FIELDS, PLACEHOLDER_ICON_ID }
